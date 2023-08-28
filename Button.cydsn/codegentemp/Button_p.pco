@@ -1,0 +1,14 @@
+dont_use_io iocell 1 0
+dont_use_io iocell 1 1
+dont_use_io iocell 1 3
+# Note: port 15 is the logical name for port 8
+set_io "Pin_Button(0)" iocell 15 5
+set_location "ClockBlock" clockblockcell -1 -1 0
+set_location "Pin_Button" logicalport -1 -1 8
+set_location "isr_Button" interrupt -1 -1 12
+# Note: port 12 is the logical name for port 7
+set_io "Pin_YELLOW_LED(0)" iocell 12 2
+# Note: port 12 is the logical name for port 7
+set_io "Pin_GREEN_LED(0)" iocell 12 0
+# Note: port 12 is the logical name for port 7
+set_io "Pin_RED_LED(0)" iocell 12 1

@@ -1,0 +1,2052 @@
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"isr_pushbutton.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_pushbutton_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_pushbutton_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_pushbutton_Interrupt, %function
+  25              	isr_pushbutton_Interrupt:
+  26              	.LFB66:
+  27              		.file 1 "Generated_Source\\PSoC5\\isr_pushbutton.c"
+   1:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+   2:Generated_Source\PSoC5/isr_pushbutton.c **** * File Name: isr_pushbutton.c  
+   3:Generated_Source\PSoC5/isr_pushbutton.c **** * Version 1.70
+   4:Generated_Source\PSoC5/isr_pushbutton.c **** *
+   5:Generated_Source\PSoC5/isr_pushbutton.c **** *  Description:
+   6:Generated_Source\PSoC5/isr_pushbutton.c **** *   API for controlling the state of an interrupt.
+   7:Generated_Source\PSoC5/isr_pushbutton.c **** *
+   8:Generated_Source\PSoC5/isr_pushbutton.c **** *
+   9:Generated_Source\PSoC5/isr_pushbutton.c **** *  Note:
+  10:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  11:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+  12:Generated_Source\PSoC5/isr_pushbutton.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC5/isr_pushbutton.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC5/isr_pushbutton.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC5/isr_pushbutton.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+  17:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  18:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  19:Generated_Source\PSoC5/isr_pushbutton.c **** #include <cydevice_trm.h>
+  20:Generated_Source\PSoC5/isr_pushbutton.c **** #include <CyLib.h>
+  21:Generated_Source\PSoC5/isr_pushbutton.c **** #include <isr_pushbutton.h>
+  22:Generated_Source\PSoC5/isr_pushbutton.c **** #include "cyapicallbacks.h"
+  23:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  24:Generated_Source\PSoC5/isr_pushbutton.c **** #if !defined(isr_pushbutton__REMOVED) /* Check for removal by optimization */
+  25:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  26:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+  27:Generated_Source\PSoC5/isr_pushbutton.c **** *  Place your includes, defines and code here 
+  28:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************/
+  29:Generated_Source\PSoC5/isr_pushbutton.c **** /* `#START isr_pushbutton_intc` */
+  30:Generated_Source\PSoC5/isr_pushbutton.c **** #include "common.h"
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 2
+
+
+  31:Generated_Source\PSoC5/isr_pushbutton.c ****     uint8_t flagPB = 0;
+  32:Generated_Source\PSoC5/isr_pushbutton.c **** /* `#END` */
+  33:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  34:Generated_Source\PSoC5/isr_pushbutton.c **** #ifndef CYINT_IRQ_BASE
+  35:Generated_Source\PSoC5/isr_pushbutton.c **** #define CYINT_IRQ_BASE      16
+  36:Generated_Source\PSoC5/isr_pushbutton.c **** #endif /* CYINT_IRQ_BASE */
+  37:Generated_Source\PSoC5/isr_pushbutton.c **** #ifndef CYINT_VECT_TABLE
+  38:Generated_Source\PSoC5/isr_pushbutton.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  39:Generated_Source\PSoC5/isr_pushbutton.c **** #endif /* CYINT_VECT_TABLE */
+  40:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  41:Generated_Source\PSoC5/isr_pushbutton.c **** /* Declared in startup, used to set unused interrupts to. */
+  42:Generated_Source\PSoC5/isr_pushbutton.c **** CY_ISR_PROTO(IntDefaultHandler);
+  43:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  44:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  45:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+  46:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_Start
+  47:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+  48:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  49:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+  50:Generated_Source\PSoC5/isr_pushbutton.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  51:Generated_Source\PSoC5/isr_pushbutton.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  52:Generated_Source\PSoC5/isr_pushbutton.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  53:Generated_Source\PSoC5/isr_pushbutton.c **** *  interrupt controller.
+  54:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  55:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:  
+  56:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+  57:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  58:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+  59:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+  60:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  61:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+  62:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_Start(void)
+  63:Generated_Source\PSoC5/isr_pushbutton.c **** {
+  64:Generated_Source\PSoC5/isr_pushbutton.c ****     /* For all we know the interrupt is active. */
+  65:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_Disable();
+  66:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  67:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Set the ISR to point to the isr_pushbutton Interrupt. */
+  68:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_SetVector(&isr_pushbutton_Interrupt);
+  69:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  70:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Set the priority. */
+  71:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_SetPriority((uint8)isr_pushbutton_INTC_PRIOR_NUMBER);
+  72:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  73:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Enable it. */
+  74:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_Enable();
+  75:Generated_Source\PSoC5/isr_pushbutton.c **** }
+  76:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  77:Generated_Source\PSoC5/isr_pushbutton.c **** 
+  78:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+  79:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_StartEx
+  80:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+  81:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  82:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+  83:Generated_Source\PSoC5/isr_pushbutton.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  84:Generated_Source\PSoC5/isr_pushbutton.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  85:Generated_Source\PSoC5/isr_pushbutton.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  86:Generated_Source\PSoC5/isr_pushbutton.c **** *  the interrupt to the interrupt controller.
+  87:Generated_Source\PSoC5/isr_pushbutton.c **** *  
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 3
+
+
+  88:Generated_Source\PSoC5/isr_pushbutton.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  89:Generated_Source\PSoC5/isr_pushbutton.c **** *  used to provide consistent definition across compilers:
+  90:Generated_Source\PSoC5/isr_pushbutton.c **** *  
+  91:Generated_Source\PSoC5/isr_pushbutton.c **** *  Function definition example:
+  92:Generated_Source\PSoC5/isr_pushbutton.c **** *   CY_ISR(MyISR)
+  93:Generated_Source\PSoC5/isr_pushbutton.c **** *   {
+  94:Generated_Source\PSoC5/isr_pushbutton.c **** *   }
+  95:Generated_Source\PSoC5/isr_pushbutton.c **** *   Function prototype example:
+  96:Generated_Source\PSoC5/isr_pushbutton.c **** *   CY_ISR_PROTO(MyISR);
+  97:Generated_Source\PSoC5/isr_pushbutton.c **** *
+  98:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:  
+  99:Generated_Source\PSoC5/isr_pushbutton.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 100:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 101:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 102:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 103:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 104:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 105:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_StartEx(cyisraddress address)
+ 106:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 107:Generated_Source\PSoC5/isr_pushbutton.c ****     /* For all we know the interrupt is active. */
+ 108:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_Disable();
+ 109:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 110:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Set the ISR to point to the isr_pushbutton Interrupt. */
+ 111:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_SetVector(address);
+ 112:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 113:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Set the priority. */
+ 114:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_SetPriority((uint8)isr_pushbutton_INTC_PRIOR_NUMBER);
+ 115:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 116:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Enable it. */
+ 117:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_Enable();
+ 118:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 119:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 120:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 121:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 122:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_Stop
+ 123:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 124:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 125:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 126:Generated_Source\PSoC5/isr_pushbutton.c **** *   Disables and removes the interrupt.
+ 127:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 128:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:  
+ 129:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 130:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 131:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 132:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 133:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 134:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 135:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_Stop(void)
+ 136:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 137:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Disable this interrupt. */
+ 138:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_Disable();
+ 139:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 140:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Set the ISR to point to the passive one. */
+ 141:Generated_Source\PSoC5/isr_pushbutton.c ****     isr_pushbutton_SetVector(&IntDefaultHandler);
+ 142:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 143:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 144:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 4
+
+
+ 145:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 146:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_Interrupt
+ 147:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 148:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 149:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 150:Generated_Source\PSoC5/isr_pushbutton.c **** *   The default Interrupt Service Routine for isr_pushbutton.
+ 151:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 152:Generated_Source\PSoC5/isr_pushbutton.c **** *   Add custom code between the coments to keep the next version of this file
+ 153:Generated_Source\PSoC5/isr_pushbutton.c **** *   from over writting your code.
+ 154:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 155:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:  
+ 156:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 157:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 158:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 159:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 160:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 161:Generated_Source\PSoC5/isr_pushbutton.c **** CY_ISR(isr_pushbutton_Interrupt)
+ 162:Generated_Source\PSoC5/isr_pushbutton.c **** {
+  28              		.loc 1 162 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 163:Generated_Source\PSoC5/isr_pushbutton.c ****     #ifdef isr_pushbutton_INTERRUPT_INTERRUPT_CALLBACK
+ 164:Generated_Source\PSoC5/isr_pushbutton.c ****         isr_pushbutton_Interrupt_InterruptCallback();
+ 165:Generated_Source\PSoC5/isr_pushbutton.c ****     #endif /* isr_pushbutton_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 166:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 167:Generated_Source\PSoC5/isr_pushbutton.c ****     /*  Place your Interrupt code here. */
+ 168:Generated_Source\PSoC5/isr_pushbutton.c ****     /* `#START isr_pushbutton_Interrupt` */
+ 169:Generated_Source\PSoC5/isr_pushbutton.c ****         PushButton_ClearInterrupt();
+  36              		.loc 1 169 0
+  37 0002 FFF7FEFF 		bl	PushButton_ClearInterrupt
+  38              	.LVL0:
+ 170:Generated_Source\PSoC5/isr_pushbutton.c ****         flagPB = 1;
+  39              		.loc 1 170 0
+  40 0006 0122     		movs	r2, #1
+  41 0008 014B     		ldr	r3, .L3
+  42 000a 1A70     		strb	r2, [r3]
+  43 000c 08BD     		pop	{r3, pc}
+  44              	.L4:
+  45 000e 00BF     		.align	2
+  46              	.L3:
+  47 0010 00000000 		.word	.LANCHOR0
+  48              		.cfi_endproc
+  49              	.LFE66:
+  50              		.size	isr_pushbutton_Interrupt, .-isr_pushbutton_Interrupt
+  51              		.section	.text.isr_pushbutton_SetVector,"ax",%progbits
+  52              		.align	2
+  53              		.global	isr_pushbutton_SetVector
+  54              		.thumb
+  55              		.thumb_func
+  56              		.type	isr_pushbutton_SetVector, %function
+  57              	isr_pushbutton_SetVector:
+  58              	.LFB67:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 5
+
+
+ 171:Generated_Source\PSoC5/isr_pushbutton.c ****     /* `#END` */
+ 172:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 173:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 174:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 175:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 176:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_SetVector
+ 177:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 178:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 179:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 180:Generated_Source\PSoC5/isr_pushbutton.c **** *   Change the ISR vector for the Interrupt. Note calling isr_pushbutton_Start
+ 181:Generated_Source\PSoC5/isr_pushbutton.c **** *   will override any effect this method would have had. To set the vector 
+ 182:Generated_Source\PSoC5/isr_pushbutton.c **** *   before the component has been started use isr_pushbutton_StartEx instead.
+ 183:Generated_Source\PSoC5/isr_pushbutton.c **** * 
+ 184:Generated_Source\PSoC5/isr_pushbutton.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 185:Generated_Source\PSoC5/isr_pushbutton.c **** *   used to provide consistent definition across compilers:
+ 186:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 187:Generated_Source\PSoC5/isr_pushbutton.c **** *   Function definition example:
+ 188:Generated_Source\PSoC5/isr_pushbutton.c **** *   CY_ISR(MyISR)
+ 189:Generated_Source\PSoC5/isr_pushbutton.c **** *   {
+ 190:Generated_Source\PSoC5/isr_pushbutton.c **** *   }
+ 191:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 192:Generated_Source\PSoC5/isr_pushbutton.c **** *   Function prototype example:
+ 193:Generated_Source\PSoC5/isr_pushbutton.c **** *     CY_ISR_PROTO(MyISR);
+ 194:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 195:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 196:Generated_Source\PSoC5/isr_pushbutton.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 197:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 198:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 199:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 200:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 201:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 202:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_SetVector(cyisraddress address)
+ 203:Generated_Source\PSoC5/isr_pushbutton.c **** {
+  59              		.loc 1 203 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		@ link register save eliminated.
+  64              	.LVL1:
+ 204:Generated_Source\PSoC5/isr_pushbutton.c ****     cyisraddress * ramVectorTable;
+ 205:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 206:Generated_Source\PSoC5/isr_pushbutton.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+  65              		.loc 1 206 0
+  66 0000 014B     		ldr	r3, .L6
+  67 0002 1B68     		ldr	r3, [r3]
+  68              	.LVL2:
+ 207:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 208:Generated_Source\PSoC5/isr_pushbutton.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_pushbutton__INTC_NUMBER] = address;
+  69              		.loc 1 208 0
+  70 0004 5865     		str	r0, [r3, #84]
+  71 0006 7047     		bx	lr
+  72              	.L7:
+  73              		.align	2
+  74              	.L6:
+  75 0008 08ED00E0 		.word	-536810232
+  76              		.cfi_endproc
+  77              	.LFE67:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 6
+
+
+  78              		.size	isr_pushbutton_SetVector, .-isr_pushbutton_SetVector
+  79              		.section	.text.isr_pushbutton_GetVector,"ax",%progbits
+  80              		.align	2
+  81              		.global	isr_pushbutton_GetVector
+  82              		.thumb
+  83              		.thumb_func
+  84              		.type	isr_pushbutton_GetVector, %function
+  85              	isr_pushbutton_GetVector:
+  86              	.LFB68:
+ 209:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 210:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 211:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 212:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 213:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_GetVector
+ 214:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 215:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 216:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 217:Generated_Source\PSoC5/isr_pushbutton.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 218:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 219:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 220:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 221:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 222:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 223:Generated_Source\PSoC5/isr_pushbutton.c **** *   Address of the ISR in the interrupt vector table.
+ 224:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 225:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 226:Generated_Source\PSoC5/isr_pushbutton.c **** cyisraddress isr_pushbutton_GetVector(void)
+ 227:Generated_Source\PSoC5/isr_pushbutton.c **** {
+  87              		.loc 1 227 0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+ 228:Generated_Source\PSoC5/isr_pushbutton.c ****     cyisraddress * ramVectorTable;
+ 229:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 230:Generated_Source\PSoC5/isr_pushbutton.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+  92              		.loc 1 230 0
+  93 0000 014B     		ldr	r3, .L9
+  94 0002 1B68     		ldr	r3, [r3]
+  95              	.LVL3:
+ 231:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 232:Generated_Source\PSoC5/isr_pushbutton.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)isr_pushbutton__INTC_NUMBER];
+ 233:Generated_Source\PSoC5/isr_pushbutton.c **** }
+  96              		.loc 1 233 0
+  97 0004 586D     		ldr	r0, [r3, #84]
+  98 0006 7047     		bx	lr
+  99              	.L10:
+ 100              		.align	2
+ 101              	.L9:
+ 102 0008 08ED00E0 		.word	-536810232
+ 103              		.cfi_endproc
+ 104              	.LFE68:
+ 105              		.size	isr_pushbutton_GetVector, .-isr_pushbutton_GetVector
+ 106              		.section	.text.isr_pushbutton_SetPriority,"ax",%progbits
+ 107              		.align	2
+ 108              		.global	isr_pushbutton_SetPriority
+ 109              		.thumb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 7
+
+
+ 110              		.thumb_func
+ 111              		.type	isr_pushbutton_SetPriority, %function
+ 112              	isr_pushbutton_SetPriority:
+ 113              	.LFB69:
+ 234:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 235:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 236:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 237:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_SetPriority
+ 238:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 239:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 240:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 241:Generated_Source\PSoC5/isr_pushbutton.c **** *   Sets the Priority of the Interrupt. 
+ 242:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 243:Generated_Source\PSoC5/isr_pushbutton.c **** *   Note calling isr_pushbutton_Start or isr_pushbutton_StartEx will 
+ 244:Generated_Source\PSoC5/isr_pushbutton.c **** *   override any effect this API would have had. This API should only be called
+ 245:Generated_Source\PSoC5/isr_pushbutton.c **** *   after isr_pushbutton_Start or isr_pushbutton_StartEx has been called. 
+ 246:Generated_Source\PSoC5/isr_pushbutton.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 247:Generated_Source\PSoC5/isr_pushbutton.c **** *   Interrupt Editor.
+ 248:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 249:Generated_Source\PSoC5/isr_pushbutton.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 250:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 251:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 252:Generated_Source\PSoC5/isr_pushbutton.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 253:Generated_Source\PSoC5/isr_pushbutton.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 254:Generated_Source\PSoC5/isr_pushbutton.c **** *             PSoC 4: Priority is from 0 to 3.
+ 255:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 256:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 257:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 258:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 259:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 260:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_SetPriority(uint8 priority)
+ 261:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 114              		.loc 1 261 0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		@ link register save eliminated.
+ 119              	.LVL4:
+ 262:Generated_Source\PSoC5/isr_pushbutton.c ****     *isr_pushbutton_INTC_PRIOR = priority << 5;
+ 120              		.loc 1 262 0
+ 121 0000 4001     		lsls	r0, r0, #5
+ 122              	.LVL5:
+ 123 0002 C0B2     		uxtb	r0, r0
+ 124 0004 014B     		ldr	r3, .L12
+ 125 0006 1870     		strb	r0, [r3]
+ 126 0008 7047     		bx	lr
+ 127              	.L13:
+ 128 000a 00BF     		.align	2
+ 129              	.L12:
+ 130 000c 05E400E0 		.word	-536812539
+ 131              		.cfi_endproc
+ 132              	.LFE69:
+ 133              		.size	isr_pushbutton_SetPriority, .-isr_pushbutton_SetPriority
+ 134              		.section	.text.isr_pushbutton_GetPriority,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	isr_pushbutton_GetPriority
+ 137              		.thumb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 8
+
+
+ 138              		.thumb_func
+ 139              		.type	isr_pushbutton_GetPriority, %function
+ 140              	isr_pushbutton_GetPriority:
+ 141              	.LFB70:
+ 263:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 264:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 265:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 266:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 267:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_GetPriority
+ 268:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 269:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 270:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 271:Generated_Source\PSoC5/isr_pushbutton.c **** *   Gets the Priority of the Interrupt.
+ 272:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 273:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 274:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 275:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 276:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 277:Generated_Source\PSoC5/isr_pushbutton.c **** *   Priority of the interrupt, 0 being the highest priority
+ 278:Generated_Source\PSoC5/isr_pushbutton.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 279:Generated_Source\PSoC5/isr_pushbutton.c **** *    PSoC 4: Priority is from 0 to 3.
+ 280:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 281:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 282:Generated_Source\PSoC5/isr_pushbutton.c **** uint8 isr_pushbutton_GetPriority(void)
+ 283:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 142              		.loc 1 283 0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		@ link register save eliminated.
+ 284:Generated_Source\PSoC5/isr_pushbutton.c ****     uint8 priority;
+ 285:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 286:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 287:Generated_Source\PSoC5/isr_pushbutton.c ****     priority = *isr_pushbutton_INTC_PRIOR >> 5;
+ 147              		.loc 1 287 0
+ 148 0000 014B     		ldr	r3, .L15
+ 149 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 150              	.LVL6:
+ 288:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 289:Generated_Source\PSoC5/isr_pushbutton.c ****     return priority;
+ 290:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 151              		.loc 1 290 0
+ 152 0004 4009     		lsrs	r0, r0, #5
+ 153              	.LVL7:
+ 154 0006 7047     		bx	lr
+ 155              	.L16:
+ 156              		.align	2
+ 157              	.L15:
+ 158 0008 05E400E0 		.word	-536812539
+ 159              		.cfi_endproc
+ 160              	.LFE70:
+ 161              		.size	isr_pushbutton_GetPriority, .-isr_pushbutton_GetPriority
+ 162              		.section	.text.isr_pushbutton_Enable,"ax",%progbits
+ 163              		.align	2
+ 164              		.global	isr_pushbutton_Enable
+ 165              		.thumb
+ 166              		.thumb_func
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 9
+
+
+ 167              		.type	isr_pushbutton_Enable, %function
+ 168              	isr_pushbutton_Enable:
+ 169              	.LFB71:
+ 291:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 292:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 293:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 294:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_Enable
+ 295:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 296:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 297:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 298:Generated_Source\PSoC5/isr_pushbutton.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 299:Generated_Source\PSoC5/isr_pushbutton.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 300:Generated_Source\PSoC5/isr_pushbutton.c **** *   function, which sets the vector and the priority, has been called.
+ 301:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 302:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 303:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 304:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 305:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 306:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 307:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 308:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 309:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_Enable(void)
+ 310:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 170              		.loc 1 310 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174              		@ link register save eliminated.
+ 311:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Enable the general interrupt. */
+ 312:Generated_Source\PSoC5/isr_pushbutton.c ****     *isr_pushbutton_INTC_SET_EN = isr_pushbutton__INTC_MASK;
+ 175              		.loc 1 312 0
+ 176 0000 2022     		movs	r2, #32
+ 177 0002 014B     		ldr	r3, .L18
+ 178 0004 1A60     		str	r2, [r3]
+ 179 0006 7047     		bx	lr
+ 180              	.L19:
+ 181              		.align	2
+ 182              	.L18:
+ 183 0008 00E100E0 		.word	-536813312
+ 184              		.cfi_endproc
+ 185              	.LFE71:
+ 186              		.size	isr_pushbutton_Enable, .-isr_pushbutton_Enable
+ 187              		.section	.text.isr_pushbutton_GetState,"ax",%progbits
+ 188              		.align	2
+ 189              		.global	isr_pushbutton_GetState
+ 190              		.thumb
+ 191              		.thumb_func
+ 192              		.type	isr_pushbutton_GetState, %function
+ 193              	isr_pushbutton_GetState:
+ 194              	.LFB72:
+ 313:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 314:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 315:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 316:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 317:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_GetState
+ 318:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 319:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 10
+
+
+ 320:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 321:Generated_Source\PSoC5/isr_pushbutton.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 322:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 323:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 324:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 325:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 326:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 327:Generated_Source\PSoC5/isr_pushbutton.c **** *   1 if enabled, 0 if disabled.
+ 328:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 329:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 330:Generated_Source\PSoC5/isr_pushbutton.c **** uint8 isr_pushbutton_GetState(void)
+ 331:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 195              		.loc 1 331 0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+ 332:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Get the state of the general interrupt. */
+ 333:Generated_Source\PSoC5/isr_pushbutton.c ****     return ((*isr_pushbutton_INTC_SET_EN & (uint32)isr_pushbutton__INTC_MASK) != 0u) ? 1u:0u;
+ 200              		.loc 1 333 0
+ 201 0000 044B     		ldr	r3, .L23
+ 202 0002 1B68     		ldr	r3, [r3]
+ 203 0004 13F0200F 		tst	r3, #32
+ 204 0008 01D0     		beq	.L22
+ 205 000a 0120     		movs	r0, #1
+ 206 000c 7047     		bx	lr
+ 207              	.L22:
+ 208 000e 0020     		movs	r0, #0
+ 334:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 209              		.loc 1 334 0
+ 210 0010 7047     		bx	lr
+ 211              	.L24:
+ 212 0012 00BF     		.align	2
+ 213              	.L23:
+ 214 0014 00E100E0 		.word	-536813312
+ 215              		.cfi_endproc
+ 216              	.LFE72:
+ 217              		.size	isr_pushbutton_GetState, .-isr_pushbutton_GetState
+ 218              		.section	.text.isr_pushbutton_Disable,"ax",%progbits
+ 219              		.align	2
+ 220              		.global	isr_pushbutton_Disable
+ 221              		.thumb
+ 222              		.thumb_func
+ 223              		.type	isr_pushbutton_Disable, %function
+ 224              	isr_pushbutton_Disable:
+ 225              	.LFB73:
+ 335:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 336:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 337:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 338:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_Disable
+ 339:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 340:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 341:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 342:Generated_Source\PSoC5/isr_pushbutton.c **** *   Disables the Interrupt in the interrupt controller.
+ 343:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 344:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 345:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 11
+
+
+ 346:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 347:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 348:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 349:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 350:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 351:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_Disable(void)
+ 352:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 226              		.loc 1 352 0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 0
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230              		@ link register save eliminated.
+ 353:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Disable the general interrupt. */
+ 354:Generated_Source\PSoC5/isr_pushbutton.c ****     *isr_pushbutton_INTC_CLR_EN = isr_pushbutton__INTC_MASK;
+ 231              		.loc 1 354 0
+ 232 0000 2022     		movs	r2, #32
+ 233 0002 014B     		ldr	r3, .L26
+ 234 0004 1A60     		str	r2, [r3]
+ 235 0006 7047     		bx	lr
+ 236              	.L27:
+ 237              		.align	2
+ 238              	.L26:
+ 239 0008 80E100E0 		.word	-536813184
+ 240              		.cfi_endproc
+ 241              	.LFE73:
+ 242              		.size	isr_pushbutton_Disable, .-isr_pushbutton_Disable
+ 243              		.section	.text.isr_pushbutton_Start,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	isr_pushbutton_Start
+ 246              		.thumb
+ 247              		.thumb_func
+ 248              		.type	isr_pushbutton_Start, %function
+ 249              	isr_pushbutton_Start:
+ 250              	.LFB63:
+  63:Generated_Source\PSoC5/isr_pushbutton.c ****     /* For all we know the interrupt is active. */
+ 251              		.loc 1 63 0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 0
+ 254              		@ frame_needed = 0, uses_anonymous_args = 0
+ 255 0000 08B5     		push	{r3, lr}
+ 256              		.cfi_def_cfa_offset 8
+ 257              		.cfi_offset 3, -8
+ 258              		.cfi_offset 14, -4
+  65:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 259              		.loc 1 65 0
+ 260 0002 FFF7FEFF 		bl	isr_pushbutton_Disable
+ 261              	.LVL8:
+  68:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 262              		.loc 1 68 0
+ 263 0006 0448     		ldr	r0, .L30
+ 264 0008 FFF7FEFF 		bl	isr_pushbutton_SetVector
+ 265              	.LVL9:
+  71:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 266              		.loc 1 71 0
+ 267 000c 0720     		movs	r0, #7
+ 268 000e FFF7FEFF 		bl	isr_pushbutton_SetPriority
+ 269              	.LVL10:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 12
+
+
+  74:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 270              		.loc 1 74 0
+ 271 0012 FFF7FEFF 		bl	isr_pushbutton_Enable
+ 272              	.LVL11:
+ 273 0016 08BD     		pop	{r3, pc}
+ 274              	.L31:
+ 275              		.align	2
+ 276              	.L30:
+ 277 0018 00000000 		.word	isr_pushbutton_Interrupt
+ 278              		.cfi_endproc
+ 279              	.LFE63:
+ 280              		.size	isr_pushbutton_Start, .-isr_pushbutton_Start
+ 281              		.section	.text.isr_pushbutton_StartEx,"ax",%progbits
+ 282              		.align	2
+ 283              		.global	isr_pushbutton_StartEx
+ 284              		.thumb
+ 285              		.thumb_func
+ 286              		.type	isr_pushbutton_StartEx, %function
+ 287              	isr_pushbutton_StartEx:
+ 288              	.LFB64:
+ 106:Generated_Source\PSoC5/isr_pushbutton.c ****     /* For all we know the interrupt is active. */
+ 289              		.loc 1 106 0
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 0, uses_anonymous_args = 0
+ 293              	.LVL12:
+ 294 0000 10B5     		push	{r4, lr}
+ 295              		.cfi_def_cfa_offset 8
+ 296              		.cfi_offset 4, -8
+ 297              		.cfi_offset 14, -4
+ 298 0002 0446     		mov	r4, r0
+ 108:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 299              		.loc 1 108 0
+ 300 0004 FFF7FEFF 		bl	isr_pushbutton_Disable
+ 301              	.LVL13:
+ 111:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 302              		.loc 1 111 0
+ 303 0008 2046     		mov	r0, r4
+ 304 000a FFF7FEFF 		bl	isr_pushbutton_SetVector
+ 305              	.LVL14:
+ 114:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 306              		.loc 1 114 0
+ 307 000e 0720     		movs	r0, #7
+ 308 0010 FFF7FEFF 		bl	isr_pushbutton_SetPriority
+ 309              	.LVL15:
+ 117:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 310              		.loc 1 117 0
+ 311 0014 FFF7FEFF 		bl	isr_pushbutton_Enable
+ 312              	.LVL16:
+ 313 0018 10BD     		pop	{r4, pc}
+ 314              		.cfi_endproc
+ 315              	.LFE64:
+ 316              		.size	isr_pushbutton_StartEx, .-isr_pushbutton_StartEx
+ 317 001a 00BF     		.section	.text.isr_pushbutton_Stop,"ax",%progbits
+ 318              		.align	2
+ 319              		.global	isr_pushbutton_Stop
+ 320              		.thumb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 13
+
+
+ 321              		.thumb_func
+ 322              		.type	isr_pushbutton_Stop, %function
+ 323              	isr_pushbutton_Stop:
+ 324              	.LFB65:
+ 136:Generated_Source\PSoC5/isr_pushbutton.c ****     /* Disable this interrupt. */
+ 325              		.loc 1 136 0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329 0000 08B5     		push	{r3, lr}
+ 330              		.cfi_def_cfa_offset 8
+ 331              		.cfi_offset 3, -8
+ 332              		.cfi_offset 14, -4
+ 138:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 333              		.loc 1 138 0
+ 334 0002 FFF7FEFF 		bl	isr_pushbutton_Disable
+ 335              	.LVL17:
+ 141:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 336              		.loc 1 141 0
+ 337 0006 0248     		ldr	r0, .L36
+ 338 0008 FFF7FEFF 		bl	isr_pushbutton_SetVector
+ 339              	.LVL18:
+ 340 000c 08BD     		pop	{r3, pc}
+ 341              	.L37:
+ 342 000e 00BF     		.align	2
+ 343              	.L36:
+ 344 0010 00000000 		.word	IntDefaultHandler
+ 345              		.cfi_endproc
+ 346              	.LFE65:
+ 347              		.size	isr_pushbutton_Stop, .-isr_pushbutton_Stop
+ 348              		.section	.text.isr_pushbutton_SetPending,"ax",%progbits
+ 349              		.align	2
+ 350              		.global	isr_pushbutton_SetPending
+ 351              		.thumb
+ 352              		.thumb_func
+ 353              		.type	isr_pushbutton_SetPending, %function
+ 354              	isr_pushbutton_SetPending:
+ 355              	.LFB74:
+ 355:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 356:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 357:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 358:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 359:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_SetPending
+ 360:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 361:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 362:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 363:Generated_Source\PSoC5/isr_pushbutton.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 364:Generated_Source\PSoC5/isr_pushbutton.c **** *   generating the interrupt.
+ 365:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 366:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 367:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 368:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 369:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 370:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 371:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 372:Generated_Source\PSoC5/isr_pushbutton.c **** * Side Effects:
+ 373:Generated_Source\PSoC5/isr_pushbutton.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 14
+
+
+ 374:Generated_Source\PSoC5/isr_pushbutton.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 375:Generated_Source\PSoC5/isr_pushbutton.c **** *   interrupts).
+ 376:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 377:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 378:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_SetPending(void)
+ 379:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 356              		.loc 1 379 0
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 0
+ 359              		@ frame_needed = 0, uses_anonymous_args = 0
+ 360              		@ link register save eliminated.
+ 380:Generated_Source\PSoC5/isr_pushbutton.c ****     *isr_pushbutton_INTC_SET_PD = isr_pushbutton__INTC_MASK;
+ 361              		.loc 1 380 0
+ 362 0000 2022     		movs	r2, #32
+ 363 0002 014B     		ldr	r3, .L39
+ 364 0004 1A60     		str	r2, [r3]
+ 365 0006 7047     		bx	lr
+ 366              	.L40:
+ 367              		.align	2
+ 368              	.L39:
+ 369 0008 00E200E0 		.word	-536813056
+ 370              		.cfi_endproc
+ 371              	.LFE74:
+ 372              		.size	isr_pushbutton_SetPending, .-isr_pushbutton_SetPending
+ 373              		.section	.text.isr_pushbutton_ClearPending,"ax",%progbits
+ 374              		.align	2
+ 375              		.global	isr_pushbutton_ClearPending
+ 376              		.thumb
+ 377              		.thumb_func
+ 378              		.type	isr_pushbutton_ClearPending, %function
+ 379              	isr_pushbutton_ClearPending:
+ 380              	.LFB75:
+ 381:Generated_Source\PSoC5/isr_pushbutton.c **** }
+ 382:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 383:Generated_Source\PSoC5/isr_pushbutton.c **** 
+ 384:Generated_Source\PSoC5/isr_pushbutton.c **** /*******************************************************************************
+ 385:Generated_Source\PSoC5/isr_pushbutton.c **** * Function Name: isr_pushbutton_ClearPending
+ 386:Generated_Source\PSoC5/isr_pushbutton.c **** ********************************************************************************
+ 387:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 388:Generated_Source\PSoC5/isr_pushbutton.c **** * Summary:
+ 389:Generated_Source\PSoC5/isr_pushbutton.c **** *   Clears a pending interrupt in the interrupt controller.
+ 390:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 391:Generated_Source\PSoC5/isr_pushbutton.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 392:Generated_Source\PSoC5/isr_pushbutton.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 393:Generated_Source\PSoC5/isr_pushbutton.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 394:Generated_Source\PSoC5/isr_pushbutton.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 395:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 396:Generated_Source\PSoC5/isr_pushbutton.c **** * Parameters:
+ 397:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 398:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 399:Generated_Source\PSoC5/isr_pushbutton.c **** * Return:
+ 400:Generated_Source\PSoC5/isr_pushbutton.c **** *   None
+ 401:Generated_Source\PSoC5/isr_pushbutton.c **** *
+ 402:Generated_Source\PSoC5/isr_pushbutton.c **** *******************************************************************************/
+ 403:Generated_Source\PSoC5/isr_pushbutton.c **** void isr_pushbutton_ClearPending(void)
+ 404:Generated_Source\PSoC5/isr_pushbutton.c **** {
+ 381              		.loc 1 404 0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 15
+
+
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385              		@ link register save eliminated.
+ 405:Generated_Source\PSoC5/isr_pushbutton.c ****     *isr_pushbutton_INTC_CLR_PD = isr_pushbutton__INTC_MASK;
+ 386              		.loc 1 405 0
+ 387 0000 2022     		movs	r2, #32
+ 388 0002 014B     		ldr	r3, .L42
+ 389 0004 1A60     		str	r2, [r3]
+ 390 0006 7047     		bx	lr
+ 391              	.L43:
+ 392              		.align	2
+ 393              	.L42:
+ 394 0008 80E200E0 		.word	-536812928
+ 395              		.cfi_endproc
+ 396              	.LFE75:
+ 397              		.size	isr_pushbutton_ClearPending, .-isr_pushbutton_ClearPending
+ 398              		.global	flagPB
+ 399              		.bss
+ 400              		.set	.LANCHOR0,. + 0
+ 401              		.type	flagPB, %object
+ 402              		.size	flagPB, 1
+ 403              	flagPB:
+ 404 0000 00       		.space	1
+ 405              		.text
+ 406              	.Letext0:
+ 407              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 408              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 409              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 410              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 411              		.file 6 "Generated_Source\\PSoC5/PushButton.h"
+ 412              		.section	.debug_info,"",%progbits
+ 413              	.Ldebug_info0:
+ 414 0000 35030000 		.4byte	0x335
+ 415 0004 0400     		.2byte	0x4
+ 416 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 417 000a 04       		.byte	0x4
+ 418 000b 01       		.uleb128 0x1
+ 419 000c 16020000 		.4byte	.LASF40
+ 420 0010 0C       		.byte	0xc
+ 421 0011 C6010000 		.4byte	.LASF41
+ 422 0015 D0000000 		.4byte	.LASF42
+ 423 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 424 001d 00000000 		.4byte	0
+ 425 0021 00000000 		.4byte	.Ldebug_line0
+ 426 0025 02       		.uleb128 0x2
+ 427 0026 04       		.byte	0x4
+ 428 0027 05       		.byte	0x5
+ 429 0028 696E7400 		.ascii	"int\000"
+ 430 002c 03       		.uleb128 0x3
+ 431 002d 04       		.byte	0x4
+ 432 002e 07       		.byte	0x7
+ 433 002f 83010000 		.4byte	.LASF0
+ 434 0033 03       		.uleb128 0x3
+ 435 0034 08       		.byte	0x8
+ 436 0035 05       		.byte	0x5
+ 437 0036 B5020000 		.4byte	.LASF1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 16
+
+
+ 438 003a 03       		.uleb128 0x3
+ 439 003b 08       		.byte	0x8
+ 440 003c 04       		.byte	0x4
+ 441 003d 19030000 		.4byte	.LASF2
+ 442 0041 03       		.uleb128 0x3
+ 443 0042 01       		.byte	0x1
+ 444 0043 06       		.byte	0x6
+ 445 0044 25030000 		.4byte	.LASF3
+ 446 0048 04       		.uleb128 0x4
+ 447 0049 20000000 		.4byte	.LASF7
+ 448 004d 02       		.byte	0x2
+ 449 004e 1D       		.byte	0x1d
+ 450 004f 53000000 		.4byte	0x53
+ 451 0053 03       		.uleb128 0x3
+ 452 0054 01       		.byte	0x1
+ 453 0055 08       		.byte	0x8
+ 454 0056 50000000 		.4byte	.LASF4
+ 455 005a 03       		.uleb128 0x3
+ 456 005b 02       		.byte	0x2
+ 457 005c 05       		.byte	0x5
+ 458 005d EB020000 		.4byte	.LASF5
+ 459 0061 03       		.uleb128 0x3
+ 460 0062 02       		.byte	0x2
+ 461 0063 07       		.byte	0x7
+ 462 0064 95000000 		.4byte	.LASF6
+ 463 0068 04       		.uleb128 0x4
+ 464 0069 40000000 		.4byte	.LASF8
+ 465 006d 02       		.byte	0x2
+ 466 006e 3F       		.byte	0x3f
+ 467 006f 73000000 		.4byte	0x73
+ 468 0073 03       		.uleb128 0x3
+ 469 0074 04       		.byte	0x4
+ 470 0075 05       		.byte	0x5
+ 471 0076 10030000 		.4byte	.LASF9
+ 472 007a 03       		.uleb128 0x3
+ 473 007b 04       		.byte	0x4
+ 474 007c 07       		.byte	0x7
+ 475 007d 83000000 		.4byte	.LASF10
+ 476 0081 03       		.uleb128 0x3
+ 477 0082 08       		.byte	0x8
+ 478 0083 07       		.byte	0x7
+ 479 0084 A7010000 		.4byte	.LASF11
+ 480 0088 03       		.uleb128 0x3
+ 481 0089 04       		.byte	0x4
+ 482 008a 07       		.byte	0x7
+ 483 008b AC020000 		.4byte	.LASF12
+ 484 008f 03       		.uleb128 0x3
+ 485 0090 01       		.byte	0x1
+ 486 0091 08       		.byte	0x8
+ 487 0092 C3020000 		.4byte	.LASF13
+ 488 0096 05       		.uleb128 0x5
+ 489 0097 04       		.byte	0x4
+ 490 0098 9C000000 		.4byte	0x9c
+ 491 009c 06       		.uleb128 0x6
+ 492 009d 04       		.uleb128 0x4
+ 493 009e BE010000 		.4byte	.LASF14
+ 494 00a2 03       		.byte	0x3
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 17
+
+
+ 495 00a3 18       		.byte	0x18
+ 496 00a4 48000000 		.4byte	0x48
+ 497 00a8 04       		.uleb128 0x4
+ 498 00a9 A4020000 		.4byte	.LASF15
+ 499 00ad 03       		.byte	0x3
+ 500 00ae 2C       		.byte	0x2c
+ 501 00af 68000000 		.4byte	0x68
+ 502 00b3 07       		.uleb128 0x7
+ 503 00b4 F5020000 		.4byte	.LASF16
+ 504 00b8 04       		.byte	0x4
+ 505 00b9 E801     		.2byte	0x1e8
+ 506 00bb 53000000 		.4byte	0x53
+ 507 00bf 07       		.uleb128 0x7
+ 508 00c0 47010000 		.4byte	.LASF17
+ 509 00c4 04       		.byte	0x4
+ 510 00c5 EA01     		.2byte	0x1ea
+ 511 00c7 7A000000 		.4byte	0x7a
+ 512 00cb 03       		.uleb128 0x3
+ 513 00cc 04       		.byte	0x4
+ 514 00cd 04       		.byte	0x4
+ 515 00ce 4A000000 		.4byte	.LASF18
+ 516 00d2 03       		.uleb128 0x3
+ 517 00d3 08       		.byte	0x8
+ 518 00d4 04       		.byte	0x4
+ 519 00d5 30010000 		.4byte	.LASF19
+ 520 00d9 07       		.uleb128 0x7
+ 521 00da 76000000 		.4byte	.LASF20
+ 522 00de 04       		.byte	0x4
+ 523 00df 9202     		.2byte	0x292
+ 524 00e1 E5000000 		.4byte	0xe5
+ 525 00e5 08       		.uleb128 0x8
+ 526 00e6 B3000000 		.4byte	0xb3
+ 527 00ea 07       		.uleb128 0x7
+ 528 00eb 1A000000 		.4byte	.LASF21
+ 529 00ef 04       		.byte	0x4
+ 530 00f0 9402     		.2byte	0x294
+ 531 00f2 F6000000 		.4byte	0xf6
+ 532 00f6 08       		.uleb128 0x8
+ 533 00f7 BF000000 		.4byte	0xbf
+ 534 00fb 07       		.uleb128 0x7
+ 535 00fc EE010000 		.4byte	.LASF22
+ 536 0100 04       		.byte	0x4
+ 537 0101 A402     		.2byte	0x2a4
+ 538 0103 96000000 		.4byte	0x96
+ 539 0107 09       		.uleb128 0x9
+ 540 0108 4A030000 		.4byte	.LASF23
+ 541 010c 01       		.byte	0x1
+ 542 010d A1       		.byte	0xa1
+ 543 010e 00000000 		.4byte	.LFB66
+ 544 0112 14000000 		.4byte	.LFE66-.LFB66
+ 545 0116 01       		.uleb128 0x1
+ 546 0117 9C       		.byte	0x9c
+ 547 0118 26010000 		.4byte	0x126
+ 548 011c 0A       		.uleb128 0xa
+ 549 011d 06000000 		.4byte	.LVL0
+ 550 0121 2D030000 		.4byte	0x32d
+ 551 0125 00       		.byte	0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 18
+
+
+ 552 0126 09       		.uleb128 0x9
+ 553 0127 6A010000 		.4byte	.LASF24
+ 554 012b 01       		.byte	0x1
+ 555 012c CA       		.byte	0xca
+ 556 012d 00000000 		.4byte	.LFB67
+ 557 0131 0C000000 		.4byte	.LFE67-.LFB67
+ 558 0135 01       		.uleb128 0x1
+ 559 0136 9C       		.byte	0x9c
+ 560 0137 56010000 		.4byte	0x156
+ 561 013b 0B       		.uleb128 0xb
+ 562 013c 7B000000 		.4byte	.LASF27
+ 563 0140 01       		.byte	0x1
+ 564 0141 CA       		.byte	0xca
+ 565 0142 FB000000 		.4byte	0xfb
+ 566 0146 01       		.uleb128 0x1
+ 567 0147 50       		.byte	0x50
+ 568 0148 0C       		.uleb128 0xc
+ 569 0149 C8020000 		.4byte	.LASF25
+ 570 014d 01       		.byte	0x1
+ 571 014e CC       		.byte	0xcc
+ 572 014f 56010000 		.4byte	0x156
+ 573 0153 01       		.uleb128 0x1
+ 574 0154 53       		.byte	0x53
+ 575 0155 00       		.byte	0
+ 576 0156 05       		.uleb128 0x5
+ 577 0157 04       		.byte	0x4
+ 578 0158 FB000000 		.4byte	0xfb
+ 579 015c 0D       		.uleb128 0xd
+ 580 015d 31030000 		.4byte	.LASF29
+ 581 0161 01       		.byte	0x1
+ 582 0162 E2       		.byte	0xe2
+ 583 0163 FB000000 		.4byte	0xfb
+ 584 0167 00000000 		.4byte	.LFB68
+ 585 016b 0C000000 		.4byte	.LFE68-.LFB68
+ 586 016f 01       		.uleb128 0x1
+ 587 0170 9C       		.byte	0x9c
+ 588 0171 83010000 		.4byte	0x183
+ 589 0175 0C       		.uleb128 0xc
+ 590 0176 C8020000 		.4byte	.LASF25
+ 591 017a 01       		.byte	0x1
+ 592 017b E4       		.byte	0xe4
+ 593 017c 56010000 		.4byte	0x156
+ 594 0180 01       		.uleb128 0x1
+ 595 0181 53       		.byte	0x53
+ 596 0182 00       		.byte	0
+ 597 0183 0E       		.uleb128 0xe
+ 598 0184 FB010000 		.4byte	.LASF26
+ 599 0188 01       		.byte	0x1
+ 600 0189 0401     		.2byte	0x104
+ 601 018b 00000000 		.4byte	.LFB69
+ 602 018f 10000000 		.4byte	.LFE69-.LFB69
+ 603 0193 01       		.uleb128 0x1
+ 604 0194 9C       		.byte	0x9c
+ 605 0195 AA010000 		.4byte	0x1aa
+ 606 0199 0F       		.uleb128 0xf
+ 607 019a 3E010000 		.4byte	.LASF28
+ 608 019e 01       		.byte	0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 19
+
+
+ 609 019f 0401     		.2byte	0x104
+ 610 01a1 B3000000 		.4byte	0xb3
+ 611 01a5 00000000 		.4byte	.LLST0
+ 612 01a9 00       		.byte	0
+ 613 01aa 10       		.uleb128 0x10
+ 614 01ab A8000000 		.4byte	.LASF30
+ 615 01af 01       		.byte	0x1
+ 616 01b0 1A01     		.2byte	0x11a
+ 617 01b2 B3000000 		.4byte	0xb3
+ 618 01b6 00000000 		.4byte	.LFB70
+ 619 01ba 0C000000 		.4byte	.LFE70-.LFB70
+ 620 01be 01       		.uleb128 0x1
+ 621 01bf 9C       		.byte	0x9c
+ 622 01c0 D5010000 		.4byte	0x1d5
+ 623 01c4 11       		.uleb128 0x11
+ 624 01c5 3E010000 		.4byte	.LASF28
+ 625 01c9 01       		.byte	0x1
+ 626 01ca 1C01     		.2byte	0x11c
+ 627 01cc B3000000 		.4byte	0xb3
+ 628 01d0 21000000 		.4byte	.LLST1
+ 629 01d4 00       		.byte	0
+ 630 01d5 12       		.uleb128 0x12
+ 631 01d6 2A000000 		.4byte	.LASF31
+ 632 01da 01       		.byte	0x1
+ 633 01db 3501     		.2byte	0x135
+ 634 01dd 00000000 		.4byte	.LFB71
+ 635 01e1 0C000000 		.4byte	.LFE71-.LFB71
+ 636 01e5 01       		.uleb128 0x1
+ 637 01e6 9C       		.byte	0x9c
+ 638 01e7 13       		.uleb128 0x13
+ 639 01e8 5E000000 		.4byte	.LASF43
+ 640 01ec 01       		.byte	0x1
+ 641 01ed 4A01     		.2byte	0x14a
+ 642 01ef B3000000 		.4byte	0xb3
+ 643 01f3 00000000 		.4byte	.LFB72
+ 644 01f7 18000000 		.4byte	.LFE72-.LFB72
+ 645 01fb 01       		.uleb128 0x1
+ 646 01fc 9C       		.byte	0x9c
+ 647 01fd 12       		.uleb128 0x12
+ 648 01fe 90010000 		.4byte	.LASF32
+ 649 0202 01       		.byte	0x1
+ 650 0203 5F01     		.2byte	0x15f
+ 651 0205 00000000 		.4byte	.LFB73
+ 652 0209 0C000000 		.4byte	.LFE73-.LFB73
+ 653 020d 01       		.uleb128 0x1
+ 654 020e 9C       		.byte	0x9c
+ 655 020f 09       		.uleb128 0x9
+ 656 0210 FB020000 		.4byte	.LASF33
+ 657 0214 01       		.byte	0x1
+ 658 0215 3E       		.byte	0x3e
+ 659 0216 00000000 		.4byte	.LFB63
+ 660 021a 1C000000 		.4byte	.LFE63-.LFB63
+ 661 021e 01       		.uleb128 0x1
+ 662 021f 9C       		.byte	0x9c
+ 663 0220 61020000 		.4byte	0x261
+ 664 0224 0A       		.uleb128 0xa
+ 665 0225 06000000 		.4byte	.LVL8
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 20
+
+
+ 666 0229 FD010000 		.4byte	0x1fd
+ 667 022d 14       		.uleb128 0x14
+ 668 022e 0C000000 		.4byte	.LVL9
+ 669 0232 26010000 		.4byte	0x126
+ 670 0236 44020000 		.4byte	0x244
+ 671 023a 15       		.uleb128 0x15
+ 672 023b 01       		.uleb128 0x1
+ 673 023c 50       		.byte	0x50
+ 674 023d 05       		.uleb128 0x5
+ 675 023e 03       		.byte	0x3
+ 676 023f 00000000 		.4byte	isr_pushbutton_Interrupt
+ 677 0243 00       		.byte	0
+ 678 0244 14       		.uleb128 0x14
+ 679 0245 12000000 		.4byte	.LVL10
+ 680 0249 83010000 		.4byte	0x183
+ 681 024d 57020000 		.4byte	0x257
+ 682 0251 15       		.uleb128 0x15
+ 683 0252 01       		.uleb128 0x1
+ 684 0253 50       		.byte	0x50
+ 685 0254 01       		.uleb128 0x1
+ 686 0255 37       		.byte	0x37
+ 687 0256 00       		.byte	0
+ 688 0257 0A       		.uleb128 0xa
+ 689 0258 16000000 		.4byte	.LVL11
+ 690 025c D5010000 		.4byte	0x1d5
+ 691 0260 00       		.byte	0
+ 692 0261 09       		.uleb128 0x9
+ 693 0262 19010000 		.4byte	.LASF34
+ 694 0266 01       		.byte	0x1
+ 695 0267 69       		.byte	0x69
+ 696 0268 00000000 		.4byte	.LFB64
+ 697 026c 1A000000 		.4byte	.LFE64-.LFB64
+ 698 0270 01       		.uleb128 0x1
+ 699 0271 9C       		.byte	0x9c
+ 700 0272 BF020000 		.4byte	0x2bf
+ 701 0276 16       		.uleb128 0x16
+ 702 0277 7B000000 		.4byte	.LASF27
+ 703 027b 01       		.byte	0x1
+ 704 027c 69       		.byte	0x69
+ 705 027d FB000000 		.4byte	0xfb
+ 706 0281 38000000 		.4byte	.LLST2
+ 707 0285 0A       		.uleb128 0xa
+ 708 0286 08000000 		.4byte	.LVL13
+ 709 028a FD010000 		.4byte	0x1fd
+ 710 028e 14       		.uleb128 0x14
+ 711 028f 0E000000 		.4byte	.LVL14
+ 712 0293 26010000 		.4byte	0x126
+ 713 0297 A2020000 		.4byte	0x2a2
+ 714 029b 15       		.uleb128 0x15
+ 715 029c 01       		.uleb128 0x1
+ 716 029d 50       		.byte	0x50
+ 717 029e 02       		.uleb128 0x2
+ 718 029f 74       		.byte	0x74
+ 719 02a0 00       		.sleb128 0
+ 720 02a1 00       		.byte	0
+ 721 02a2 14       		.uleb128 0x14
+ 722 02a3 14000000 		.4byte	.LVL15
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 21
+
+
+ 723 02a7 83010000 		.4byte	0x183
+ 724 02ab B5020000 		.4byte	0x2b5
+ 725 02af 15       		.uleb128 0x15
+ 726 02b0 01       		.uleb128 0x1
+ 727 02b1 50       		.byte	0x50
+ 728 02b2 01       		.uleb128 0x1
+ 729 02b3 37       		.byte	0x37
+ 730 02b4 00       		.byte	0
+ 731 02b5 0A       		.uleb128 0xa
+ 732 02b6 18000000 		.4byte	.LVL16
+ 733 02ba D5010000 		.4byte	0x1d5
+ 734 02be 00       		.byte	0
+ 735 02bf 09       		.uleb128 0x9
+ 736 02c0 D7020000 		.4byte	.LASF35
+ 737 02c4 01       		.byte	0x1
+ 738 02c5 87       		.byte	0x87
+ 739 02c6 00000000 		.4byte	.LFB65
+ 740 02ca 14000000 		.4byte	.LFE65-.LFB65
+ 741 02ce 01       		.uleb128 0x1
+ 742 02cf 9C       		.byte	0x9c
+ 743 02d0 E7020000 		.4byte	0x2e7
+ 744 02d4 0A       		.uleb128 0xa
+ 745 02d5 06000000 		.4byte	.LVL17
+ 746 02d9 FD010000 		.4byte	0x1fd
+ 747 02dd 0A       		.uleb128 0xa
+ 748 02de 0C000000 		.4byte	.LVL18
+ 749 02e2 26010000 		.4byte	0x126
+ 750 02e6 00       		.byte	0
+ 751 02e7 12       		.uleb128 0x12
+ 752 02e8 63030000 		.4byte	.LASF36
+ 753 02ec 01       		.byte	0x1
+ 754 02ed 7A01     		.2byte	0x17a
+ 755 02ef 00000000 		.4byte	.LFB74
+ 756 02f3 0C000000 		.4byte	.LFE74-.LFB74
+ 757 02f7 01       		.uleb128 0x1
+ 758 02f8 9C       		.byte	0x9c
+ 759 02f9 12       		.uleb128 0x12
+ 760 02fa 4E010000 		.4byte	.LASF37
+ 761 02fe 01       		.byte	0x1
+ 762 02ff 9301     		.2byte	0x193
+ 763 0301 00000000 		.4byte	.LFB75
+ 764 0305 0C000000 		.4byte	.LFE75-.LFB75
+ 765 0309 01       		.uleb128 0x1
+ 766 030a 9C       		.byte	0x9c
+ 767 030b 17       		.uleb128 0x17
+ 768 030c C3000000 		.4byte	.LASF38
+ 769 0310 05       		.byte	0x5
+ 770 0311 1207     		.2byte	0x712
+ 771 0313 17030000 		.4byte	0x317
+ 772 0317 08       		.uleb128 0x8
+ 773 0318 A8000000 		.4byte	0xa8
+ 774 031c 18       		.uleb128 0x18
+ 775 031d 37010000 		.4byte	.LASF39
+ 776 0321 01       		.byte	0x1
+ 777 0322 1F       		.byte	0x1f
+ 778 0323 9D000000 		.4byte	0x9d
+ 779 0327 05       		.uleb128 0x5
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 22
+
+
+ 780 0328 03       		.byte	0x3
+ 781 0329 00000000 		.4byte	flagPB
+ 782 032d 19       		.uleb128 0x19
+ 783 032e 00000000 		.4byte	.LASF44
+ 784 0332 00000000 		.4byte	.LASF44
+ 785 0336 06       		.byte	0x6
+ 786 0337 2B       		.byte	0x2b
+ 787 0338 00       		.byte	0
+ 788              		.section	.debug_abbrev,"",%progbits
+ 789              	.Ldebug_abbrev0:
+ 790 0000 01       		.uleb128 0x1
+ 791 0001 11       		.uleb128 0x11
+ 792 0002 01       		.byte	0x1
+ 793 0003 25       		.uleb128 0x25
+ 794 0004 0E       		.uleb128 0xe
+ 795 0005 13       		.uleb128 0x13
+ 796 0006 0B       		.uleb128 0xb
+ 797 0007 03       		.uleb128 0x3
+ 798 0008 0E       		.uleb128 0xe
+ 799 0009 1B       		.uleb128 0x1b
+ 800 000a 0E       		.uleb128 0xe
+ 801 000b 55       		.uleb128 0x55
+ 802 000c 17       		.uleb128 0x17
+ 803 000d 11       		.uleb128 0x11
+ 804 000e 01       		.uleb128 0x1
+ 805 000f 10       		.uleb128 0x10
+ 806 0010 17       		.uleb128 0x17
+ 807 0011 00       		.byte	0
+ 808 0012 00       		.byte	0
+ 809 0013 02       		.uleb128 0x2
+ 810 0014 24       		.uleb128 0x24
+ 811 0015 00       		.byte	0
+ 812 0016 0B       		.uleb128 0xb
+ 813 0017 0B       		.uleb128 0xb
+ 814 0018 3E       		.uleb128 0x3e
+ 815 0019 0B       		.uleb128 0xb
+ 816 001a 03       		.uleb128 0x3
+ 817 001b 08       		.uleb128 0x8
+ 818 001c 00       		.byte	0
+ 819 001d 00       		.byte	0
+ 820 001e 03       		.uleb128 0x3
+ 821 001f 24       		.uleb128 0x24
+ 822 0020 00       		.byte	0
+ 823 0021 0B       		.uleb128 0xb
+ 824 0022 0B       		.uleb128 0xb
+ 825 0023 3E       		.uleb128 0x3e
+ 826 0024 0B       		.uleb128 0xb
+ 827 0025 03       		.uleb128 0x3
+ 828 0026 0E       		.uleb128 0xe
+ 829 0027 00       		.byte	0
+ 830 0028 00       		.byte	0
+ 831 0029 04       		.uleb128 0x4
+ 832 002a 16       		.uleb128 0x16
+ 833 002b 00       		.byte	0
+ 834 002c 03       		.uleb128 0x3
+ 835 002d 0E       		.uleb128 0xe
+ 836 002e 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 23
+
+
+ 837 002f 0B       		.uleb128 0xb
+ 838 0030 3B       		.uleb128 0x3b
+ 839 0031 0B       		.uleb128 0xb
+ 840 0032 49       		.uleb128 0x49
+ 841 0033 13       		.uleb128 0x13
+ 842 0034 00       		.byte	0
+ 843 0035 00       		.byte	0
+ 844 0036 05       		.uleb128 0x5
+ 845 0037 0F       		.uleb128 0xf
+ 846 0038 00       		.byte	0
+ 847 0039 0B       		.uleb128 0xb
+ 848 003a 0B       		.uleb128 0xb
+ 849 003b 49       		.uleb128 0x49
+ 850 003c 13       		.uleb128 0x13
+ 851 003d 00       		.byte	0
+ 852 003e 00       		.byte	0
+ 853 003f 06       		.uleb128 0x6
+ 854 0040 15       		.uleb128 0x15
+ 855 0041 00       		.byte	0
+ 856 0042 27       		.uleb128 0x27
+ 857 0043 19       		.uleb128 0x19
+ 858 0044 00       		.byte	0
+ 859 0045 00       		.byte	0
+ 860 0046 07       		.uleb128 0x7
+ 861 0047 16       		.uleb128 0x16
+ 862 0048 00       		.byte	0
+ 863 0049 03       		.uleb128 0x3
+ 864 004a 0E       		.uleb128 0xe
+ 865 004b 3A       		.uleb128 0x3a
+ 866 004c 0B       		.uleb128 0xb
+ 867 004d 3B       		.uleb128 0x3b
+ 868 004e 05       		.uleb128 0x5
+ 869 004f 49       		.uleb128 0x49
+ 870 0050 13       		.uleb128 0x13
+ 871 0051 00       		.byte	0
+ 872 0052 00       		.byte	0
+ 873 0053 08       		.uleb128 0x8
+ 874 0054 35       		.uleb128 0x35
+ 875 0055 00       		.byte	0
+ 876 0056 49       		.uleb128 0x49
+ 877 0057 13       		.uleb128 0x13
+ 878 0058 00       		.byte	0
+ 879 0059 00       		.byte	0
+ 880 005a 09       		.uleb128 0x9
+ 881 005b 2E       		.uleb128 0x2e
+ 882 005c 01       		.byte	0x1
+ 883 005d 3F       		.uleb128 0x3f
+ 884 005e 19       		.uleb128 0x19
+ 885 005f 03       		.uleb128 0x3
+ 886 0060 0E       		.uleb128 0xe
+ 887 0061 3A       		.uleb128 0x3a
+ 888 0062 0B       		.uleb128 0xb
+ 889 0063 3B       		.uleb128 0x3b
+ 890 0064 0B       		.uleb128 0xb
+ 891 0065 27       		.uleb128 0x27
+ 892 0066 19       		.uleb128 0x19
+ 893 0067 11       		.uleb128 0x11
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 24
+
+
+ 894 0068 01       		.uleb128 0x1
+ 895 0069 12       		.uleb128 0x12
+ 896 006a 06       		.uleb128 0x6
+ 897 006b 40       		.uleb128 0x40
+ 898 006c 18       		.uleb128 0x18
+ 899 006d 9742     		.uleb128 0x2117
+ 900 006f 19       		.uleb128 0x19
+ 901 0070 01       		.uleb128 0x1
+ 902 0071 13       		.uleb128 0x13
+ 903 0072 00       		.byte	0
+ 904 0073 00       		.byte	0
+ 905 0074 0A       		.uleb128 0xa
+ 906 0075 898201   		.uleb128 0x4109
+ 907 0078 00       		.byte	0
+ 908 0079 11       		.uleb128 0x11
+ 909 007a 01       		.uleb128 0x1
+ 910 007b 31       		.uleb128 0x31
+ 911 007c 13       		.uleb128 0x13
+ 912 007d 00       		.byte	0
+ 913 007e 00       		.byte	0
+ 914 007f 0B       		.uleb128 0xb
+ 915 0080 05       		.uleb128 0x5
+ 916 0081 00       		.byte	0
+ 917 0082 03       		.uleb128 0x3
+ 918 0083 0E       		.uleb128 0xe
+ 919 0084 3A       		.uleb128 0x3a
+ 920 0085 0B       		.uleb128 0xb
+ 921 0086 3B       		.uleb128 0x3b
+ 922 0087 0B       		.uleb128 0xb
+ 923 0088 49       		.uleb128 0x49
+ 924 0089 13       		.uleb128 0x13
+ 925 008a 02       		.uleb128 0x2
+ 926 008b 18       		.uleb128 0x18
+ 927 008c 00       		.byte	0
+ 928 008d 00       		.byte	0
+ 929 008e 0C       		.uleb128 0xc
+ 930 008f 34       		.uleb128 0x34
+ 931 0090 00       		.byte	0
+ 932 0091 03       		.uleb128 0x3
+ 933 0092 0E       		.uleb128 0xe
+ 934 0093 3A       		.uleb128 0x3a
+ 935 0094 0B       		.uleb128 0xb
+ 936 0095 3B       		.uleb128 0x3b
+ 937 0096 0B       		.uleb128 0xb
+ 938 0097 49       		.uleb128 0x49
+ 939 0098 13       		.uleb128 0x13
+ 940 0099 02       		.uleb128 0x2
+ 941 009a 18       		.uleb128 0x18
+ 942 009b 00       		.byte	0
+ 943 009c 00       		.byte	0
+ 944 009d 0D       		.uleb128 0xd
+ 945 009e 2E       		.uleb128 0x2e
+ 946 009f 01       		.byte	0x1
+ 947 00a0 3F       		.uleb128 0x3f
+ 948 00a1 19       		.uleb128 0x19
+ 949 00a2 03       		.uleb128 0x3
+ 950 00a3 0E       		.uleb128 0xe
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 25
+
+
+ 951 00a4 3A       		.uleb128 0x3a
+ 952 00a5 0B       		.uleb128 0xb
+ 953 00a6 3B       		.uleb128 0x3b
+ 954 00a7 0B       		.uleb128 0xb
+ 955 00a8 27       		.uleb128 0x27
+ 956 00a9 19       		.uleb128 0x19
+ 957 00aa 49       		.uleb128 0x49
+ 958 00ab 13       		.uleb128 0x13
+ 959 00ac 11       		.uleb128 0x11
+ 960 00ad 01       		.uleb128 0x1
+ 961 00ae 12       		.uleb128 0x12
+ 962 00af 06       		.uleb128 0x6
+ 963 00b0 40       		.uleb128 0x40
+ 964 00b1 18       		.uleb128 0x18
+ 965 00b2 9742     		.uleb128 0x2117
+ 966 00b4 19       		.uleb128 0x19
+ 967 00b5 01       		.uleb128 0x1
+ 968 00b6 13       		.uleb128 0x13
+ 969 00b7 00       		.byte	0
+ 970 00b8 00       		.byte	0
+ 971 00b9 0E       		.uleb128 0xe
+ 972 00ba 2E       		.uleb128 0x2e
+ 973 00bb 01       		.byte	0x1
+ 974 00bc 3F       		.uleb128 0x3f
+ 975 00bd 19       		.uleb128 0x19
+ 976 00be 03       		.uleb128 0x3
+ 977 00bf 0E       		.uleb128 0xe
+ 978 00c0 3A       		.uleb128 0x3a
+ 979 00c1 0B       		.uleb128 0xb
+ 980 00c2 3B       		.uleb128 0x3b
+ 981 00c3 05       		.uleb128 0x5
+ 982 00c4 27       		.uleb128 0x27
+ 983 00c5 19       		.uleb128 0x19
+ 984 00c6 11       		.uleb128 0x11
+ 985 00c7 01       		.uleb128 0x1
+ 986 00c8 12       		.uleb128 0x12
+ 987 00c9 06       		.uleb128 0x6
+ 988 00ca 40       		.uleb128 0x40
+ 989 00cb 18       		.uleb128 0x18
+ 990 00cc 9742     		.uleb128 0x2117
+ 991 00ce 19       		.uleb128 0x19
+ 992 00cf 01       		.uleb128 0x1
+ 993 00d0 13       		.uleb128 0x13
+ 994 00d1 00       		.byte	0
+ 995 00d2 00       		.byte	0
+ 996 00d3 0F       		.uleb128 0xf
+ 997 00d4 05       		.uleb128 0x5
+ 998 00d5 00       		.byte	0
+ 999 00d6 03       		.uleb128 0x3
+ 1000 00d7 0E       		.uleb128 0xe
+ 1001 00d8 3A       		.uleb128 0x3a
+ 1002 00d9 0B       		.uleb128 0xb
+ 1003 00da 3B       		.uleb128 0x3b
+ 1004 00db 05       		.uleb128 0x5
+ 1005 00dc 49       		.uleb128 0x49
+ 1006 00dd 13       		.uleb128 0x13
+ 1007 00de 02       		.uleb128 0x2
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 26
+
+
+ 1008 00df 17       		.uleb128 0x17
+ 1009 00e0 00       		.byte	0
+ 1010 00e1 00       		.byte	0
+ 1011 00e2 10       		.uleb128 0x10
+ 1012 00e3 2E       		.uleb128 0x2e
+ 1013 00e4 01       		.byte	0x1
+ 1014 00e5 3F       		.uleb128 0x3f
+ 1015 00e6 19       		.uleb128 0x19
+ 1016 00e7 03       		.uleb128 0x3
+ 1017 00e8 0E       		.uleb128 0xe
+ 1018 00e9 3A       		.uleb128 0x3a
+ 1019 00ea 0B       		.uleb128 0xb
+ 1020 00eb 3B       		.uleb128 0x3b
+ 1021 00ec 05       		.uleb128 0x5
+ 1022 00ed 27       		.uleb128 0x27
+ 1023 00ee 19       		.uleb128 0x19
+ 1024 00ef 49       		.uleb128 0x49
+ 1025 00f0 13       		.uleb128 0x13
+ 1026 00f1 11       		.uleb128 0x11
+ 1027 00f2 01       		.uleb128 0x1
+ 1028 00f3 12       		.uleb128 0x12
+ 1029 00f4 06       		.uleb128 0x6
+ 1030 00f5 40       		.uleb128 0x40
+ 1031 00f6 18       		.uleb128 0x18
+ 1032 00f7 9742     		.uleb128 0x2117
+ 1033 00f9 19       		.uleb128 0x19
+ 1034 00fa 01       		.uleb128 0x1
+ 1035 00fb 13       		.uleb128 0x13
+ 1036 00fc 00       		.byte	0
+ 1037 00fd 00       		.byte	0
+ 1038 00fe 11       		.uleb128 0x11
+ 1039 00ff 34       		.uleb128 0x34
+ 1040 0100 00       		.byte	0
+ 1041 0101 03       		.uleb128 0x3
+ 1042 0102 0E       		.uleb128 0xe
+ 1043 0103 3A       		.uleb128 0x3a
+ 1044 0104 0B       		.uleb128 0xb
+ 1045 0105 3B       		.uleb128 0x3b
+ 1046 0106 05       		.uleb128 0x5
+ 1047 0107 49       		.uleb128 0x49
+ 1048 0108 13       		.uleb128 0x13
+ 1049 0109 02       		.uleb128 0x2
+ 1050 010a 17       		.uleb128 0x17
+ 1051 010b 00       		.byte	0
+ 1052 010c 00       		.byte	0
+ 1053 010d 12       		.uleb128 0x12
+ 1054 010e 2E       		.uleb128 0x2e
+ 1055 010f 00       		.byte	0
+ 1056 0110 3F       		.uleb128 0x3f
+ 1057 0111 19       		.uleb128 0x19
+ 1058 0112 03       		.uleb128 0x3
+ 1059 0113 0E       		.uleb128 0xe
+ 1060 0114 3A       		.uleb128 0x3a
+ 1061 0115 0B       		.uleb128 0xb
+ 1062 0116 3B       		.uleb128 0x3b
+ 1063 0117 05       		.uleb128 0x5
+ 1064 0118 27       		.uleb128 0x27
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 27
+
+
+ 1065 0119 19       		.uleb128 0x19
+ 1066 011a 11       		.uleb128 0x11
+ 1067 011b 01       		.uleb128 0x1
+ 1068 011c 12       		.uleb128 0x12
+ 1069 011d 06       		.uleb128 0x6
+ 1070 011e 40       		.uleb128 0x40
+ 1071 011f 18       		.uleb128 0x18
+ 1072 0120 9742     		.uleb128 0x2117
+ 1073 0122 19       		.uleb128 0x19
+ 1074 0123 00       		.byte	0
+ 1075 0124 00       		.byte	0
+ 1076 0125 13       		.uleb128 0x13
+ 1077 0126 2E       		.uleb128 0x2e
+ 1078 0127 00       		.byte	0
+ 1079 0128 3F       		.uleb128 0x3f
+ 1080 0129 19       		.uleb128 0x19
+ 1081 012a 03       		.uleb128 0x3
+ 1082 012b 0E       		.uleb128 0xe
+ 1083 012c 3A       		.uleb128 0x3a
+ 1084 012d 0B       		.uleb128 0xb
+ 1085 012e 3B       		.uleb128 0x3b
+ 1086 012f 05       		.uleb128 0x5
+ 1087 0130 27       		.uleb128 0x27
+ 1088 0131 19       		.uleb128 0x19
+ 1089 0132 49       		.uleb128 0x49
+ 1090 0133 13       		.uleb128 0x13
+ 1091 0134 11       		.uleb128 0x11
+ 1092 0135 01       		.uleb128 0x1
+ 1093 0136 12       		.uleb128 0x12
+ 1094 0137 06       		.uleb128 0x6
+ 1095 0138 40       		.uleb128 0x40
+ 1096 0139 18       		.uleb128 0x18
+ 1097 013a 9742     		.uleb128 0x2117
+ 1098 013c 19       		.uleb128 0x19
+ 1099 013d 00       		.byte	0
+ 1100 013e 00       		.byte	0
+ 1101 013f 14       		.uleb128 0x14
+ 1102 0140 898201   		.uleb128 0x4109
+ 1103 0143 01       		.byte	0x1
+ 1104 0144 11       		.uleb128 0x11
+ 1105 0145 01       		.uleb128 0x1
+ 1106 0146 31       		.uleb128 0x31
+ 1107 0147 13       		.uleb128 0x13
+ 1108 0148 01       		.uleb128 0x1
+ 1109 0149 13       		.uleb128 0x13
+ 1110 014a 00       		.byte	0
+ 1111 014b 00       		.byte	0
+ 1112 014c 15       		.uleb128 0x15
+ 1113 014d 8A8201   		.uleb128 0x410a
+ 1114 0150 00       		.byte	0
+ 1115 0151 02       		.uleb128 0x2
+ 1116 0152 18       		.uleb128 0x18
+ 1117 0153 9142     		.uleb128 0x2111
+ 1118 0155 18       		.uleb128 0x18
+ 1119 0156 00       		.byte	0
+ 1120 0157 00       		.byte	0
+ 1121 0158 16       		.uleb128 0x16
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 28
+
+
+ 1122 0159 05       		.uleb128 0x5
+ 1123 015a 00       		.byte	0
+ 1124 015b 03       		.uleb128 0x3
+ 1125 015c 0E       		.uleb128 0xe
+ 1126 015d 3A       		.uleb128 0x3a
+ 1127 015e 0B       		.uleb128 0xb
+ 1128 015f 3B       		.uleb128 0x3b
+ 1129 0160 0B       		.uleb128 0xb
+ 1130 0161 49       		.uleb128 0x49
+ 1131 0162 13       		.uleb128 0x13
+ 1132 0163 02       		.uleb128 0x2
+ 1133 0164 17       		.uleb128 0x17
+ 1134 0165 00       		.byte	0
+ 1135 0166 00       		.byte	0
+ 1136 0167 17       		.uleb128 0x17
+ 1137 0168 34       		.uleb128 0x34
+ 1138 0169 00       		.byte	0
+ 1139 016a 03       		.uleb128 0x3
+ 1140 016b 0E       		.uleb128 0xe
+ 1141 016c 3A       		.uleb128 0x3a
+ 1142 016d 0B       		.uleb128 0xb
+ 1143 016e 3B       		.uleb128 0x3b
+ 1144 016f 05       		.uleb128 0x5
+ 1145 0170 49       		.uleb128 0x49
+ 1146 0171 13       		.uleb128 0x13
+ 1147 0172 3F       		.uleb128 0x3f
+ 1148 0173 19       		.uleb128 0x19
+ 1149 0174 3C       		.uleb128 0x3c
+ 1150 0175 19       		.uleb128 0x19
+ 1151 0176 00       		.byte	0
+ 1152 0177 00       		.byte	0
+ 1153 0178 18       		.uleb128 0x18
+ 1154 0179 34       		.uleb128 0x34
+ 1155 017a 00       		.byte	0
+ 1156 017b 03       		.uleb128 0x3
+ 1157 017c 0E       		.uleb128 0xe
+ 1158 017d 3A       		.uleb128 0x3a
+ 1159 017e 0B       		.uleb128 0xb
+ 1160 017f 3B       		.uleb128 0x3b
+ 1161 0180 0B       		.uleb128 0xb
+ 1162 0181 49       		.uleb128 0x49
+ 1163 0182 13       		.uleb128 0x13
+ 1164 0183 3F       		.uleb128 0x3f
+ 1165 0184 19       		.uleb128 0x19
+ 1166 0185 02       		.uleb128 0x2
+ 1167 0186 18       		.uleb128 0x18
+ 1168 0187 00       		.byte	0
+ 1169 0188 00       		.byte	0
+ 1170 0189 19       		.uleb128 0x19
+ 1171 018a 2E       		.uleb128 0x2e
+ 1172 018b 00       		.byte	0
+ 1173 018c 3F       		.uleb128 0x3f
+ 1174 018d 19       		.uleb128 0x19
+ 1175 018e 3C       		.uleb128 0x3c
+ 1176 018f 19       		.uleb128 0x19
+ 1177 0190 6E       		.uleb128 0x6e
+ 1178 0191 0E       		.uleb128 0xe
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 29
+
+
+ 1179 0192 03       		.uleb128 0x3
+ 1180 0193 0E       		.uleb128 0xe
+ 1181 0194 3A       		.uleb128 0x3a
+ 1182 0195 0B       		.uleb128 0xb
+ 1183 0196 3B       		.uleb128 0x3b
+ 1184 0197 0B       		.uleb128 0xb
+ 1185 0198 00       		.byte	0
+ 1186 0199 00       		.byte	0
+ 1187 019a 00       		.byte	0
+ 1188              		.section	.debug_loc,"",%progbits
+ 1189              	.Ldebug_loc0:
+ 1190              	.LLST0:
+ 1191 0000 00000000 		.4byte	.LVL4
+ 1192 0004 02000000 		.4byte	.LVL5
+ 1193 0008 0100     		.2byte	0x1
+ 1194 000a 50       		.byte	0x50
+ 1195 000b 02000000 		.4byte	.LVL5
+ 1196 000f 10000000 		.4byte	.LFE69
+ 1197 0013 0400     		.2byte	0x4
+ 1198 0015 F3       		.byte	0xf3
+ 1199 0016 01       		.uleb128 0x1
+ 1200 0017 50       		.byte	0x50
+ 1201 0018 9F       		.byte	0x9f
+ 1202 0019 00000000 		.4byte	0
+ 1203 001d 00000000 		.4byte	0
+ 1204              	.LLST1:
+ 1205 0021 04000000 		.4byte	.LVL6
+ 1206 0025 06000000 		.4byte	.LVL7
+ 1207 0029 0500     		.2byte	0x5
+ 1208 002b 70       		.byte	0x70
+ 1209 002c 00       		.sleb128 0
+ 1210 002d 35       		.byte	0x35
+ 1211 002e 25       		.byte	0x25
+ 1212 002f 9F       		.byte	0x9f
+ 1213 0030 00000000 		.4byte	0
+ 1214 0034 00000000 		.4byte	0
+ 1215              	.LLST2:
+ 1216 0038 00000000 		.4byte	.LVL12
+ 1217 003c 07000000 		.4byte	.LVL13-1
+ 1218 0040 0100     		.2byte	0x1
+ 1219 0042 50       		.byte	0x50
+ 1220 0043 07000000 		.4byte	.LVL13-1
+ 1221 0047 1A000000 		.4byte	.LFE64
+ 1222 004b 0100     		.2byte	0x1
+ 1223 004d 54       		.byte	0x54
+ 1224 004e 00000000 		.4byte	0
+ 1225 0052 00000000 		.4byte	0
+ 1226              		.section	.debug_aranges,"",%progbits
+ 1227 0000 7C000000 		.4byte	0x7c
+ 1228 0004 0200     		.2byte	0x2
+ 1229 0006 00000000 		.4byte	.Ldebug_info0
+ 1230 000a 04       		.byte	0x4
+ 1231 000b 00       		.byte	0
+ 1232 000c 0000     		.2byte	0
+ 1233 000e 0000     		.2byte	0
+ 1234 0010 00000000 		.4byte	.LFB66
+ 1235 0014 14000000 		.4byte	.LFE66-.LFB66
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 30
+
+
+ 1236 0018 00000000 		.4byte	.LFB67
+ 1237 001c 0C000000 		.4byte	.LFE67-.LFB67
+ 1238 0020 00000000 		.4byte	.LFB68
+ 1239 0024 0C000000 		.4byte	.LFE68-.LFB68
+ 1240 0028 00000000 		.4byte	.LFB69
+ 1241 002c 10000000 		.4byte	.LFE69-.LFB69
+ 1242 0030 00000000 		.4byte	.LFB70
+ 1243 0034 0C000000 		.4byte	.LFE70-.LFB70
+ 1244 0038 00000000 		.4byte	.LFB71
+ 1245 003c 0C000000 		.4byte	.LFE71-.LFB71
+ 1246 0040 00000000 		.4byte	.LFB72
+ 1247 0044 18000000 		.4byte	.LFE72-.LFB72
+ 1248 0048 00000000 		.4byte	.LFB73
+ 1249 004c 0C000000 		.4byte	.LFE73-.LFB73
+ 1250 0050 00000000 		.4byte	.LFB63
+ 1251 0054 1C000000 		.4byte	.LFE63-.LFB63
+ 1252 0058 00000000 		.4byte	.LFB64
+ 1253 005c 1A000000 		.4byte	.LFE64-.LFB64
+ 1254 0060 00000000 		.4byte	.LFB65
+ 1255 0064 14000000 		.4byte	.LFE65-.LFB65
+ 1256 0068 00000000 		.4byte	.LFB74
+ 1257 006c 0C000000 		.4byte	.LFE74-.LFB74
+ 1258 0070 00000000 		.4byte	.LFB75
+ 1259 0074 0C000000 		.4byte	.LFE75-.LFB75
+ 1260 0078 00000000 		.4byte	0
+ 1261 007c 00000000 		.4byte	0
+ 1262              		.section	.debug_ranges,"",%progbits
+ 1263              	.Ldebug_ranges0:
+ 1264 0000 00000000 		.4byte	.LFB66
+ 1265 0004 14000000 		.4byte	.LFE66
+ 1266 0008 00000000 		.4byte	.LFB67
+ 1267 000c 0C000000 		.4byte	.LFE67
+ 1268 0010 00000000 		.4byte	.LFB68
+ 1269 0014 0C000000 		.4byte	.LFE68
+ 1270 0018 00000000 		.4byte	.LFB69
+ 1271 001c 10000000 		.4byte	.LFE69
+ 1272 0020 00000000 		.4byte	.LFB70
+ 1273 0024 0C000000 		.4byte	.LFE70
+ 1274 0028 00000000 		.4byte	.LFB71
+ 1275 002c 0C000000 		.4byte	.LFE71
+ 1276 0030 00000000 		.4byte	.LFB72
+ 1277 0034 18000000 		.4byte	.LFE72
+ 1278 0038 00000000 		.4byte	.LFB73
+ 1279 003c 0C000000 		.4byte	.LFE73
+ 1280 0040 00000000 		.4byte	.LFB63
+ 1281 0044 1C000000 		.4byte	.LFE63
+ 1282 0048 00000000 		.4byte	.LFB64
+ 1283 004c 1A000000 		.4byte	.LFE64
+ 1284 0050 00000000 		.4byte	.LFB65
+ 1285 0054 14000000 		.4byte	.LFE65
+ 1286 0058 00000000 		.4byte	.LFB74
+ 1287 005c 0C000000 		.4byte	.LFE74
+ 1288 0060 00000000 		.4byte	.LFB75
+ 1289 0064 0C000000 		.4byte	.LFE75
+ 1290 0068 00000000 		.4byte	0
+ 1291 006c 00000000 		.4byte	0
+ 1292              		.section	.debug_line,"",%progbits
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 31
+
+
+ 1293              	.Ldebug_line0:
+ 1294 0000 54020000 		.section	.debug_str,"MS",%progbits,1
+ 1294      02006601 
+ 1294      00000201 
+ 1294      FB0E0D00 
+ 1294      01010101 
+ 1295              	.LASF44:
+ 1296 0000 50757368 		.ascii	"PushButton_ClearInterrupt\000"
+ 1296      42757474 
+ 1296      6F6E5F43 
+ 1296      6C656172 
+ 1296      496E7465 
+ 1297              	.LASF21:
+ 1298 001a 72656733 		.ascii	"reg32\000"
+ 1298      3200
+ 1299              	.LASF7:
+ 1300 0020 5F5F7569 		.ascii	"__uint8_t\000"
+ 1300      6E74385F 
+ 1300      7400
+ 1301              	.LASF31:
+ 1302 002a 6973725F 		.ascii	"isr_pushbutton_Enable\000"
+ 1302      70757368 
+ 1302      62757474 
+ 1302      6F6E5F45 
+ 1302      6E61626C 
+ 1303              	.LASF8:
+ 1304 0040 5F5F696E 		.ascii	"__int32_t\000"
+ 1304      7433325F 
+ 1304      7400
+ 1305              	.LASF18:
+ 1306 004a 666C6F61 		.ascii	"float\000"
+ 1306      7400
+ 1307              	.LASF4:
+ 1308 0050 756E7369 		.ascii	"unsigned char\000"
+ 1308      676E6564 
+ 1308      20636861 
+ 1308      7200
+ 1309              	.LASF43:
+ 1310 005e 6973725F 		.ascii	"isr_pushbutton_GetState\000"
+ 1310      70757368 
+ 1310      62757474 
+ 1310      6F6E5F47 
+ 1310      65745374 
+ 1311              	.LASF20:
+ 1312 0076 72656738 		.ascii	"reg8\000"
+ 1312      00
+ 1313              	.LASF27:
+ 1314 007b 61646472 		.ascii	"address\000"
+ 1314      65737300 
+ 1315              	.LASF10:
+ 1316 0083 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1316      20756E73 
+ 1316      69676E65 
+ 1316      6420696E 
+ 1316      7400
+ 1317              	.LASF6:
+ 1318 0095 73686F72 		.ascii	"short unsigned int\000"
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 32
+
+
+ 1318      7420756E 
+ 1318      7369676E 
+ 1318      65642069 
+ 1318      6E7400
+ 1319              	.LASF30:
+ 1320 00a8 6973725F 		.ascii	"isr_pushbutton_GetPriority\000"
+ 1320      70757368 
+ 1320      62757474 
+ 1320      6F6E5F47 
+ 1320      65745072 
+ 1321              	.LASF38:
+ 1322 00c3 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1322      52784275 
+ 1322      66666572 
+ 1322      00
+ 1323              	.LASF42:
+ 1324 00d0 433A5C55 		.ascii	"C:\\Users\\giris\\OneDrive\\Documents\\PSoC Creator"
+ 1324      73657273 
+ 1324      5C676972 
+ 1324      69735C4F 
+ 1324      6E654472 
+ 1325 00fe 5C534448 		.ascii	"\\SDHD\\MotionDetector.cydsn\000"
+ 1325      445C4D6F 
+ 1325      74696F6E 
+ 1325      44657465 
+ 1325      63746F72 
+ 1326              	.LASF34:
+ 1327 0119 6973725F 		.ascii	"isr_pushbutton_StartEx\000"
+ 1327      70757368 
+ 1327      62757474 
+ 1327      6F6E5F53 
+ 1327      74617274 
+ 1328              	.LASF19:
+ 1329 0130 646F7562 		.ascii	"double\000"
+ 1329      6C6500
+ 1330              	.LASF39:
+ 1331 0137 666C6167 		.ascii	"flagPB\000"
+ 1331      504200
+ 1332              	.LASF28:
+ 1333 013e 7072696F 		.ascii	"priority\000"
+ 1333      72697479 
+ 1333      00
+ 1334              	.LASF17:
+ 1335 0147 75696E74 		.ascii	"uint32\000"
+ 1335      333200
+ 1336              	.LASF37:
+ 1337 014e 6973725F 		.ascii	"isr_pushbutton_ClearPending\000"
+ 1337      70757368 
+ 1337      62757474 
+ 1337      6F6E5F43 
+ 1337      6C656172 
+ 1338              	.LASF24:
+ 1339 016a 6973725F 		.ascii	"isr_pushbutton_SetVector\000"
+ 1339      70757368 
+ 1339      62757474 
+ 1339      6F6E5F53 
+ 1339      65745665 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 33
+
+
+ 1340              	.LASF0:
+ 1341 0183 756E7369 		.ascii	"unsigned int\000"
+ 1341      676E6564 
+ 1341      20696E74 
+ 1341      00
+ 1342              	.LASF32:
+ 1343 0190 6973725F 		.ascii	"isr_pushbutton_Disable\000"
+ 1343      70757368 
+ 1343      62757474 
+ 1343      6F6E5F44 
+ 1343      69736162 
+ 1344              	.LASF11:
+ 1345 01a7 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1345      206C6F6E 
+ 1345      6720756E 
+ 1345      7369676E 
+ 1345      65642069 
+ 1346              	.LASF14:
+ 1347 01be 75696E74 		.ascii	"uint8_t\000"
+ 1347      385F7400 
+ 1348              	.LASF41:
+ 1349 01c6 47656E65 		.ascii	"Generated_Source\\PSoC5\\isr_pushbutton.c\000"
+ 1349      72617465 
+ 1349      645F536F 
+ 1349      75726365 
+ 1349      5C50536F 
+ 1350              	.LASF22:
+ 1351 01ee 63796973 		.ascii	"cyisraddress\000"
+ 1351      72616464 
+ 1351      72657373 
+ 1351      00
+ 1352              	.LASF26:
+ 1353 01fb 6973725F 		.ascii	"isr_pushbutton_SetPriority\000"
+ 1353      70757368 
+ 1353      62757474 
+ 1353      6F6E5F53 
+ 1353      65745072 
+ 1354              	.LASF40:
+ 1355 0216 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1355      43313120 
+ 1355      352E342E 
+ 1355      31203230 
+ 1355      31363036 
+ 1356 0249 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1356      20726576 
+ 1356      6973696F 
+ 1356      6E203233 
+ 1356      37373135 
+ 1357 027c 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1357      66756E63 
+ 1357      74696F6E 
+ 1357      2D736563 
+ 1357      74696F6E 
+ 1358              	.LASF15:
+ 1359 02a4 696E7433 		.ascii	"int32_t\000"
+ 1359      325F7400 
+ 1360              	.LASF12:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 34
+
+
+ 1361 02ac 73697A65 		.ascii	"sizetype\000"
+ 1361      74797065 
+ 1361      00
+ 1362              	.LASF1:
+ 1363 02b5 6C6F6E67 		.ascii	"long long int\000"
+ 1363      206C6F6E 
+ 1363      6720696E 
+ 1363      7400
+ 1364              	.LASF13:
+ 1365 02c3 63686172 		.ascii	"char\000"
+ 1365      00
+ 1366              	.LASF25:
+ 1367 02c8 72616D56 		.ascii	"ramVectorTable\000"
+ 1367      6563746F 
+ 1367      72546162 
+ 1367      6C6500
+ 1368              	.LASF35:
+ 1369 02d7 6973725F 		.ascii	"isr_pushbutton_Stop\000"
+ 1369      70757368 
+ 1369      62757474 
+ 1369      6F6E5F53 
+ 1369      746F7000 
+ 1370              	.LASF5:
+ 1371 02eb 73686F72 		.ascii	"short int\000"
+ 1371      7420696E 
+ 1371      7400
+ 1372              	.LASF16:
+ 1373 02f5 75696E74 		.ascii	"uint8\000"
+ 1373      3800
+ 1374              	.LASF33:
+ 1375 02fb 6973725F 		.ascii	"isr_pushbutton_Start\000"
+ 1375      70757368 
+ 1375      62757474 
+ 1375      6F6E5F53 
+ 1375      74617274 
+ 1376              	.LASF9:
+ 1377 0310 6C6F6E67 		.ascii	"long int\000"
+ 1377      20696E74 
+ 1377      00
+ 1378              	.LASF2:
+ 1379 0319 6C6F6E67 		.ascii	"long double\000"
+ 1379      20646F75 
+ 1379      626C6500 
+ 1380              	.LASF3:
+ 1381 0325 7369676E 		.ascii	"signed char\000"
+ 1381      65642063 
+ 1381      68617200 
+ 1382              	.LASF29:
+ 1383 0331 6973725F 		.ascii	"isr_pushbutton_GetVector\000"
+ 1383      70757368 
+ 1383      62757474 
+ 1383      6F6E5F47 
+ 1383      65745665 
+ 1384              	.LASF23:
+ 1385 034a 6973725F 		.ascii	"isr_pushbutton_Interrupt\000"
+ 1385      70757368 
+ 1385      62757474 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccy6rokf.s 			page 35
+
+
+ 1385      6F6E5F49 
+ 1385      6E746572 
+ 1386              	.LASF36:
+ 1387 0363 6973725F 		.ascii	"isr_pushbutton_SetPending\000"
+ 1387      70757368 
+ 1387      62757474 
+ 1387      6F6E5F53 
+ 1387      65745065 
+ 1388              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

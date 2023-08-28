@@ -1,0 +1,835 @@
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_Button_RisingEdge_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_Button_RisingEdge_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_Button_RisingEdge_Interrupt, %function
+  25              	isr_Button_RisingEdge_Interrupt:
+  26              	.LFB65:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** 
+  14:main.c        **** volatile int i = 0;
+  15:main.c        **** 
+  16:main.c        **** CY_ISR_PROTO(isr_Button_RisingEdge_Interrupt);
+  17:main.c        **** 
+  18:main.c        **** void three_bit_counter();
+  19:main.c        **** 
+  20:main.c        **** int main(void)
+  21:main.c        **** {
+  22:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  23:main.c        **** 
+  24:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  25:main.c        **** 
+  26:main.c        ****     isr_Button_StartEx(isr_Button_RisingEdge_Interrupt);
+  27:main.c        ****     
+  28:main.c        ****     for(;;)
+  29:main.c        ****     {
+  30:main.c        ****         /* Place your application code here. */
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 2
+
+
+  31:main.c        ****         three_bit_counter();
+  32:main.c        ****         
+  33:main.c        ****     }
+  34:main.c        **** }
+  35:main.c        **** 
+  36:main.c        **** void three_bit_counter()
+  37:main.c        **** {    
+  38:main.c        ****     Pin_YELLOW_LED_Write(i & 0x01);
+  39:main.c        ****     Pin_RED_LED_Write((i>>1) & 0x01);
+  40:main.c        ****     Pin_GREEN_LED_Write((i>>2) & 0x01);
+  41:main.c        **** }
+  42:main.c        **** 
+  43:main.c        **** CY_ISR(isr_Button_RisingEdge_Interrupt)
+  44:main.c        **** {
+  28              		.loc 1 44 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  45:main.c        ****     Pin_Button_ClearInterrupt();
+  36              		.loc 1 45 0
+  37 0002 FFF7FEFF 		bl	Pin_Button_ClearInterrupt
+  38              	.LVL0:
+  46:main.c        ****     
+  47:main.c        ****     i = (i + 1) & 0x07;
+  39              		.loc 1 47 0
+  40 0006 034A     		ldr	r2, .L3
+  41 0008 1368     		ldr	r3, [r2]
+  42 000a 0133     		adds	r3, r3, #1
+  43 000c 03F00703 		and	r3, r3, #7
+  44 0010 1360     		str	r3, [r2]
+  45 0012 08BD     		pop	{r3, pc}
+  46              	.L4:
+  47              		.align	2
+  48              	.L3:
+  49 0014 00000000 		.word	.LANCHOR0
+  50              		.cfi_endproc
+  51              	.LFE65:
+  52              		.size	isr_Button_RisingEdge_Interrupt, .-isr_Button_RisingEdge_Interrupt
+  53              		.section	.text.three_bit_counter,"ax",%progbits
+  54              		.align	2
+  55              		.global	three_bit_counter
+  56              		.thumb
+  57              		.thumb_func
+  58              		.type	three_bit_counter, %function
+  59              	three_bit_counter:
+  60              	.LFB64:
+  37:main.c        ****     Pin_YELLOW_LED_Write(i & 0x01);
+  61              		.loc 1 37 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65 0000 10B5     		push	{r4, lr}
+  66              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 3
+
+
+  67              		.cfi_offset 4, -8
+  68              		.cfi_offset 14, -4
+  38:main.c        ****     Pin_RED_LED_Write((i>>1) & 0x01);
+  69              		.loc 1 38 0
+  70 0002 084C     		ldr	r4, .L7
+  71 0004 2068     		ldr	r0, [r4]
+  72 0006 00F00100 		and	r0, r0, #1
+  73 000a FFF7FEFF 		bl	Pin_YELLOW_LED_Write
+  74              	.LVL1:
+  39:main.c        ****     Pin_GREEN_LED_Write((i>>2) & 0x01);
+  75              		.loc 1 39 0
+  76 000e 2068     		ldr	r0, [r4]
+  77 0010 C0F34000 		ubfx	r0, r0, #1, #1
+  78 0014 FFF7FEFF 		bl	Pin_RED_LED_Write
+  79              	.LVL2:
+  40:main.c        **** }
+  80              		.loc 1 40 0
+  81 0018 2068     		ldr	r0, [r4]
+  82 001a C0F38000 		ubfx	r0, r0, #2, #1
+  83 001e FFF7FEFF 		bl	Pin_GREEN_LED_Write
+  84              	.LVL3:
+  85 0022 10BD     		pop	{r4, pc}
+  86              	.L8:
+  87              		.align	2
+  88              	.L7:
+  89 0024 00000000 		.word	.LANCHOR0
+  90              		.cfi_endproc
+  91              	.LFE64:
+  92              		.size	three_bit_counter, .-three_bit_counter
+  93              		.section	.text.main,"ax",%progbits
+  94              		.align	2
+  95              		.global	main
+  96              		.thumb
+  97              		.thumb_func
+  98              		.type	main, %function
+  99              	main:
+ 100              	.LFB63:
+  21:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ 101              		.loc 1 21 0
+ 102              		.cfi_startproc
+ 103              		@ Volatile: function does not return.
+ 104              		@ args = 0, pretend = 0, frame = 0
+ 105              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106 0000 08B5     		push	{r3, lr}
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 3, -8
+ 109              		.cfi_offset 14, -4
+  22:main.c        **** 
+ 110              		.loc 1 22 0
+ 111              		.syntax unified
+ 112              	@ 22 "main.c" 1
+ 113 0002 62B6     		CPSIE   i
+ 114              	@ 0 "" 2
+  26:main.c        ****     
+ 115              		.loc 1 26 0
+ 116              		.thumb
+ 117              		.syntax unified
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 4
+
+
+ 118 0004 0248     		ldr	r0, .L12
+ 119 0006 FFF7FEFF 		bl	isr_Button_StartEx
+ 120              	.LVL4:
+ 121              	.L10:
+  31:main.c        ****         
+ 122              		.loc 1 31 0 discriminator 1
+ 123 000a FFF7FEFF 		bl	three_bit_counter
+ 124              	.LVL5:
+ 125 000e FCE7     		b	.L10
+ 126              	.L13:
+ 127              		.align	2
+ 128              	.L12:
+ 129 0010 00000000 		.word	isr_Button_RisingEdge_Interrupt
+ 130              		.cfi_endproc
+ 131              	.LFE63:
+ 132              		.size	main, .-main
+ 133              		.global	i
+ 134              		.bss
+ 135              		.align	2
+ 136              		.set	.LANCHOR0,. + 0
+ 137              		.type	i, %object
+ 138              		.size	i, 4
+ 139              	i:
+ 140 0000 00000000 		.space	4
+ 141              		.text
+ 142              	.Letext0:
+ 143              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 144              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 145              		.file 4 "Generated_Source\\PSoC5/Pin_Button.h"
+ 146              		.file 5 "Generated_Source\\PSoC5/Pin_YELLOW_LED.h"
+ 147              		.file 6 "Generated_Source\\PSoC5/Pin_RED_LED.h"
+ 148              		.file 7 "Generated_Source\\PSoC5/Pin_GREEN_LED.h"
+ 149              		.file 8 "Generated_Source\\PSoC5/isr_Button.h"
+ 150              		.file 9 "Generated_Source\\PSoC5/core_cm3.h"
+ 151              		.section	.debug_info,"",%progbits
+ 152              	.Ldebug_info0:
+ 153 0000 87010000 		.4byte	0x187
+ 154 0004 0400     		.2byte	0x4
+ 155 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 156 000a 04       		.byte	0x4
+ 157 000b 01       		.uleb128 0x1
+ 158 000c 7B000000 		.4byte	.LASF22
+ 159 0010 0C       		.byte	0xc
+ 160 0011 55000000 		.4byte	.LASF23
+ 161 0015 87010000 		.4byte	.LASF24
+ 162 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 163 001d 00000000 		.4byte	0
+ 164 0021 00000000 		.4byte	.Ldebug_line0
+ 165 0025 02       		.uleb128 0x2
+ 166 0026 01       		.byte	0x1
+ 167 0027 06       		.byte	0x6
+ 168 0028 DA010000 		.4byte	.LASF0
+ 169 002c 02       		.uleb128 0x2
+ 170 002d 01       		.byte	0x1
+ 171 002e 08       		.byte	0x8
+ 172 002f 64010000 		.4byte	.LASF1
+ 173 0033 02       		.uleb128 0x2
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 5
+
+
+ 174 0034 02       		.byte	0x2
+ 175 0035 05       		.byte	0x5
+ 176 0036 17020000 		.4byte	.LASF2
+ 177 003a 02       		.uleb128 0x2
+ 178 003b 02       		.byte	0x2
+ 179 003c 07       		.byte	0x7
+ 180 003d 0E000000 		.4byte	.LASF3
+ 181 0041 03       		.uleb128 0x3
+ 182 0042 F2010000 		.4byte	.LASF9
+ 183 0046 02       		.byte	0x2
+ 184 0047 3F       		.byte	0x3f
+ 185 0048 4C000000 		.4byte	0x4c
+ 186 004c 02       		.uleb128 0x2
+ 187 004d 04       		.byte	0x4
+ 188 004e 05       		.byte	0x5
+ 189 004f 77010000 		.4byte	.LASF4
+ 190 0053 02       		.uleb128 0x2
+ 191 0054 04       		.byte	0x4
+ 192 0055 07       		.byte	0x7
+ 193 0056 09010000 		.4byte	.LASF5
+ 194 005a 02       		.uleb128 0x2
+ 195 005b 08       		.byte	0x8
+ 196 005c 05       		.byte	0x5
+ 197 005d 00000000 		.4byte	.LASF6
+ 198 0061 02       		.uleb128 0x2
+ 199 0062 08       		.byte	0x8
+ 200 0063 07       		.byte	0x7
+ 201 0064 1B010000 		.4byte	.LASF7
+ 202 0068 04       		.uleb128 0x4
+ 203 0069 04       		.byte	0x4
+ 204 006a 05       		.byte	0x5
+ 205 006b 696E7400 		.ascii	"int\000"
+ 206 006f 02       		.uleb128 0x2
+ 207 0070 04       		.byte	0x4
+ 208 0071 07       		.byte	0x7
+ 209 0072 21000000 		.4byte	.LASF8
+ 210 0076 03       		.uleb128 0x3
+ 211 0077 21020000 		.4byte	.LASF10
+ 212 007b 03       		.byte	0x3
+ 213 007c 2C       		.byte	0x2c
+ 214 007d 41000000 		.4byte	0x41
+ 215 0081 02       		.uleb128 0x2
+ 216 0082 04       		.byte	0x4
+ 217 0083 04       		.byte	0x4
+ 218 0084 FC010000 		.4byte	.LASF11
+ 219 0088 02       		.uleb128 0x2
+ 220 0089 08       		.byte	0x8
+ 221 008a 04       		.byte	0x4
+ 222 008b 80010000 		.4byte	.LASF12
+ 223 008f 02       		.uleb128 0x2
+ 224 0090 01       		.byte	0x1
+ 225 0091 08       		.byte	0x8
+ 226 0092 72010000 		.4byte	.LASF13
+ 227 0096 02       		.uleb128 0x2
+ 228 0097 04       		.byte	0x4
+ 229 0098 07       		.byte	0x7
+ 230 0099 3B020000 		.4byte	.LASF14
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 6
+
+
+ 231 009d 02       		.uleb128 0x2
+ 232 009e 08       		.byte	0x8
+ 233 009f 04       		.byte	0x4
+ 234 00a0 E6010000 		.4byte	.LASF15
+ 235 00a4 05       		.uleb128 0x5
+ 236 00a5 32010000 		.4byte	.LASF25
+ 237 00a9 01       		.byte	0x1
+ 238 00aa 2B       		.byte	0x2b
+ 239 00ab 00000000 		.4byte	.LFB65
+ 240 00af 18000000 		.4byte	.LFE65-.LFB65
+ 241 00b3 01       		.uleb128 0x1
+ 242 00b4 9C       		.byte	0x9c
+ 243 00b5 C3000000 		.4byte	0xc3
+ 244 00b9 06       		.uleb128 0x6
+ 245 00ba 06000000 		.4byte	.LVL0
+ 246 00be 53010000 		.4byte	0x153
+ 247 00c2 00       		.byte	0
+ 248 00c3 07       		.uleb128 0x7
+ 249 00c4 29020000 		.4byte	.LASF26
+ 250 00c8 01       		.byte	0x1
+ 251 00c9 24       		.byte	0x24
+ 252 00ca 00000000 		.4byte	.LFB64
+ 253 00ce 28000000 		.4byte	.LFE64-.LFB64
+ 254 00d2 01       		.uleb128 0x1
+ 255 00d3 9C       		.byte	0x9c
+ 256 00d4 F4000000 		.4byte	0xf4
+ 257 00d8 06       		.uleb128 0x6
+ 258 00d9 0E000000 		.4byte	.LVL1
+ 259 00dd 5E010000 		.4byte	0x15e
+ 260 00e1 06       		.uleb128 0x6
+ 261 00e2 18000000 		.4byte	.LVL2
+ 262 00e6 69010000 		.4byte	0x169
+ 263 00ea 06       		.uleb128 0x6
+ 264 00eb 22000000 		.4byte	.LVL3
+ 265 00ef 74010000 		.4byte	0x174
+ 266 00f3 00       		.byte	0
+ 267 00f4 08       		.uleb128 0x8
+ 268 00f5 76000000 		.4byte	.LASF27
+ 269 00f9 01       		.byte	0x1
+ 270 00fa 14       		.byte	0x14
+ 271 00fb 68000000 		.4byte	0x68
+ 272 00ff 00000000 		.4byte	.LFB63
+ 273 0103 14000000 		.4byte	.LFE63-.LFB63
+ 274 0107 01       		.uleb128 0x1
+ 275 0108 9C       		.byte	0x9c
+ 276 0109 2E010000 		.4byte	0x12e
+ 277 010d 09       		.uleb128 0x9
+ 278 010e 0A000000 		.4byte	.LVL4
+ 279 0112 7F010000 		.4byte	0x17f
+ 280 0116 24010000 		.4byte	0x124
+ 281 011a 0A       		.uleb128 0xa
+ 282 011b 01       		.uleb128 0x1
+ 283 011c 50       		.byte	0x50
+ 284 011d 05       		.uleb128 0x5
+ 285 011e 03       		.byte	0x3
+ 286 011f 00000000 		.4byte	isr_Button_RisingEdge_Interrupt
+ 287 0123 00       		.byte	0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 7
+
+
+ 288 0124 06       		.uleb128 0x6
+ 289 0125 0E000000 		.4byte	.LVL5
+ 290 0129 C3000000 		.4byte	0xc3
+ 291 012d 00       		.byte	0
+ 292 012e 0B       		.uleb128 0xb
+ 293 012f CD010000 		.4byte	.LASF16
+ 294 0133 09       		.byte	0x9
+ 295 0134 1207     		.2byte	0x712
+ 296 0136 3A010000 		.4byte	0x13a
+ 297 013a 0C       		.uleb128 0xc
+ 298 013b 76000000 		.4byte	0x76
+ 299 013f 0D       		.uleb128 0xd
+ 300 0140 6900     		.ascii	"i\000"
+ 301 0142 01       		.byte	0x1
+ 302 0143 0E       		.byte	0xe
+ 303 0144 4E010000 		.4byte	0x14e
+ 304 0148 05       		.uleb128 0x5
+ 305 0149 03       		.byte	0x3
+ 306 014a 00000000 		.4byte	i
+ 307 014e 0C       		.uleb128 0xc
+ 308 014f 68000000 		.4byte	0x68
+ 309 0153 0E       		.uleb128 0xe
+ 310 0154 5C000000 		.4byte	.LASF17
+ 311 0158 5C000000 		.4byte	.LASF17
+ 312 015c 04       		.byte	0x4
+ 313 015d 2B       		.byte	0x2b
+ 314 015e 0E       		.uleb128 0xe
+ 315 015f 02020000 		.4byte	.LASF18
+ 316 0163 02020000 		.4byte	.LASF18
+ 317 0167 05       		.byte	0x5
+ 318 0168 26       		.byte	0x26
+ 319 0169 0E       		.uleb128 0xe
+ 320 016a 52010000 		.4byte	.LASF19
+ 321 016e 52010000 		.4byte	.LASF19
+ 322 0172 06       		.byte	0x6
+ 323 0173 26       		.byte	0x26
+ 324 0174 0E       		.uleb128 0xe
+ 325 0175 41000000 		.4byte	.LASF20
+ 326 0179 41000000 		.4byte	.LASF20
+ 327 017d 07       		.byte	0x7
+ 328 017e 26       		.byte	0x26
+ 329 017f 0E       		.uleb128 0xe
+ 330 0180 2E000000 		.4byte	.LASF21
+ 331 0184 2E000000 		.4byte	.LASF21
+ 332 0188 08       		.byte	0x8
+ 333 0189 18       		.byte	0x18
+ 334 018a 00       		.byte	0
+ 335              		.section	.debug_abbrev,"",%progbits
+ 336              	.Ldebug_abbrev0:
+ 337 0000 01       		.uleb128 0x1
+ 338 0001 11       		.uleb128 0x11
+ 339 0002 01       		.byte	0x1
+ 340 0003 25       		.uleb128 0x25
+ 341 0004 0E       		.uleb128 0xe
+ 342 0005 13       		.uleb128 0x13
+ 343 0006 0B       		.uleb128 0xb
+ 344 0007 03       		.uleb128 0x3
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 8
+
+
+ 345 0008 0E       		.uleb128 0xe
+ 346 0009 1B       		.uleb128 0x1b
+ 347 000a 0E       		.uleb128 0xe
+ 348 000b 55       		.uleb128 0x55
+ 349 000c 17       		.uleb128 0x17
+ 350 000d 11       		.uleb128 0x11
+ 351 000e 01       		.uleb128 0x1
+ 352 000f 10       		.uleb128 0x10
+ 353 0010 17       		.uleb128 0x17
+ 354 0011 00       		.byte	0
+ 355 0012 00       		.byte	0
+ 356 0013 02       		.uleb128 0x2
+ 357 0014 24       		.uleb128 0x24
+ 358 0015 00       		.byte	0
+ 359 0016 0B       		.uleb128 0xb
+ 360 0017 0B       		.uleb128 0xb
+ 361 0018 3E       		.uleb128 0x3e
+ 362 0019 0B       		.uleb128 0xb
+ 363 001a 03       		.uleb128 0x3
+ 364 001b 0E       		.uleb128 0xe
+ 365 001c 00       		.byte	0
+ 366 001d 00       		.byte	0
+ 367 001e 03       		.uleb128 0x3
+ 368 001f 16       		.uleb128 0x16
+ 369 0020 00       		.byte	0
+ 370 0021 03       		.uleb128 0x3
+ 371 0022 0E       		.uleb128 0xe
+ 372 0023 3A       		.uleb128 0x3a
+ 373 0024 0B       		.uleb128 0xb
+ 374 0025 3B       		.uleb128 0x3b
+ 375 0026 0B       		.uleb128 0xb
+ 376 0027 49       		.uleb128 0x49
+ 377 0028 13       		.uleb128 0x13
+ 378 0029 00       		.byte	0
+ 379 002a 00       		.byte	0
+ 380 002b 04       		.uleb128 0x4
+ 381 002c 24       		.uleb128 0x24
+ 382 002d 00       		.byte	0
+ 383 002e 0B       		.uleb128 0xb
+ 384 002f 0B       		.uleb128 0xb
+ 385 0030 3E       		.uleb128 0x3e
+ 386 0031 0B       		.uleb128 0xb
+ 387 0032 03       		.uleb128 0x3
+ 388 0033 08       		.uleb128 0x8
+ 389 0034 00       		.byte	0
+ 390 0035 00       		.byte	0
+ 391 0036 05       		.uleb128 0x5
+ 392 0037 2E       		.uleb128 0x2e
+ 393 0038 01       		.byte	0x1
+ 394 0039 3F       		.uleb128 0x3f
+ 395 003a 19       		.uleb128 0x19
+ 396 003b 03       		.uleb128 0x3
+ 397 003c 0E       		.uleb128 0xe
+ 398 003d 3A       		.uleb128 0x3a
+ 399 003e 0B       		.uleb128 0xb
+ 400 003f 3B       		.uleb128 0x3b
+ 401 0040 0B       		.uleb128 0xb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 9
+
+
+ 402 0041 27       		.uleb128 0x27
+ 403 0042 19       		.uleb128 0x19
+ 404 0043 11       		.uleb128 0x11
+ 405 0044 01       		.uleb128 0x1
+ 406 0045 12       		.uleb128 0x12
+ 407 0046 06       		.uleb128 0x6
+ 408 0047 40       		.uleb128 0x40
+ 409 0048 18       		.uleb128 0x18
+ 410 0049 9742     		.uleb128 0x2117
+ 411 004b 19       		.uleb128 0x19
+ 412 004c 01       		.uleb128 0x1
+ 413 004d 13       		.uleb128 0x13
+ 414 004e 00       		.byte	0
+ 415 004f 00       		.byte	0
+ 416 0050 06       		.uleb128 0x6
+ 417 0051 898201   		.uleb128 0x4109
+ 418 0054 00       		.byte	0
+ 419 0055 11       		.uleb128 0x11
+ 420 0056 01       		.uleb128 0x1
+ 421 0057 31       		.uleb128 0x31
+ 422 0058 13       		.uleb128 0x13
+ 423 0059 00       		.byte	0
+ 424 005a 00       		.byte	0
+ 425 005b 07       		.uleb128 0x7
+ 426 005c 2E       		.uleb128 0x2e
+ 427 005d 01       		.byte	0x1
+ 428 005e 3F       		.uleb128 0x3f
+ 429 005f 19       		.uleb128 0x19
+ 430 0060 03       		.uleb128 0x3
+ 431 0061 0E       		.uleb128 0xe
+ 432 0062 3A       		.uleb128 0x3a
+ 433 0063 0B       		.uleb128 0xb
+ 434 0064 3B       		.uleb128 0x3b
+ 435 0065 0B       		.uleb128 0xb
+ 436 0066 11       		.uleb128 0x11
+ 437 0067 01       		.uleb128 0x1
+ 438 0068 12       		.uleb128 0x12
+ 439 0069 06       		.uleb128 0x6
+ 440 006a 40       		.uleb128 0x40
+ 441 006b 18       		.uleb128 0x18
+ 442 006c 9742     		.uleb128 0x2117
+ 443 006e 19       		.uleb128 0x19
+ 444 006f 01       		.uleb128 0x1
+ 445 0070 13       		.uleb128 0x13
+ 446 0071 00       		.byte	0
+ 447 0072 00       		.byte	0
+ 448 0073 08       		.uleb128 0x8
+ 449 0074 2E       		.uleb128 0x2e
+ 450 0075 01       		.byte	0x1
+ 451 0076 3F       		.uleb128 0x3f
+ 452 0077 19       		.uleb128 0x19
+ 453 0078 03       		.uleb128 0x3
+ 454 0079 0E       		.uleb128 0xe
+ 455 007a 3A       		.uleb128 0x3a
+ 456 007b 0B       		.uleb128 0xb
+ 457 007c 3B       		.uleb128 0x3b
+ 458 007d 0B       		.uleb128 0xb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 10
+
+
+ 459 007e 27       		.uleb128 0x27
+ 460 007f 19       		.uleb128 0x19
+ 461 0080 49       		.uleb128 0x49
+ 462 0081 13       		.uleb128 0x13
+ 463 0082 8701     		.uleb128 0x87
+ 464 0084 19       		.uleb128 0x19
+ 465 0085 11       		.uleb128 0x11
+ 466 0086 01       		.uleb128 0x1
+ 467 0087 12       		.uleb128 0x12
+ 468 0088 06       		.uleb128 0x6
+ 469 0089 40       		.uleb128 0x40
+ 470 008a 18       		.uleb128 0x18
+ 471 008b 9742     		.uleb128 0x2117
+ 472 008d 19       		.uleb128 0x19
+ 473 008e 01       		.uleb128 0x1
+ 474 008f 13       		.uleb128 0x13
+ 475 0090 00       		.byte	0
+ 476 0091 00       		.byte	0
+ 477 0092 09       		.uleb128 0x9
+ 478 0093 898201   		.uleb128 0x4109
+ 479 0096 01       		.byte	0x1
+ 480 0097 11       		.uleb128 0x11
+ 481 0098 01       		.uleb128 0x1
+ 482 0099 31       		.uleb128 0x31
+ 483 009a 13       		.uleb128 0x13
+ 484 009b 01       		.uleb128 0x1
+ 485 009c 13       		.uleb128 0x13
+ 486 009d 00       		.byte	0
+ 487 009e 00       		.byte	0
+ 488 009f 0A       		.uleb128 0xa
+ 489 00a0 8A8201   		.uleb128 0x410a
+ 490 00a3 00       		.byte	0
+ 491 00a4 02       		.uleb128 0x2
+ 492 00a5 18       		.uleb128 0x18
+ 493 00a6 9142     		.uleb128 0x2111
+ 494 00a8 18       		.uleb128 0x18
+ 495 00a9 00       		.byte	0
+ 496 00aa 00       		.byte	0
+ 497 00ab 0B       		.uleb128 0xb
+ 498 00ac 34       		.uleb128 0x34
+ 499 00ad 00       		.byte	0
+ 500 00ae 03       		.uleb128 0x3
+ 501 00af 0E       		.uleb128 0xe
+ 502 00b0 3A       		.uleb128 0x3a
+ 503 00b1 0B       		.uleb128 0xb
+ 504 00b2 3B       		.uleb128 0x3b
+ 505 00b3 05       		.uleb128 0x5
+ 506 00b4 49       		.uleb128 0x49
+ 507 00b5 13       		.uleb128 0x13
+ 508 00b6 3F       		.uleb128 0x3f
+ 509 00b7 19       		.uleb128 0x19
+ 510 00b8 3C       		.uleb128 0x3c
+ 511 00b9 19       		.uleb128 0x19
+ 512 00ba 00       		.byte	0
+ 513 00bb 00       		.byte	0
+ 514 00bc 0C       		.uleb128 0xc
+ 515 00bd 35       		.uleb128 0x35
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 11
+
+
+ 516 00be 00       		.byte	0
+ 517 00bf 49       		.uleb128 0x49
+ 518 00c0 13       		.uleb128 0x13
+ 519 00c1 00       		.byte	0
+ 520 00c2 00       		.byte	0
+ 521 00c3 0D       		.uleb128 0xd
+ 522 00c4 34       		.uleb128 0x34
+ 523 00c5 00       		.byte	0
+ 524 00c6 03       		.uleb128 0x3
+ 525 00c7 08       		.uleb128 0x8
+ 526 00c8 3A       		.uleb128 0x3a
+ 527 00c9 0B       		.uleb128 0xb
+ 528 00ca 3B       		.uleb128 0x3b
+ 529 00cb 0B       		.uleb128 0xb
+ 530 00cc 49       		.uleb128 0x49
+ 531 00cd 13       		.uleb128 0x13
+ 532 00ce 3F       		.uleb128 0x3f
+ 533 00cf 19       		.uleb128 0x19
+ 534 00d0 02       		.uleb128 0x2
+ 535 00d1 18       		.uleb128 0x18
+ 536 00d2 00       		.byte	0
+ 537 00d3 00       		.byte	0
+ 538 00d4 0E       		.uleb128 0xe
+ 539 00d5 2E       		.uleb128 0x2e
+ 540 00d6 00       		.byte	0
+ 541 00d7 3F       		.uleb128 0x3f
+ 542 00d8 19       		.uleb128 0x19
+ 543 00d9 3C       		.uleb128 0x3c
+ 544 00da 19       		.uleb128 0x19
+ 545 00db 6E       		.uleb128 0x6e
+ 546 00dc 0E       		.uleb128 0xe
+ 547 00dd 03       		.uleb128 0x3
+ 548 00de 0E       		.uleb128 0xe
+ 549 00df 3A       		.uleb128 0x3a
+ 550 00e0 0B       		.uleb128 0xb
+ 551 00e1 3B       		.uleb128 0x3b
+ 552 00e2 0B       		.uleb128 0xb
+ 553 00e3 00       		.byte	0
+ 554 00e4 00       		.byte	0
+ 555 00e5 00       		.byte	0
+ 556              		.section	.debug_aranges,"",%progbits
+ 557 0000 2C000000 		.4byte	0x2c
+ 558 0004 0200     		.2byte	0x2
+ 559 0006 00000000 		.4byte	.Ldebug_info0
+ 560 000a 04       		.byte	0x4
+ 561 000b 00       		.byte	0
+ 562 000c 0000     		.2byte	0
+ 563 000e 0000     		.2byte	0
+ 564 0010 00000000 		.4byte	.LFB65
+ 565 0014 18000000 		.4byte	.LFE65-.LFB65
+ 566 0018 00000000 		.4byte	.LFB64
+ 567 001c 28000000 		.4byte	.LFE64-.LFB64
+ 568 0020 00000000 		.4byte	.LFB63
+ 569 0024 14000000 		.4byte	.LFE63-.LFB63
+ 570 0028 00000000 		.4byte	0
+ 571 002c 00000000 		.4byte	0
+ 572              		.section	.debug_ranges,"",%progbits
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 12
+
+
+ 573              	.Ldebug_ranges0:
+ 574 0000 00000000 		.4byte	.LFB65
+ 575 0004 18000000 		.4byte	.LFE65
+ 576 0008 00000000 		.4byte	.LFB64
+ 577 000c 28000000 		.4byte	.LFE64
+ 578 0010 00000000 		.4byte	.LFB63
+ 579 0014 14000000 		.4byte	.LFE63
+ 580 0018 00000000 		.4byte	0
+ 581 001c 00000000 		.4byte	0
+ 582              		.section	.debug_line,"",%progbits
+ 583              	.Ldebug_line0:
+ 584 0000 D6010000 		.section	.debug_str,"MS",%progbits,1
+ 584      02009701 
+ 584      00000201 
+ 584      FB0E0D00 
+ 584      01010101 
+ 585              	.LASF6:
+ 586 0000 6C6F6E67 		.ascii	"long long int\000"
+ 586      206C6F6E 
+ 586      6720696E 
+ 586      7400
+ 587              	.LASF3:
+ 588 000e 73686F72 		.ascii	"short unsigned int\000"
+ 588      7420756E 
+ 588      7369676E 
+ 588      65642069 
+ 588      6E7400
+ 589              	.LASF8:
+ 590 0021 756E7369 		.ascii	"unsigned int\000"
+ 590      676E6564 
+ 590      20696E74 
+ 590      00
+ 591              	.LASF21:
+ 592 002e 6973725F 		.ascii	"isr_Button_StartEx\000"
+ 592      42757474 
+ 592      6F6E5F53 
+ 592      74617274 
+ 592      457800
+ 593              	.LASF20:
+ 594 0041 50696E5F 		.ascii	"Pin_GREEN_LED_Write\000"
+ 594      47524545 
+ 594      4E5F4C45 
+ 594      445F5772 
+ 594      69746500 
+ 595              	.LASF23:
+ 596 0055 6D61696E 		.ascii	"main.c\000"
+ 596      2E6300
+ 597              	.LASF17:
+ 598 005c 50696E5F 		.ascii	"Pin_Button_ClearInterrupt\000"
+ 598      42757474 
+ 598      6F6E5F43 
+ 598      6C656172 
+ 598      496E7465 
+ 599              	.LASF27:
+ 600 0076 6D61696E 		.ascii	"main\000"
+ 600      00
+ 601              	.LASF22:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 13
+
+
+ 602 007b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 602      43313120 
+ 602      352E342E 
+ 602      31203230 
+ 602      31363036 
+ 603 00ae 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 603      20726576 
+ 603      6973696F 
+ 603      6E203233 
+ 603      37373135 
+ 604 00e1 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 604      66756E63 
+ 604      74696F6E 
+ 604      2D736563 
+ 604      74696F6E 
+ 605              	.LASF5:
+ 606 0109 6C6F6E67 		.ascii	"long unsigned int\000"
+ 606      20756E73 
+ 606      69676E65 
+ 606      6420696E 
+ 606      7400
+ 607              	.LASF7:
+ 608 011b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 608      206C6F6E 
+ 608      6720756E 
+ 608      7369676E 
+ 608      65642069 
+ 609              	.LASF25:
+ 610 0132 6973725F 		.ascii	"isr_Button_RisingEdge_Interrupt\000"
+ 610      42757474 
+ 610      6F6E5F52 
+ 610      6973696E 
+ 610      67456467 
+ 611              	.LASF19:
+ 612 0152 50696E5F 		.ascii	"Pin_RED_LED_Write\000"
+ 612      5245445F 
+ 612      4C45445F 
+ 612      57726974 
+ 612      6500
+ 613              	.LASF1:
+ 614 0164 756E7369 		.ascii	"unsigned char\000"
+ 614      676E6564 
+ 614      20636861 
+ 614      7200
+ 615              	.LASF13:
+ 616 0172 63686172 		.ascii	"char\000"
+ 616      00
+ 617              	.LASF4:
+ 618 0177 6C6F6E67 		.ascii	"long int\000"
+ 618      20696E74 
+ 618      00
+ 619              	.LASF12:
+ 620 0180 646F7562 		.ascii	"double\000"
+ 620      6C6500
+ 621              	.LASF24:
+ 622 0187 433A5C55 		.ascii	"C:\\Users\\giris\\OneDrive\\Documents\\PSoC Creator"
+ 622      73657273 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\ccfd0rO4.s 			page 14
+
+
+ 622      5C676972 
+ 622      69735C4F 
+ 622      6E654472 
+ 623 01b5 5C534448 		.ascii	"\\SDHD\\3bitCounter.cydsn\000"
+ 623      445C3362 
+ 623      6974436F 
+ 623      756E7465 
+ 623      722E6379 
+ 624              	.LASF16:
+ 625 01cd 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 625      52784275 
+ 625      66666572 
+ 625      00
+ 626              	.LASF0:
+ 627 01da 7369676E 		.ascii	"signed char\000"
+ 627      65642063 
+ 627      68617200 
+ 628              	.LASF15:
+ 629 01e6 6C6F6E67 		.ascii	"long double\000"
+ 629      20646F75 
+ 629      626C6500 
+ 630              	.LASF9:
+ 631 01f2 5F5F696E 		.ascii	"__int32_t\000"
+ 631      7433325F 
+ 631      7400
+ 632              	.LASF11:
+ 633 01fc 666C6F61 		.ascii	"float\000"
+ 633      7400
+ 634              	.LASF18:
+ 635 0202 50696E5F 		.ascii	"Pin_YELLOW_LED_Write\000"
+ 635      59454C4C 
+ 635      4F575F4C 
+ 635      45445F57 
+ 635      72697465 
+ 636              	.LASF2:
+ 637 0217 73686F72 		.ascii	"short int\000"
+ 637      7420696E 
+ 637      7400
+ 638              	.LASF10:
+ 639 0221 696E7433 		.ascii	"int32_t\000"
+ 639      325F7400 
+ 640              	.LASF26:
+ 641 0229 74687265 		.ascii	"three_bit_counter\000"
+ 641      655F6269 
+ 641      745F636F 
+ 641      756E7465 
+ 641      7200
+ 642              	.LASF14:
+ 643 023b 73697A65 		.ascii	"sizetype\000"
+ 643      74797065 
+ 643      00
+ 644              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
