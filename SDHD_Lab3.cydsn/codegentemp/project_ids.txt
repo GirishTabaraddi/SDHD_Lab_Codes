@@ -1,0 +1,15 @@
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\SDHD_Lab3.cydsn\SDHD_Lab3.cyprj|27f723c2-cedd-4525-ad2f-dd49eebeeda5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|4c7a61e0-671f-46ce-9267-f9ec94808a55
+C:\Users\giris\OneDrive\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|4cf636f2-317e-4ed8-b17f-ad789840f6a1
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|02a60736-447d-4653-8d0b-19044e7c516f
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|35c6e5b6-8192-441d-9091-7cf864cbb27e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|f4786b72-cad2-4542-92ee-0d91748e9374
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\MotionDetector.cydsn\MotionDetector.cyprj|fe14736b-2975-4ce6-b69a-0b9ed32c62e2
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_3.cydsn\UART_Exercise_3.cyprj|0c6b6fbb-b014-4b32-a27b-6b02aa07fdb9
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_2.cydsn\UART_Exercise_2.cyprj|f2b88fbf-b586-48ff-924f-0a2ab7c012ea
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_1.cydsn\UART_Exercise_1.cyprj|3eeb7e88-2af5-4ea7-9d1b-896545b4de09
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\LAB3_SDHD.cydsn\LAB3_SDHD.cyprj|7203a712-8a50-4549-ae70-ecea18d6ec05
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\3bitCounter.cydsn\3bitCounter.cyprj|e04c4db8-cfd8-4171-a822-867b2033718f
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\Button.cydsn\Button.cyprj|abd32e4d-b332-405e-922c-1c3091e9fabb
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\LEDBlinking.cydsn\LEDBlinking.cyprj|424db141-b0a3-499c-8300-33a06e80f5cb
+C:\Users\giris\OneDrive\Documents\PSoC Creator\My Templates\SDHD_Lab3.cydsn\SDHD_Lab3.cyprj|12f8863e-4d31-420e-835e-6397be5b5615

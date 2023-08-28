@@ -1,0 +1,6 @@
+C:\Users\drash\Downloads\SDHD_Lab3_fft.cydsn\SDHD_Lab3.cydsn\SDHD_Lab3.cyprj|edf4325e-e17b-4bc9-8f73-f69302e3e317
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|8ee880d1-a687-45f7-91d4-af2d91524384
+C:\Users\drash\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|9b0d333b-885b-4bd3-a142-6921c6451afa
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|6790b6d6-51bb-4284-ad64-494255ef5795
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|9cf9959f-47bc-4bf0-a66e-3bacec9e4b8b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|1ad5ef5c-77e1-4f8f-84d5-57ac9adcb133

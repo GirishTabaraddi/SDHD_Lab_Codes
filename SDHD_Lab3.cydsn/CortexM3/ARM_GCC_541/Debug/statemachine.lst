@@ -1,0 +1,2170 @@
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"statemachine.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.isr_PushButton_Enable_Interrupt,"ax",%progbits
+  20              		.align	2
+  21              		.global	isr_PushButton_Enable_Interrupt
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	isr_PushButton_Enable_Interrupt, %function
+  25              	isr_PushButton_Enable_Interrupt:
+  26              	.LFB120:
+  27              		.file 1 "source\\bsw\\statemachine.c"
+   1:source\bsw/statemachine.c **** /**
+   2:source\bsw/statemachine.c **** * \file statemachine
+   3:source\bsw/statemachine.c **** * \author <author-name>
+   4:source\bsw/statemachine.c **** * \date <date>
+   5:source\bsw/statemachine.c **** *
+   6:source\bsw/statemachine.c **** * \brief <Symbolic File name>
+   7:source\bsw/statemachine.c **** *
+   8:source\bsw/statemachine.c **** * \copyright Copyright ©2016
+   9:source\bsw/statemachine.c **** * Department of electrical engineering and information technology, Hochschule Darmstadt - Universit
+  10:source\bsw/statemachine.c **** * Permission to use, copy, modify, and distribute this software and its documentation for education
+  11:source\bsw/statemachine.c **** * (unless permitted by h_da) and official h_da projects, is hereby granted for enrolled students of
+  12:source\bsw/statemachine.c **** * this paragraph and the following paragraph appear in all copies, modifications, and distributions
+  13:source\bsw/statemachine.c **** * Contact Prof.Dr.-Ing. Peter Fromm, peter.fromm@h-da.de, Birkenweg 8 64295 Darmstadt - GERMANY for
+  14:source\bsw/statemachine.c **** *
+  15:source\bsw/statemachine.c **** * \warning This software is a PROTOTYPE version and is not designed or intended for use in producti
+  16:source\bsw/statemachine.c **** * The user represents and warrants that it will NOT use or redistribute the Software for such purpo
+  17:source\bsw/statemachine.c **** * This prototype is for research purposes only. This software is provided "AS IS," without a warran
+  18:source\bsw/statemachine.c **** */
+  19:source\bsw/statemachine.c **** 
+  20:source\bsw/statemachine.c **** /*****************************************************************************/
+  21:source\bsw/statemachine.c **** /* Include files                                                             */
+  22:source\bsw/statemachine.c **** /*****************************************************************************/
+  23:source\bsw/statemachine.c **** #include "statemachine.h"
+  24:source\bsw/statemachine.c **** #include "stdlib.h"
+  25:source\bsw/statemachine.c **** /*****************************************************************************/
+  26:source\bsw/statemachine.c **** /* Local pre-processor symbols/macros ('#define')                            */
+  27:source\bsw/statemachine.c **** /*****************************************************************************/
+  28:source\bsw/statemachine.c **** 
+  29:source\bsw/statemachine.c **** /*****************************************************************************/
+  30:source\bsw/statemachine.c **** /* Global variable definitions (declared in header file with 'extern')       */
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 2
+
+
+  31:source\bsw/statemachine.c **** /*****************************************************************************/
+  32:source\bsw/statemachine.c **** 
+  33:source\bsw/statemachine.c **** /*****************************************************************************/
+  34:source\bsw/statemachine.c **** /* Local type definitions ('typedef')                                        */
+  35:source\bsw/statemachine.c **** /*****************************************************************************/
+  36:source\bsw/statemachine.c **** 
+  37:source\bsw/statemachine.c **** /*****************************************************************************/
+  38:source\bsw/statemachine.c **** /* Local variable definitions ('static')                                     */
+  39:source\bsw/statemachine.c **** /*****************************************************************************/
+  40:source\bsw/statemachine.c **** 
+  41:source\bsw/statemachine.c **** /*****************************************************************************/
+  42:source\bsw/statemachine.c **** /* Local function prototypes ('static')                                      */
+  43:source\bsw/statemachine.c **** /*****************************************************************************/
+  44:source\bsw/statemachine.c **** 
+  45:source\bsw/statemachine.c **** /*****************************************************************************/
+  46:source\bsw/statemachine.c **** /* Function implementation - global ('extern') and local ('static')          */
+  47:source\bsw/statemachine.c **** /*****************************************************************************/
+  48:source\bsw/statemachine.c **** 
+  49:source\bsw/statemachine.c **** volatile uint8_t push_button_toggle = 0;        // A toggle variable to store the status of isr_Pus
+  50:source\bsw/statemachine.c **** 
+  51:source\bsw/statemachine.c **** uint8_t sChRx = 0;                              // sChRx is a flag that stores the status of 's' ch
+  52:source\bsw/statemachine.c **** uint8_t oChRx = 0;                              // oChRx is a flag that stores the status of 'o' ch
+  53:source\bsw/statemachine.c **** char rxDataCh;                                  // rxdataCh receives the character sent from Matlab
+  54:source\bsw/statemachine.c **** 
+  55:source\bsw/statemachine.c **** uint8_t count = 0;                              // A count variable to increment till 10.
+  56:source\bsw/statemachine.c **** 
+  57:source\bsw/statemachine.c **** // Creating an object of my enum type for handling the different states.
+  58:source\bsw/statemachine.c **** // Initializing the object with IDLE_STATE at first.
+  59:source\bsw/statemachine.c **** myStateMachine_t State = IDLE_STATE;
+  60:source\bsw/statemachine.c **** 
+  61:source\bsw/statemachine.c **** int32 FFT_SamplesArray[2 * 1024] = {0}; // An array which will contain the result of the FFT calcul
+  62:source\bsw/statemachine.c **** 
+  63:source\bsw/statemachine.c **** /**
+  64:source\bsw/statemachine.c ****  * Function that initializes all the Hardware used in the top design.
+  65:source\bsw/statemachine.c ****  * @param: None
+  66:source\bsw/statemachine.c ****  * @return: None
+  67:source\bsw/statemachine.c ****  */
+  68:source\bsw/statemachine.c **** void Hardware_Init()
+  69:source\bsw/statemachine.c **** {
+  70:source\bsw/statemachine.c ****     UART_LOG_Start();
+  71:source\bsw/statemachine.c ****     UART_LOG_PutString("UART Started\n");
+  72:source\bsw/statemachine.c ****     //WaveDAC_Start();
+  73:source\bsw/statemachine.c ****     ADC_DelSig_Start();
+  74:source\bsw/statemachine.c ****     ADC_DelSig_StartConvert();
+  75:source\bsw/statemachine.c ****     
+  76:source\bsw/statemachine.c ****     isr_PushButton_StartEx(isr_PushButton_Enable_Interrupt);
+  77:source\bsw/statemachine.c ****     isr_UART_StartEx(isr_UART);
+  78:source\bsw/statemachine.c **** }
+  79:source\bsw/statemachine.c **** 
+  80:source\bsw/statemachine.c **** 
+  81:source\bsw/statemachine.c **** /**
+  82:source\bsw/statemachine.c ****  * An interrupt function that stores 1 in push button toggle variable if PushButton is pressed.
+  83:source\bsw/statemachine.c ****  */
+  84:source\bsw/statemachine.c **** CY_ISR(isr_PushButton_Enable_Interrupt)
+  85:source\bsw/statemachine.c **** {
+  28              		.loc 1 85 0
+  29              		.cfi_startproc
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 3
+
+
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  86:source\bsw/statemachine.c ****     Push_Button_ClearInterrupt();
+  36              		.loc 1 86 0
+  37 0002 FFF7FEFF 		bl	Push_Button_ClearInterrupt
+  38              	.LVL0:
+  87:source\bsw/statemachine.c ****     
+  88:source\bsw/statemachine.c ****     if(push_button_toggle == 0)
+  39              		.loc 1 88 0
+  40 0006 044B     		ldr	r3, .L4
+  41 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  42 000a 13F0FF0F 		tst	r3, #255
+  43 000e 02D1     		bne	.L1
+  89:source\bsw/statemachine.c ****     {
+  90:source\bsw/statemachine.c ****         push_button_toggle = 1;
+  44              		.loc 1 90 0
+  45 0010 0122     		movs	r2, #1
+  46 0012 014B     		ldr	r3, .L4
+  47 0014 1A70     		strb	r2, [r3]
+  48              	.L1:
+  49 0016 08BD     		pop	{r3, pc}
+  50              	.L5:
+  51              		.align	2
+  52              	.L4:
+  53 0018 00000000 		.word	.LANCHOR0
+  54              		.cfi_endproc
+  55              	.LFE120:
+  56              		.size	isr_PushButton_Enable_Interrupt, .-isr_PushButton_Enable_Interrupt
+  57              		.section	.text.isr_UART,"ax",%progbits
+  58              		.align	2
+  59              		.global	isr_UART
+  60              		.thumb
+  61              		.thumb_func
+  62              		.type	isr_UART, %function
+  63              	isr_UART:
+  64              	.LFB121:
+  91:source\bsw/statemachine.c ****     }
+  92:source\bsw/statemachine.c **** }
+  93:source\bsw/statemachine.c **** 
+  94:source\bsw/statemachine.c **** 
+  95:source\bsw/statemachine.c **** /**
+  96:source\bsw/statemachine.c ****  * An interrupt function from UART that stores 's' or 'o' in their respective flag variables,
+  97:source\bsw/statemachine.c ****  * when the characters are sent from Matlab or Termite.
+  98:source\bsw/statemachine.c ****  */
+  99:source\bsw/statemachine.c **** CY_ISR(isr_UART)
+ 100:source\bsw/statemachine.c **** {
+  65              		.loc 1 100 0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69 0000 08B5     		push	{r3, lr}
+  70              		.cfi_def_cfa_offset 8
+  71              		.cfi_offset 3, -8
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 4
+
+
+  72              		.cfi_offset 14, -4
+ 101:source\bsw/statemachine.c ****     isr_UART_ClearPending();
+  73              		.loc 1 101 0
+  74 0002 FFF7FEFF 		bl	isr_UART_ClearPending
+  75              	.LVL1:
+ 102:source\bsw/statemachine.c ****     
+ 103:source\bsw/statemachine.c ****     rxDataCh = UART_LOG_GetChar();
+  76              		.loc 1 103 0
+  77 0006 FFF7FEFF 		bl	UART_LOG_GetChar
+  78              	.LVL2:
+  79 000a 064B     		ldr	r3, .L10
+  80 000c 1870     		strb	r0, [r3]
+ 104:source\bsw/statemachine.c ****     
+ 105:source\bsw/statemachine.c ****     if(rxDataCh == 's')
+  81              		.loc 1 105 0
+  82 000e 7328     		cmp	r0, #115
+  83 0010 02D1     		bne	.L7
+ 106:source\bsw/statemachine.c ****     {
+ 107:source\bsw/statemachine.c ****        //UART_LOG_PutString("S is sent \n");        //Debug statement added while testing UART with
+ 108:source\bsw/statemachine.c ****         sChRx = 1;
+  84              		.loc 1 108 0
+  85 0012 0122     		movs	r2, #1
+  86 0014 044B     		ldr	r3, .L10+4
+  87 0016 5A70     		strb	r2, [r3, #1]
+  88              	.L7:
+ 109:source\bsw/statemachine.c ****     }
+ 110:source\bsw/statemachine.c ****     if(rxDataCh == 'o')
+  89              		.loc 1 110 0
+  90 0018 6F28     		cmp	r0, #111
+  91 001a 02D1     		bne	.L6
+ 111:source\bsw/statemachine.c ****     {
+ 112:source\bsw/statemachine.c ****         oChRx = 1;
+  92              		.loc 1 112 0
+  93 001c 0122     		movs	r2, #1
+  94 001e 024B     		ldr	r3, .L10+4
+  95 0020 9A70     		strb	r2, [r3, #2]
+  96              	.L6:
+  97 0022 08BD     		pop	{r3, pc}
+  98              	.L11:
+  99              		.align	2
+ 100              	.L10:
+ 101 0024 00000000 		.word	rxDataCh
+ 102 0028 00000000 		.word	.LANCHOR0
+ 103              		.cfi_endproc
+ 104              	.LFE121:
+ 105              		.size	isr_UART, .-isr_UART
+ 106              		.section	.text.Hardware_Init,"ax",%progbits
+ 107              		.align	2
+ 108              		.global	Hardware_Init
+ 109              		.thumb
+ 110              		.thumb_func
+ 111              		.type	Hardware_Init, %function
+ 112              	Hardware_Init:
+ 113              	.LFB119:
+  69:source\bsw/statemachine.c ****     UART_LOG_Start();
+ 114              		.loc 1 69 0
+ 115              		.cfi_startproc
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 5
+
+
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118 0000 08B5     		push	{r3, lr}
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 3, -8
+ 121              		.cfi_offset 14, -4
+  70:source\bsw/statemachine.c ****     UART_LOG_PutString("UART Started\n");
+ 122              		.loc 1 70 0
+ 123 0002 FFF7FEFF 		bl	UART_LOG_Start
+ 124              	.LVL3:
+  71:source\bsw/statemachine.c ****     //WaveDAC_Start();
+ 125              		.loc 1 71 0
+ 126 0006 0748     		ldr	r0, .L14
+ 127 0008 FFF7FEFF 		bl	UART_LOG_PutString
+ 128              	.LVL4:
+  73:source\bsw/statemachine.c ****     ADC_DelSig_StartConvert();
+ 129              		.loc 1 73 0
+ 130 000c FFF7FEFF 		bl	ADC_DelSig_Start
+ 131              	.LVL5:
+  74:source\bsw/statemachine.c ****     
+ 132              		.loc 1 74 0
+ 133 0010 FFF7FEFF 		bl	ADC_DelSig_StartConvert
+ 134              	.LVL6:
+  76:source\bsw/statemachine.c ****     isr_UART_StartEx(isr_UART);
+ 135              		.loc 1 76 0
+ 136 0014 0448     		ldr	r0, .L14+4
+ 137 0016 FFF7FEFF 		bl	isr_PushButton_StartEx
+ 138              	.LVL7:
+  77:source\bsw/statemachine.c **** }
+ 139              		.loc 1 77 0
+ 140 001a 0448     		ldr	r0, .L14+8
+ 141 001c FFF7FEFF 		bl	isr_UART_StartEx
+ 142              	.LVL8:
+ 143 0020 08BD     		pop	{r3, pc}
+ 144              	.L15:
+ 145 0022 00BF     		.align	2
+ 146              	.L14:
+ 147 0024 00000000 		.word	.LC0
+ 148 0028 00000000 		.word	isr_PushButton_Enable_Interrupt
+ 149 002c 00000000 		.word	isr_UART
+ 150              		.cfi_endproc
+ 151              	.LFE119:
+ 152              		.size	Hardware_Init, .-Hardware_Init
+ 153              		.section	.text.Sequencing,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	Sequencing
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.type	Sequencing, %function
+ 159              	Sequencing:
+ 160              	.LFB122:
+ 113:source\bsw/statemachine.c ****     }
+ 114:source\bsw/statemachine.c **** }
+ 115:source\bsw/statemachine.c **** 
+ 116:source\bsw/statemachine.c **** 
+ 117:source\bsw/statemachine.c **** void Sequencing(uint16_t *SamplingArray)
+ 118:source\bsw/statemachine.c **** {   
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 6
+
+
+ 161              		.loc 1 118 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              	.LVL9:
+ 166 0000 38B5     		push	{r3, r4, r5, lr}
+ 167              		.cfi_def_cfa_offset 16
+ 168              		.cfi_offset 3, -16
+ 169              		.cfi_offset 4, -12
+ 170              		.cfi_offset 5, -8
+ 171              		.cfi_offset 14, -4
+ 172 0002 0546     		mov	r5, r0
+ 119:source\bsw/statemachine.c ****     switch(State)
+ 173              		.loc 1 119 0
+ 174 0004 4F4B     		ldr	r3, .L31
+ 175 0006 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 176 0008 012B     		cmp	r3, #1
+ 177 000a 1AD0     		beq	.L18
+ 178 000c 13B1     		cbz	r3, .L19
+ 179 000e 022B     		cmp	r3, #2
+ 180 0010 3BD0     		beq	.L20
+ 181 0012 8AE0     		b	.L29
+ 182              	.L19:
+ 120:source\bsw/statemachine.c ****     {
+ 121:source\bsw/statemachine.c ****         case IDLE_STATE:
+ 122:source\bsw/statemachine.c ****             
+ 123:source\bsw/statemachine.c ****             Yellow_LED_Write(1);             // Added as a debug LED, turns on when state is in IDL
+ 183              		.loc 1 123 0
+ 184 0014 0120     		movs	r0, #1
+ 185              	.LVL10:
+ 186 0016 FFF7FEFF 		bl	Yellow_LED_Write
+ 187              	.LVL11:
+ 124:source\bsw/statemachine.c ****             Green_LED_Write(0);
+ 188              		.loc 1 124 0
+ 189 001a 0020     		movs	r0, #0
+ 190 001c FFF7FEFF 		bl	Green_LED_Write
+ 191              	.LVL12:
+ 125:source\bsw/statemachine.c ****             Red_LED_Write(0);
+ 192              		.loc 1 125 0
+ 193 0020 0020     		movs	r0, #0
+ 194 0022 FFF7FEFF 		bl	Red_LED_Write
+ 195              	.LVL13:
+ 126:source\bsw/statemachine.c ****             
+ 127:source\bsw/statemachine.c ****             //Initializing count
+ 128:source\bsw/statemachine.c ****             count =  0;
+ 196              		.loc 1 128 0
+ 197 0026 474B     		ldr	r3, .L31
+ 198 0028 0022     		movs	r2, #0
+ 199 002a 1A71     		strb	r2, [r3, #4]
+ 129:source\bsw/statemachine.c ****             
+ 130:source\bsw/statemachine.c ****             if(push_button_toggle == 1)
+ 200              		.loc 1 130 0
+ 201 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 202 002e DBB2     		uxtb	r3, r3
+ 203 0030 012B     		cmp	r3, #1
+ 204 0032 40F08680 		bne	.L16
+ 131:source\bsw/statemachine.c ****             {   
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 7
+
+
+ 132:source\bsw/statemachine.c ****                 // If push button is pressed then change the state to SAMPLING state.  
+ 133:source\bsw/statemachine.c ****                 State = SAMPLING_STATE;
+ 205              		.loc 1 133 0
+ 206 0036 434B     		ldr	r3, .L31
+ 207 0038 0122     		movs	r2, #1
+ 208 003a DA70     		strb	r2, [r3, #3]
+ 134:source\bsw/statemachine.c ****                 push_button_toggle = 0;
+ 209              		.loc 1 134 0
+ 210 003c 0022     		movs	r2, #0
+ 211 003e 1A70     		strb	r2, [r3]
+ 212 0040 38BD     		pop	{r3, r4, r5, pc}
+ 213              	.LVL14:
+ 214              	.L18:
+ 135:source\bsw/statemachine.c ****             }
+ 136:source\bsw/statemachine.c ****         break;
+ 137:source\bsw/statemachine.c ****         
+ 138:source\bsw/statemachine.c ****         case SAMPLING_STATE:
+ 139:source\bsw/statemachine.c **** 
+ 140:source\bsw/statemachine.c ****             Yellow_LED_Write(0);            //Added as a debug LED; turns off when state changes fr
+ 215              		.loc 1 140 0
+ 216 0042 0020     		movs	r0, #0
+ 217              	.LVL15:
+ 218 0044 FFF7FEFF 		bl	Yellow_LED_Write
+ 219              	.LVL16:
+ 141:source\bsw/statemachine.c ****             Green_LED_Write(1);             
+ 220              		.loc 1 141 0
+ 221 0048 0120     		movs	r0, #1
+ 222 004a FFF7FEFF 		bl	Green_LED_Write
+ 223              	.LVL17:
+ 142:source\bsw/statemachine.c ****             Red_LED_Write(0);
+ 224              		.loc 1 142 0
+ 225 004e 0020     		movs	r0, #0
+ 226 0050 FFF7FEFF 		bl	Red_LED_Write
+ 227              	.LVL18:
+ 228              	.LBB2:
+ 143:source\bsw/statemachine.c ****            
+ 144:source\bsw/statemachine.c ****             for(uint16_t idx = 0; idx < 1024; idx++)
+ 229              		.loc 1 144 0
+ 230 0054 0024     		movs	r4, #0
+ 231 0056 08E0     		b	.L22
+ 232              	.LVL19:
+ 233              	.L23:
+ 145:source\bsw/statemachine.c ****             {
+ 146:source\bsw/statemachine.c ****                 //Sample the voltage divider output and store it in an Array.
+ 147:source\bsw/statemachine.c ****                 ADC_DelSig_IsEndConversion(ADC_DelSig_WAIT_FOR_RESULT);
+ 234              		.loc 1 147 0 discriminator 3
+ 235 0058 0020     		movs	r0, #0
+ 236 005a FFF7FEFF 		bl	ADC_DelSig_IsEndConversion
+ 237              	.LVL20:
+ 148:source\bsw/statemachine.c ****                 SamplingArray[idx] = (uint16_t)ADC_DelSig_GetResult32();
+ 238              		.loc 1 148 0 discriminator 3
+ 239 005e FFF7FEFF 		bl	ADC_DelSig_GetResult32
+ 240              	.LVL21:
+ 241 0062 25F81400 		strh	r0, [r5, r4, lsl #1]	@ movhi
+ 144:source\bsw/statemachine.c ****             {
+ 242              		.loc 1 144 0 discriminator 3
+ 243 0066 0134     		adds	r4, r4, #1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 8
+
+
+ 244              	.LVL22:
+ 245 0068 A4B2     		uxth	r4, r4
+ 246              	.LVL23:
+ 247              	.L22:
+ 144:source\bsw/statemachine.c ****             {
+ 248              		.loc 1 144 0 is_stmt 0 discriminator 1
+ 249 006a B4F5806F 		cmp	r4, #1024
+ 250 006e F3D3     		bcc	.L23
+ 251              	.LBE2:
+ 149:source\bsw/statemachine.c ****             }
+ 150:source\bsw/statemachine.c ****             
+ 151:source\bsw/statemachine.c ****             //If 's' is recieved from MATLAB, then change the state to UART TRANSFER state.
+ 152:source\bsw/statemachine.c ****             if(sChRx)
+ 252              		.loc 1 152 0 is_stmt 1
+ 253 0070 344B     		ldr	r3, .L31
+ 254 0072 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 255 0074 002B     		cmp	r3, #0
+ 256 0076 64D0     		beq	.L16
+ 153:source\bsw/statemachine.c ****             {
+ 154:source\bsw/statemachine.c ****                 // UART_LOG_PutString("I received S \n");        // Debug statement added when test
+ 155:source\bsw/statemachine.c ****                 User_LED_Write(1);                              // Added as a debug pin, turns on w
+ 257              		.loc 1 155 0
+ 258 0078 0120     		movs	r0, #1
+ 259 007a FFF7FEFF 		bl	User_LED_Write
+ 260              	.LVL24:
+ 156:source\bsw/statemachine.c ****                 State = UART_TRANSFER_STATE;
+ 261              		.loc 1 156 0
+ 262 007e 314B     		ldr	r3, .L31
+ 263 0080 0222     		movs	r2, #2
+ 264 0082 DA70     		strb	r2, [r3, #3]
+ 157:source\bsw/statemachine.c ****                 sChRx = 0;
+ 265              		.loc 1 157 0
+ 266 0084 0022     		movs	r2, #0
+ 267 0086 5A70     		strb	r2, [r3, #1]
+ 268 0088 38BD     		pop	{r3, r4, r5, pc}
+ 269              	.LVL25:
+ 270              	.L20:
+ 158:source\bsw/statemachine.c ****             }
+ 159:source\bsw/statemachine.c ****             
+ 160:source\bsw/statemachine.c ****         break;
+ 161:source\bsw/statemachine.c ****         
+ 162:source\bsw/statemachine.c ****         case UART_TRANSFER_STATE:
+ 163:source\bsw/statemachine.c ****             
+ 164:source\bsw/statemachine.c ****             Green_LED_Write(0);            //Added as a debug LED; turns off when state changes fro
+ 271              		.loc 1 164 0
+ 272 008a 0020     		movs	r0, #0
+ 273              	.LVL26:
+ 274 008c FFF7FEFF 		bl	Green_LED_Write
+ 275              	.LVL27:
+ 165:source\bsw/statemachine.c ****             Red_LED_Write(1);            
+ 276              		.loc 1 165 0
+ 277 0090 0120     		movs	r0, #1
+ 278 0092 FFF7FEFF 		bl	Red_LED_Write
+ 279              	.LVL28:
+ 166:source\bsw/statemachine.c ****             Yellow_LED_Write(0);
+ 280              		.loc 1 166 0
+ 281 0096 0020     		movs	r0, #0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 9
+
+
+ 282 0098 FFF7FEFF 		bl	Yellow_LED_Write
+ 283              	.LVL29:
+ 284              	.LBB3:
+ 167:source\bsw/statemachine.c ****             
+ 168:source\bsw/statemachine.c ****             //char buffer[100];
+ 169:source\bsw/statemachine.c ****             
+ 170:source\bsw/statemachine.c ****             
+ 171:source\bsw/statemachine.c ****             for(uint16_t idx = 0; idx < 1024; idx++)
+ 285              		.loc 1 171 0
+ 286 009c 0024     		movs	r4, #0
+ 287 009e 0AE0     		b	.L24
+ 288              	.LVL30:
+ 289              	.L25:
+ 172:source\bsw/statemachine.c ****             {
+ 173:source\bsw/statemachine.c ****                 //Send the ADC Sampled data to MATLAB
+ 174:source\bsw/statemachine.c ****                 UART_LOG_PutChar(SamplingArray[idx]);
+ 290              		.loc 1 174 0 discriminator 3
+ 291 00a0 15F81400 		ldrb	r0, [r5, r4, lsl #1]	@ zero_extendqisi2
+ 292 00a4 FFF7FEFF 		bl	UART_LOG_PutChar
+ 293              	.LVL31:
+ 175:source\bsw/statemachine.c ****                 UART_LOG_PutChar(SamplingArray[idx]>>8);
+ 294              		.loc 1 175 0 discriminator 3
+ 295 00a8 35F81400 		ldrh	r0, [r5, r4, lsl #1]
+ 296 00ac 000A     		lsrs	r0, r0, #8
+ 297 00ae FFF7FEFF 		bl	UART_LOG_PutChar
+ 298              	.LVL32:
+ 171:source\bsw/statemachine.c ****             {
+ 299              		.loc 1 171 0 discriminator 3
+ 300 00b2 0134     		adds	r4, r4, #1
+ 301              	.LVL33:
+ 302 00b4 A4B2     		uxth	r4, r4
+ 303              	.LVL34:
+ 304              	.L24:
+ 171:source\bsw/statemachine.c ****             {
+ 305              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 306 00b6 B4F5806F 		cmp	r4, #1024
+ 307 00ba F1D3     		bcc	.L25
+ 308              	.LBE3:
+ 176:source\bsw/statemachine.c ****             }
+ 177:source\bsw/statemachine.c ****             
+ 178:source\bsw/statemachine.c ****             fft_app(SamplingArray,FFT_SamplesArray,1024);
+ 309              		.loc 1 178 0 is_stmt 1
+ 310 00bc 4FF48062 		mov	r2, #1024
+ 311 00c0 2149     		ldr	r1, .L31+4
+ 312 00c2 2846     		mov	r0, r5
+ 313 00c4 FFF7FEFF 		bl	fft_app
+ 314              	.LVL35:
+ 315              	.LBB4:
+ 179:source\bsw/statemachine.c ****             
+ 180:source\bsw/statemachine.c ****             for(int32 idx = 0; idx < 2048; idx++)
+ 316              		.loc 1 180 0
+ 317 00c8 0025     		movs	r5, #0
+ 318              	.LVL36:
+ 319 00ca 0FE0     		b	.L26
+ 320              	.LVL37:
+ 321              	.L27:
+ 181:source\bsw/statemachine.c ****             {
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 10
+
+
+ 182:source\bsw/statemachine.c ****                 //Send the ADC Sampled data to MATLAB
+ 183:source\bsw/statemachine.c ****                 UART_LOG_PutChar(FFT_SamplesArray[idx]);
+ 322              		.loc 1 183 0 discriminator 3
+ 323 00cc 1D4C     		ldr	r4, .L31
+ 324 00ce 04EB8504 		add	r4, r4, r5, lsl #2
+ 325 00d2 207A     		ldrb	r0, [r4, #8]	@ zero_extendqisi2
+ 326 00d4 FFF7FEFF 		bl	UART_LOG_PutChar
+ 327              	.LVL38:
+ 184:source\bsw/statemachine.c ****                 UART_LOG_PutChar(FFT_SamplesArray[idx]>>8);
+ 328              		.loc 1 184 0 discriminator 3
+ 329 00d8 607A     		ldrb	r0, [r4, #9]	@ zero_extendqisi2
+ 330 00da FFF7FEFF 		bl	UART_LOG_PutChar
+ 331              	.LVL39:
+ 185:source\bsw/statemachine.c ****                 UART_LOG_PutChar(FFT_SamplesArray[idx]>>16);
+ 332              		.loc 1 185 0 discriminator 3
+ 333 00de A07A     		ldrb	r0, [r4, #10]	@ zero_extendqisi2
+ 334 00e0 FFF7FEFF 		bl	UART_LOG_PutChar
+ 335              	.LVL40:
+ 186:source\bsw/statemachine.c ****                 UART_LOG_PutChar(FFT_SamplesArray[idx]>>24);
+ 336              		.loc 1 186 0 discriminator 3
+ 337 00e4 E07A     		ldrb	r0, [r4, #11]	@ zero_extendqisi2
+ 338 00e6 FFF7FEFF 		bl	UART_LOG_PutChar
+ 339              	.LVL41:
+ 180:source\bsw/statemachine.c ****             {
+ 340              		.loc 1 180 0 discriminator 3
+ 341 00ea 0135     		adds	r5, r5, #1
+ 342              	.LVL42:
+ 343              	.L26:
+ 180:source\bsw/statemachine.c ****             {
+ 344              		.loc 1 180 0 is_stmt 0 discriminator 1
+ 345 00ec B5F5006F 		cmp	r5, #2048
+ 346 00f0 ECDB     		blt	.L27
+ 347              	.LBE4:
+ 187:source\bsw/statemachine.c ****             }
+ 188:source\bsw/statemachine.c ****             
+ 189:source\bsw/statemachine.c ****            
+ 190:source\bsw/statemachine.c ****             count++;                        // Increment the count to repeat the above process for 
+ 348              		.loc 1 190 0 is_stmt 1
+ 349 00f2 144A     		ldr	r2, .L31
+ 350 00f4 1379     		ldrb	r3, [r2, #4]	@ zero_extendqisi2
+ 351 00f6 0133     		adds	r3, r3, #1
+ 352 00f8 DBB2     		uxtb	r3, r3
+ 353 00fa 1371     		strb	r3, [r2, #4]
+ 191:source\bsw/statemachine.c ****             
+ 192:source\bsw/statemachine.c ****             if((count < 10) && oChRx)
+ 354              		.loc 1 192 0
+ 355 00fc 092B     		cmp	r3, #9
+ 356 00fe 0AD8     		bhi	.L28
+ 357              		.loc 1 192 0 is_stmt 0 discriminator 1
+ 358 0100 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
+ 359 0102 42B1     		cbz	r2, .L28
+ 193:source\bsw/statemachine.c ****             {  
+ 194:source\bsw/statemachine.c ****                 User_LED_Write(0);          // Added as a debug pin, turns off when 'o' is received
+ 360              		.loc 1 194 0 is_stmt 1
+ 361 0104 0020     		movs	r0, #0
+ 362 0106 FFF7FEFF 		bl	User_LED_Write
+ 363              	.LVL43:
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 11
+
+
+ 195:source\bsw/statemachine.c ****                 State = SAMPLING_STATE;
+ 364              		.loc 1 195 0
+ 365 010a 0E4B     		ldr	r3, .L31
+ 366 010c 0122     		movs	r2, #1
+ 367 010e DA70     		strb	r2, [r3, #3]
+ 196:source\bsw/statemachine.c ****                 oChRx = 0;
+ 368              		.loc 1 196 0
+ 369 0110 0022     		movs	r2, #0
+ 370 0112 9A70     		strb	r2, [r3, #2]
+ 371 0114 38BD     		pop	{r3, r4, r5, pc}
+ 372              	.LVL44:
+ 373              	.L28:
+ 197:source\bsw/statemachine.c ****             }
+ 198:source\bsw/statemachine.c ****             else if((count == 10) && oChRx)
+ 374              		.loc 1 198 0
+ 375 0116 0A2B     		cmp	r3, #10
+ 376 0118 13D1     		bne	.L16
+ 377              		.loc 1 198 0 is_stmt 0 discriminator 1
+ 378 011a 0A4B     		ldr	r3, .L31
+ 379 011c 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 380 011e 83B1     		cbz	r3, .L16
+ 199:source\bsw/statemachine.c ****             {
+ 200:source\bsw/statemachine.c ****                 State = IDLE_STATE;  
+ 381              		.loc 1 200 0 is_stmt 1
+ 382 0120 084B     		ldr	r3, .L31
+ 383 0122 0022     		movs	r2, #0
+ 384 0124 DA70     		strb	r2, [r3, #3]
+ 201:source\bsw/statemachine.c ****                 oChRx = 0;
+ 385              		.loc 1 201 0
+ 386 0126 9A70     		strb	r2, [r3, #2]
+ 387 0128 38BD     		pop	{r3, r4, r5, pc}
+ 388              	.LVL45:
+ 389              	.L29:
+ 202:source\bsw/statemachine.c ****             }
+ 203:source\bsw/statemachine.c ****         break;
+ 204:source\bsw/statemachine.c ****             
+ 205:source\bsw/statemachine.c ****         default:
+ 206:source\bsw/statemachine.c ****             State = IDLE_STATE; 
+ 390              		.loc 1 206 0
+ 391 012a 0024     		movs	r4, #0
+ 392 012c 054B     		ldr	r3, .L31
+ 393 012e DC70     		strb	r4, [r3, #3]
+ 207:source\bsw/statemachine.c ****             
+ 208:source\bsw/statemachine.c ****             Yellow_LED_Write(0);           
+ 394              		.loc 1 208 0
+ 395 0130 2046     		mov	r0, r4
+ 396              	.LVL46:
+ 397 0132 FFF7FEFF 		bl	Yellow_LED_Write
+ 398              	.LVL47:
+ 209:source\bsw/statemachine.c ****             Green_LED_Write(0);
+ 399              		.loc 1 209 0
+ 400 0136 2046     		mov	r0, r4
+ 401 0138 FFF7FEFF 		bl	Green_LED_Write
+ 402              	.LVL48:
+ 210:source\bsw/statemachine.c ****             Red_LED_Write(0);
+ 403              		.loc 1 210 0
+ 404 013c 2046     		mov	r0, r4
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 12
+
+
+ 405 013e FFF7FEFF 		bl	Red_LED_Write
+ 406              	.LVL49:
+ 407              	.L16:
+ 408 0142 38BD     		pop	{r3, r4, r5, pc}
+ 409              	.L32:
+ 410              		.align	2
+ 411              	.L31:
+ 412 0144 00000000 		.word	.LANCHOR0
+ 413 0148 08000000 		.word	.LANCHOR0+8
+ 414              		.cfi_endproc
+ 415              	.LFE122:
+ 416              		.size	Sequencing, .-Sequencing
+ 417              		.global	FFT_SamplesArray
+ 418              		.global	State
+ 419              		.global	count
+ 420              		.comm	rxDataCh,1,1
+ 421              		.global	oChRx
+ 422              		.global	sChRx
+ 423              		.global	push_button_toggle
+ 424              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 425              		.align	2
+ 426              	.LC0:
+ 427 0000 55415254 		.ascii	"UART Started\012\000"
+ 427      20537461 
+ 427      72746564 
+ 427      0A00
+ 428              		.bss
+ 429              		.align	2
+ 430              		.set	.LANCHOR0,. + 0
+ 431              		.type	push_button_toggle, %object
+ 432              		.size	push_button_toggle, 1
+ 433              	push_button_toggle:
+ 434 0000 00       		.space	1
+ 435              		.type	sChRx, %object
+ 436              		.size	sChRx, 1
+ 437              	sChRx:
+ 438 0001 00       		.space	1
+ 439              		.type	oChRx, %object
+ 440              		.size	oChRx, 1
+ 441              	oChRx:
+ 442 0002 00       		.space	1
+ 443              		.type	State, %object
+ 444              		.size	State, 1
+ 445              	State:
+ 446 0003 00       		.space	1
+ 447              		.type	count, %object
+ 448              		.size	count, 1
+ 449              	count:
+ 450 0004 00       		.space	1
+ 451 0005 000000   		.space	3
+ 452              		.type	FFT_SamplesArray, %object
+ 453              		.size	FFT_SamplesArray, 8192
+ 454              	FFT_SamplesArray:
+ 455 0008 00000000 		.space	8192
+ 455      00000000 
+ 455      00000000 
+ 455      00000000 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 13
+
+
+ 455      00000000 
+ 456              		.text
+ 457              	.Letext0:
+ 458              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 459              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 460              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 461              		.file 5 "source\\bsw\\statemachine.h"
+ 462              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 463              		.file 7 "Generated_Source\\PSoC5/Push_Button.h"
+ 464              		.file 8 "Generated_Source\\PSoC5/isr_UART.h"
+ 465              		.file 9 "Generated_Source\\PSoC5/UART_LOG.h"
+ 466              		.file 10 "Generated_Source\\PSoC5/ADC_DelSig.h"
+ 467              		.file 11 "Generated_Source\\PSoC5/isr_PushButton.h"
+ 468              		.file 12 "Generated_Source\\PSoC5/Yellow_LED.h"
+ 469              		.file 13 "Generated_Source\\PSoC5/Green_LED.h"
+ 470              		.file 14 "Generated_Source\\PSoC5/Red_LED.h"
+ 471              		.file 15 "Generated_Source\\PSoC5/User_LED.h"
+ 472              		.file 16 ".\\source\\asw\\fft_application/fft_application.h"
+ 473              		.section	.debug_info,"",%progbits
+ 474              	.Ldebug_info0:
+ 475 0000 1A050000 		.4byte	0x51a
+ 476 0004 0400     		.2byte	0x4
+ 477 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 478 000a 04       		.byte	0x4
+ 479 000b 01       		.uleb128 0x1
+ 480 000c 25010000 		.4byte	.LASF53
+ 481 0010 0C       		.byte	0xc
+ 482 0011 B2030000 		.4byte	.LASF54
+ 483 0015 6B020000 		.4byte	.LASF55
+ 484 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 485 001d 00000000 		.4byte	0
+ 486 0021 00000000 		.4byte	.Ldebug_line0
+ 487 0025 02       		.uleb128 0x2
+ 488 0026 01       		.byte	0x1
+ 489 0027 06       		.byte	0x6
+ 490 0028 00000000 		.4byte	.LASF0
+ 491 002c 03       		.uleb128 0x3
+ 492 002d 0C000000 		.4byte	.LASF3
+ 493 0031 02       		.byte	0x2
+ 494 0032 1D       		.byte	0x1d
+ 495 0033 37000000 		.4byte	0x37
+ 496 0037 02       		.uleb128 0x2
+ 497 0038 01       		.byte	0x1
+ 498 0039 08       		.byte	0x8
+ 499 003a 17010000 		.4byte	.LASF1
+ 500 003e 02       		.uleb128 0x2
+ 501 003f 02       		.byte	0x2
+ 502 0040 05       		.byte	0x5
+ 503 0041 15020000 		.4byte	.LASF2
+ 504 0045 03       		.uleb128 0x3
+ 505 0046 03020000 		.4byte	.LASF4
+ 506 004a 02       		.byte	0x2
+ 507 004b 2B       		.byte	0x2b
+ 508 004c 50000000 		.4byte	0x50
+ 509 0050 02       		.uleb128 0x2
+ 510 0051 02       		.byte	0x2
+ 511 0052 07       		.byte	0x7
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 14
+
+
+ 512 0053 DD030000 		.4byte	.LASF5
+ 513 0057 03       		.uleb128 0x3
+ 514 0058 35000000 		.4byte	.LASF6
+ 515 005c 02       		.byte	0x2
+ 516 005d 3F       		.byte	0x3f
+ 517 005e 62000000 		.4byte	0x62
+ 518 0062 02       		.uleb128 0x2
+ 519 0063 04       		.byte	0x4
+ 520 0064 05       		.byte	0x5
+ 521 0065 8C030000 		.4byte	.LASF7
+ 522 0069 02       		.uleb128 0x2
+ 523 006a 04       		.byte	0x4
+ 524 006b 07       		.byte	0x7
+ 525 006c C2010000 		.4byte	.LASF8
+ 526 0070 02       		.uleb128 0x2
+ 527 0071 08       		.byte	0x8
+ 528 0072 05       		.byte	0x5
+ 529 0073 0B030000 		.4byte	.LASF9
+ 530 0077 02       		.uleb128 0x2
+ 531 0078 08       		.byte	0x8
+ 532 0079 07       		.byte	0x7
+ 533 007a 3D020000 		.4byte	.LASF10
+ 534 007e 04       		.uleb128 0x4
+ 535 007f 04       		.byte	0x4
+ 536 0080 05       		.byte	0x5
+ 537 0081 696E7400 		.ascii	"int\000"
+ 538 0085 02       		.uleb128 0x2
+ 539 0086 04       		.byte	0x4
+ 540 0087 07       		.byte	0x7
+ 541 0088 30020000 		.4byte	.LASF11
+ 542 008c 03       		.uleb128 0x3
+ 543 008d 54020000 		.4byte	.LASF12
+ 544 0091 03       		.byte	0x3
+ 545 0092 18       		.byte	0x18
+ 546 0093 2C000000 		.4byte	0x2c
+ 547 0097 03       		.uleb128 0x3
+ 548 0098 72030000 		.4byte	.LASF13
+ 549 009c 03       		.byte	0x3
+ 550 009d 24       		.byte	0x24
+ 551 009e 45000000 		.4byte	0x45
+ 552 00a2 03       		.uleb128 0x3
+ 553 00a3 D5020000 		.4byte	.LASF14
+ 554 00a7 03       		.byte	0x3
+ 555 00a8 2C       		.byte	0x2c
+ 556 00a9 57000000 		.4byte	0x57
+ 557 00ad 05       		.uleb128 0x5
+ 558 00ae E4010000 		.4byte	.LASF15
+ 559 00b2 04       		.byte	0x4
+ 560 00b3 EE01     		.2byte	0x1ee
+ 561 00b5 62000000 		.4byte	0x62
+ 562 00b9 02       		.uleb128 0x2
+ 563 00ba 04       		.byte	0x4
+ 564 00bb 04       		.byte	0x4
+ 565 00bc F4000000 		.4byte	.LASF16
+ 566 00c0 02       		.uleb128 0x2
+ 567 00c1 08       		.byte	0x8
+ 568 00c2 04       		.byte	0x4
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 15
+
+
+ 569 00c3 0E020000 		.4byte	.LASF17
+ 570 00c7 02       		.uleb128 0x2
+ 571 00c8 01       		.byte	0x1
+ 572 00c9 08       		.byte	0x8
+ 573 00ca 34030000 		.4byte	.LASF18
+ 574 00ce 02       		.uleb128 0x2
+ 575 00cf 08       		.byte	0x8
+ 576 00d0 04       		.byte	0x4
+ 577 00d1 A6030000 		.4byte	.LASF19
+ 578 00d5 02       		.uleb128 0x2
+ 579 00d6 04       		.byte	0x4
+ 580 00d7 07       		.byte	0x7
+ 581 00d8 DD020000 		.4byte	.LASF20
+ 582 00dc 06       		.uleb128 0x6
+ 583 00dd 8C000000 		.4byte	0x8c
+ 584 00e1 07       		.uleb128 0x7
+ 585 00e2 04       		.byte	0x4
+ 586 00e3 97000000 		.4byte	0x97
+ 587 00e7 08       		.uleb128 0x8
+ 588 00e8 CF000000 		.4byte	.LASF56
+ 589 00ec 01       		.byte	0x1
+ 590 00ed 37000000 		.4byte	0x37
+ 591 00f1 05       		.byte	0x5
+ 592 00f2 5A       		.byte	0x5a
+ 593 00f3 0A010000 		.4byte	0x10a
+ 594 00f7 09       		.uleb128 0x9
+ 595 00f8 FB030000 		.4byte	.LASF21
+ 596 00fc 00       		.byte	0
+ 597 00fd 09       		.uleb128 0x9
+ 598 00fe B3010000 		.4byte	.LASF22
+ 599 0102 01       		.byte	0x1
+ 600 0103 09       		.uleb128 0x9
+ 601 0104 94000000 		.4byte	.LASF23
+ 602 0108 02       		.byte	0x2
+ 603 0109 00       		.byte	0
+ 604 010a 03       		.uleb128 0x3
+ 605 010b 50000000 		.4byte	.LASF24
+ 606 010f 05       		.byte	0x5
+ 607 0110 5F       		.byte	0x5f
+ 608 0111 E7000000 		.4byte	0xe7
+ 609 0115 0A       		.uleb128 0xa
+ 610 0116 52030000 		.4byte	.LASF25
+ 611 011a 01       		.byte	0x1
+ 612 011b 54       		.byte	0x54
+ 613 011c 00000000 		.4byte	.LFB120
+ 614 0120 1C000000 		.4byte	.LFE120-.LFB120
+ 615 0124 01       		.uleb128 0x1
+ 616 0125 9C       		.byte	0x9c
+ 617 0126 34010000 		.4byte	0x134
+ 618 012a 0B       		.uleb128 0xb
+ 619 012b 06000000 		.4byte	.LVL0
+ 620 012f 62040000 		.4byte	0x462
+ 621 0133 00       		.byte	0
+ 622 0134 0A       		.uleb128 0xa
+ 623 0135 1F020000 		.4byte	.LASF26
+ 624 0139 01       		.byte	0x1
+ 625 013a 63       		.byte	0x63
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 16
+
+
+ 626 013b 00000000 		.4byte	.LFB121
+ 627 013f 2C000000 		.4byte	.LFE121-.LFB121
+ 628 0143 01       		.uleb128 0x1
+ 629 0144 9C       		.byte	0x9c
+ 630 0145 5C010000 		.4byte	0x15c
+ 631 0149 0B       		.uleb128 0xb
+ 632 014a 06000000 		.4byte	.LVL1
+ 633 014e 6D040000 		.4byte	0x46d
+ 634 0152 0B       		.uleb128 0xb
+ 635 0153 0A000000 		.4byte	.LVL2
+ 636 0157 78040000 		.4byte	0x478
+ 637 015b 00       		.byte	0
+ 638 015c 0C       		.uleb128 0xc
+ 639 015d 27000000 		.4byte	.LASF57
+ 640 0161 01       		.byte	0x1
+ 641 0162 44       		.byte	0x44
+ 642 0163 00000000 		.4byte	.LFB119
+ 643 0167 30000000 		.4byte	.LFE119-.LFB119
+ 644 016b 01       		.uleb128 0x1
+ 645 016c 9C       		.byte	0x9c
+ 646 016d CE010000 		.4byte	0x1ce
+ 647 0171 0B       		.uleb128 0xb
+ 648 0172 06000000 		.4byte	.LVL3
+ 649 0176 83040000 		.4byte	0x483
+ 650 017a 0D       		.uleb128 0xd
+ 651 017b 0C000000 		.4byte	.LVL4
+ 652 017f 8E040000 		.4byte	0x48e
+ 653 0183 91010000 		.4byte	0x191
+ 654 0187 0E       		.uleb128 0xe
+ 655 0188 01       		.uleb128 0x1
+ 656 0189 50       		.byte	0x50
+ 657 018a 05       		.uleb128 0x5
+ 658 018b 03       		.byte	0x3
+ 659 018c 00000000 		.4byte	.LC0
+ 660 0190 00       		.byte	0
+ 661 0191 0B       		.uleb128 0xb
+ 662 0192 10000000 		.4byte	.LVL5
+ 663 0196 99040000 		.4byte	0x499
+ 664 019a 0B       		.uleb128 0xb
+ 665 019b 14000000 		.4byte	.LVL6
+ 666 019f A4040000 		.4byte	0x4a4
+ 667 01a3 0D       		.uleb128 0xd
+ 668 01a4 1A000000 		.4byte	.LVL7
+ 669 01a8 AF040000 		.4byte	0x4af
+ 670 01ac BA010000 		.4byte	0x1ba
+ 671 01b0 0E       		.uleb128 0xe
+ 672 01b1 01       		.uleb128 0x1
+ 673 01b2 50       		.byte	0x50
+ 674 01b3 05       		.uleb128 0x5
+ 675 01b4 03       		.byte	0x3
+ 676 01b5 00000000 		.4byte	isr_PushButton_Enable_Interrupt
+ 677 01b9 00       		.byte	0
+ 678 01ba 0F       		.uleb128 0xf
+ 679 01bb 20000000 		.4byte	.LVL8
+ 680 01bf BA040000 		.4byte	0x4ba
+ 681 01c3 0E       		.uleb128 0xe
+ 682 01c4 01       		.uleb128 0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 17
+
+
+ 683 01c5 50       		.byte	0x50
+ 684 01c6 05       		.uleb128 0x5
+ 685 01c7 03       		.byte	0x3
+ 686 01c8 00000000 		.4byte	isr_UART
+ 687 01cc 00       		.byte	0
+ 688 01cd 00       		.byte	0
+ 689 01ce 0A       		.uleb128 0xa
+ 690 01cf F0030000 		.4byte	.LASF27
+ 691 01d3 01       		.byte	0x1
+ 692 01d4 75       		.byte	0x75
+ 693 01d5 00000000 		.4byte	.LFB122
+ 694 01d9 4C010000 		.4byte	.LFE122-.LFB122
+ 695 01dd 01       		.uleb128 0x1
+ 696 01de 9C       		.byte	0x9c
+ 697 01df C9030000 		.4byte	0x3c9
+ 698 01e3 10       		.uleb128 0x10
+ 699 01e4 AF020000 		.4byte	.LASF58
+ 700 01e8 01       		.byte	0x1
+ 701 01e9 75       		.byte	0x75
+ 702 01ea E1000000 		.4byte	0xe1
+ 703 01ee 00000000 		.4byte	.LLST0
+ 704 01f2 11       		.uleb128 0x11
+ 705 01f3 54000000 		.4byte	.LBB2
+ 706 01f7 1C000000 		.4byte	.LBE2-.LBB2
+ 707 01fb 2B020000 		.4byte	0x22b
+ 708 01ff 12       		.uleb128 0x12
+ 709 0200 69647800 		.ascii	"idx\000"
+ 710 0204 01       		.byte	0x1
+ 711 0205 90       		.byte	0x90
+ 712 0206 97000000 		.4byte	0x97
+ 713 020a 7C000000 		.4byte	.LLST1
+ 714 020e 0D       		.uleb128 0xd
+ 715 020f 5E000000 		.4byte	.LVL20
+ 716 0213 C5040000 		.4byte	0x4c5
+ 717 0217 21020000 		.4byte	0x221
+ 718 021b 0E       		.uleb128 0xe
+ 719 021c 01       		.uleb128 0x1
+ 720 021d 50       		.byte	0x50
+ 721 021e 01       		.uleb128 0x1
+ 722 021f 30       		.byte	0x30
+ 723 0220 00       		.byte	0
+ 724 0221 0B       		.uleb128 0xb
+ 725 0222 62000000 		.4byte	.LVL21
+ 726 0226 D0040000 		.4byte	0x4d0
+ 727 022a 00       		.byte	0
+ 728 022b 11       		.uleb128 0x11
+ 729 022c 9C000000 		.4byte	.LBB3
+ 730 0230 20000000 		.4byte	.LBE3-.LBB3
+ 731 0234 5A020000 		.4byte	0x25a
+ 732 0238 12       		.uleb128 0x12
+ 733 0239 69647800 		.ascii	"idx\000"
+ 734 023d 01       		.byte	0x1
+ 735 023e AB       		.byte	0xab
+ 736 023f 97000000 		.4byte	0x97
+ 737 0243 A6000000 		.4byte	.LLST2
+ 738 0247 0B       		.uleb128 0xb
+ 739 0248 A8000000 		.4byte	.LVL31
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 18
+
+
+ 740 024c DB040000 		.4byte	0x4db
+ 741 0250 0B       		.uleb128 0xb
+ 742 0251 B2000000 		.4byte	.LVL32
+ 743 0255 DB040000 		.4byte	0x4db
+ 744 0259 00       		.byte	0
+ 745 025a 11       		.uleb128 0x11
+ 746 025b C8000000 		.4byte	.LBB4
+ 747 025f 2A000000 		.4byte	.LBE4-.LBB4
+ 748 0263 9B020000 		.4byte	0x29b
+ 749 0267 12       		.uleb128 0x12
+ 750 0268 69647800 		.ascii	"idx\000"
+ 751 026c 01       		.byte	0x1
+ 752 026d B4       		.byte	0xb4
+ 753 026e AD000000 		.4byte	0xad
+ 754 0272 D0000000 		.4byte	.LLST3
+ 755 0276 0B       		.uleb128 0xb
+ 756 0277 D8000000 		.4byte	.LVL38
+ 757 027b DB040000 		.4byte	0x4db
+ 758 027f 0B       		.uleb128 0xb
+ 759 0280 DE000000 		.4byte	.LVL39
+ 760 0284 DB040000 		.4byte	0x4db
+ 761 0288 0B       		.uleb128 0xb
+ 762 0289 E4000000 		.4byte	.LVL40
+ 763 028d DB040000 		.4byte	0x4db
+ 764 0291 0B       		.uleb128 0xb
+ 765 0292 EA000000 		.4byte	.LVL41
+ 766 0296 DB040000 		.4byte	0x4db
+ 767 029a 00       		.byte	0
+ 768 029b 0D       		.uleb128 0xd
+ 769 029c 1A000000 		.4byte	.LVL11
+ 770 02a0 E6040000 		.4byte	0x4e6
+ 771 02a4 AE020000 		.4byte	0x2ae
+ 772 02a8 0E       		.uleb128 0xe
+ 773 02a9 01       		.uleb128 0x1
+ 774 02aa 50       		.byte	0x50
+ 775 02ab 01       		.uleb128 0x1
+ 776 02ac 31       		.byte	0x31
+ 777 02ad 00       		.byte	0
+ 778 02ae 0D       		.uleb128 0xd
+ 779 02af 20000000 		.4byte	.LVL12
+ 780 02b3 F1040000 		.4byte	0x4f1
+ 781 02b7 C1020000 		.4byte	0x2c1
+ 782 02bb 0E       		.uleb128 0xe
+ 783 02bc 01       		.uleb128 0x1
+ 784 02bd 50       		.byte	0x50
+ 785 02be 01       		.uleb128 0x1
+ 786 02bf 30       		.byte	0x30
+ 787 02c0 00       		.byte	0
+ 788 02c1 0D       		.uleb128 0xd
+ 789 02c2 26000000 		.4byte	.LVL13
+ 790 02c6 FC040000 		.4byte	0x4fc
+ 791 02ca D4020000 		.4byte	0x2d4
+ 792 02ce 0E       		.uleb128 0xe
+ 793 02cf 01       		.uleb128 0x1
+ 794 02d0 50       		.byte	0x50
+ 795 02d1 01       		.uleb128 0x1
+ 796 02d2 30       		.byte	0x30
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 19
+
+
+ 797 02d3 00       		.byte	0
+ 798 02d4 0D       		.uleb128 0xd
+ 799 02d5 48000000 		.4byte	.LVL16
+ 800 02d9 E6040000 		.4byte	0x4e6
+ 801 02dd E7020000 		.4byte	0x2e7
+ 802 02e1 0E       		.uleb128 0xe
+ 803 02e2 01       		.uleb128 0x1
+ 804 02e3 50       		.byte	0x50
+ 805 02e4 01       		.uleb128 0x1
+ 806 02e5 30       		.byte	0x30
+ 807 02e6 00       		.byte	0
+ 808 02e7 0D       		.uleb128 0xd
+ 809 02e8 4E000000 		.4byte	.LVL17
+ 810 02ec F1040000 		.4byte	0x4f1
+ 811 02f0 FA020000 		.4byte	0x2fa
+ 812 02f4 0E       		.uleb128 0xe
+ 813 02f5 01       		.uleb128 0x1
+ 814 02f6 50       		.byte	0x50
+ 815 02f7 01       		.uleb128 0x1
+ 816 02f8 31       		.byte	0x31
+ 817 02f9 00       		.byte	0
+ 818 02fa 0D       		.uleb128 0xd
+ 819 02fb 54000000 		.4byte	.LVL18
+ 820 02ff FC040000 		.4byte	0x4fc
+ 821 0303 0D030000 		.4byte	0x30d
+ 822 0307 0E       		.uleb128 0xe
+ 823 0308 01       		.uleb128 0x1
+ 824 0309 50       		.byte	0x50
+ 825 030a 01       		.uleb128 0x1
+ 826 030b 30       		.byte	0x30
+ 827 030c 00       		.byte	0
+ 828 030d 0D       		.uleb128 0xd
+ 829 030e 7E000000 		.4byte	.LVL24
+ 830 0312 07050000 		.4byte	0x507
+ 831 0316 20030000 		.4byte	0x320
+ 832 031a 0E       		.uleb128 0xe
+ 833 031b 01       		.uleb128 0x1
+ 834 031c 50       		.byte	0x50
+ 835 031d 01       		.uleb128 0x1
+ 836 031e 31       		.byte	0x31
+ 837 031f 00       		.byte	0
+ 838 0320 0D       		.uleb128 0xd
+ 839 0321 90000000 		.4byte	.LVL27
+ 840 0325 F1040000 		.4byte	0x4f1
+ 841 0329 33030000 		.4byte	0x333
+ 842 032d 0E       		.uleb128 0xe
+ 843 032e 01       		.uleb128 0x1
+ 844 032f 50       		.byte	0x50
+ 845 0330 01       		.uleb128 0x1
+ 846 0331 30       		.byte	0x30
+ 847 0332 00       		.byte	0
+ 848 0333 0D       		.uleb128 0xd
+ 849 0334 96000000 		.4byte	.LVL28
+ 850 0338 FC040000 		.4byte	0x4fc
+ 851 033c 46030000 		.4byte	0x346
+ 852 0340 0E       		.uleb128 0xe
+ 853 0341 01       		.uleb128 0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 20
+
+
+ 854 0342 50       		.byte	0x50
+ 855 0343 01       		.uleb128 0x1
+ 856 0344 31       		.byte	0x31
+ 857 0345 00       		.byte	0
+ 858 0346 0D       		.uleb128 0xd
+ 859 0347 9C000000 		.4byte	.LVL29
+ 860 034b E6040000 		.4byte	0x4e6
+ 861 034f 59030000 		.4byte	0x359
+ 862 0353 0E       		.uleb128 0xe
+ 863 0354 01       		.uleb128 0x1
+ 864 0355 50       		.byte	0x50
+ 865 0356 01       		.uleb128 0x1
+ 866 0357 30       		.byte	0x30
+ 867 0358 00       		.byte	0
+ 868 0359 0D       		.uleb128 0xd
+ 869 035a C8000000 		.4byte	.LVL35
+ 870 035e 12050000 		.4byte	0x512
+ 871 0362 7D030000 		.4byte	0x37d
+ 872 0366 0E       		.uleb128 0xe
+ 873 0367 01       		.uleb128 0x1
+ 874 0368 50       		.byte	0x50
+ 875 0369 02       		.uleb128 0x2
+ 876 036a 75       		.byte	0x75
+ 877 036b 00       		.sleb128 0
+ 878 036c 0E       		.uleb128 0xe
+ 879 036d 01       		.uleb128 0x1
+ 880 036e 51       		.byte	0x51
+ 881 036f 05       		.uleb128 0x5
+ 882 0370 03       		.byte	0x3
+ 883 0371 08000000 		.4byte	.LANCHOR0+8
+ 884 0375 0E       		.uleb128 0xe
+ 885 0376 01       		.uleb128 0x1
+ 886 0377 52       		.byte	0x52
+ 887 0378 03       		.uleb128 0x3
+ 888 0379 0A       		.byte	0xa
+ 889 037a 0004     		.2byte	0x400
+ 890 037c 00       		.byte	0
+ 891 037d 0D       		.uleb128 0xd
+ 892 037e 0A010000 		.4byte	.LVL43
+ 893 0382 07050000 		.4byte	0x507
+ 894 0386 90030000 		.4byte	0x390
+ 895 038a 0E       		.uleb128 0xe
+ 896 038b 01       		.uleb128 0x1
+ 897 038c 50       		.byte	0x50
+ 898 038d 01       		.uleb128 0x1
+ 899 038e 30       		.byte	0x30
+ 900 038f 00       		.byte	0
+ 901 0390 0D       		.uleb128 0xd
+ 902 0391 36010000 		.4byte	.LVL47
+ 903 0395 E6040000 		.4byte	0x4e6
+ 904 0399 A4030000 		.4byte	0x3a4
+ 905 039d 0E       		.uleb128 0xe
+ 906 039e 01       		.uleb128 0x1
+ 907 039f 50       		.byte	0x50
+ 908 03a0 02       		.uleb128 0x2
+ 909 03a1 74       		.byte	0x74
+ 910 03a2 00       		.sleb128 0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 21
+
+
+ 911 03a3 00       		.byte	0
+ 912 03a4 0D       		.uleb128 0xd
+ 913 03a5 3C010000 		.4byte	.LVL48
+ 914 03a9 F1040000 		.4byte	0x4f1
+ 915 03ad B8030000 		.4byte	0x3b8
+ 916 03b1 0E       		.uleb128 0xe
+ 917 03b2 01       		.uleb128 0x1
+ 918 03b3 50       		.byte	0x50
+ 919 03b4 02       		.uleb128 0x2
+ 920 03b5 74       		.byte	0x74
+ 921 03b6 00       		.sleb128 0
+ 922 03b7 00       		.byte	0
+ 923 03b8 0F       		.uleb128 0xf
+ 924 03b9 42010000 		.4byte	.LVL49
+ 925 03bd FC040000 		.4byte	0x4fc
+ 926 03c1 0E       		.uleb128 0xe
+ 927 03c2 01       		.uleb128 0x1
+ 928 03c3 50       		.byte	0x50
+ 929 03c4 02       		.uleb128 0x2
+ 930 03c5 74       		.byte	0x74
+ 931 03c6 00       		.sleb128 0
+ 932 03c7 00       		.byte	0
+ 933 03c8 00       		.byte	0
+ 934 03c9 13       		.uleb128 0x13
+ 935 03ca F0010000 		.4byte	.LASF28
+ 936 03ce 06       		.byte	0x6
+ 937 03cf 1207     		.2byte	0x712
+ 938 03d1 D5030000 		.4byte	0x3d5
+ 939 03d5 06       		.uleb128 0x6
+ 940 03d6 A2000000 		.4byte	0xa2
+ 941 03da 14       		.uleb128 0x14
+ 942 03db 39030000 		.4byte	.LASF29
+ 943 03df 01       		.byte	0x1
+ 944 03e0 31       		.byte	0x31
+ 945 03e1 DC000000 		.4byte	0xdc
+ 946 03e5 05       		.uleb128 0x5
+ 947 03e6 03       		.byte	0x3
+ 948 03e7 00000000 		.4byte	push_button_toggle
+ 949 03eb 14       		.uleb128 0x14
+ 950 03ec 11010000 		.4byte	.LASF30
+ 951 03f0 01       		.byte	0x1
+ 952 03f1 33       		.byte	0x33
+ 953 03f2 8C000000 		.4byte	0x8c
+ 954 03f6 05       		.uleb128 0x5
+ 955 03f7 03       		.byte	0x3
+ 956 03f8 00000000 		.4byte	sChRx
+ 957 03fc 14       		.uleb128 0x14
+ 958 03fd FD010000 		.4byte	.LASF31
+ 959 0401 01       		.byte	0x1
+ 960 0402 34       		.byte	0x34
+ 961 0403 8C000000 		.4byte	0x8c
+ 962 0407 05       		.uleb128 0x5
+ 963 0408 03       		.byte	0x3
+ 964 0409 00000000 		.4byte	oChRx
+ 965 040d 14       		.uleb128 0x14
+ 966 040e 8B000000 		.4byte	.LASF32
+ 967 0412 01       		.byte	0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 22
+
+
+ 968 0413 35       		.byte	0x35
+ 969 0414 C7000000 		.4byte	0xc7
+ 970 0418 05       		.uleb128 0x5
+ 971 0419 03       		.byte	0x3
+ 972 041a 00000000 		.4byte	rxDataCh
+ 973 041e 14       		.uleb128 0x14
+ 974 041f 4C030000 		.4byte	.LASF33
+ 975 0423 01       		.byte	0x1
+ 976 0424 37       		.byte	0x37
+ 977 0425 8C000000 		.4byte	0x8c
+ 978 0429 05       		.uleb128 0x5
+ 979 042a 03       		.byte	0x3
+ 980 042b 00000000 		.4byte	count
+ 981 042f 14       		.uleb128 0x14
+ 982 0430 EA010000 		.4byte	.LASF34
+ 983 0434 01       		.byte	0x1
+ 984 0435 3B       		.byte	0x3b
+ 985 0436 0A010000 		.4byte	0x10a
+ 986 043a 05       		.uleb128 0x5
+ 987 043b 03       		.byte	0x3
+ 988 043c 00000000 		.4byte	State
+ 989 0440 15       		.uleb128 0x15
+ 990 0441 AD000000 		.4byte	0xad
+ 991 0445 51040000 		.4byte	0x451
+ 992 0449 16       		.uleb128 0x16
+ 993 044a D5000000 		.4byte	0xd5
+ 994 044e FF07     		.2byte	0x7ff
+ 995 0450 00       		.byte	0
+ 996 0451 14       		.uleb128 0x14
+ 997 0452 95030000 		.4byte	.LASF35
+ 998 0456 01       		.byte	0x1
+ 999 0457 3D       		.byte	0x3d
+ 1000 0458 40040000 		.4byte	0x440
+ 1001 045c 05       		.uleb128 0x5
+ 1002 045d 03       		.byte	0x3
+ 1003 045e 00000000 		.4byte	FFT_SamplesArray
+ 1004 0462 17       		.uleb128 0x17
+ 1005 0463 19030000 		.4byte	.LASF36
+ 1006 0467 19030000 		.4byte	.LASF36
+ 1007 046b 07       		.byte	0x7
+ 1008 046c 2B       		.byte	0x2b
+ 1009 046d 17       		.uleb128 0x17
+ 1010 046e B9000000 		.4byte	.LASF37
+ 1011 0472 B9000000 		.4byte	.LASF37
+ 1012 0476 08       		.byte	0x8
+ 1013 0477 28       		.byte	0x28
+ 1014 0478 17       		.uleb128 0x17
+ 1015 0479 A8000000 		.4byte	.LASF38
+ 1016 047d A8000000 		.4byte	.LASF38
+ 1017 0481 09       		.byte	0x9
+ 1018 0482 71       		.byte	0x71
+ 1019 0483 17       		.uleb128 0x17
+ 1020 0484 7C000000 		.4byte	.LASF39
+ 1021 0488 7C000000 		.4byte	.LASF39
+ 1022 048c 09       		.byte	0x9
+ 1023 048d 54       		.byte	0x54
+ 1024 048e 17       		.uleb128 0x17
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 23
+
+
+ 1025 048f E1000000 		.4byte	.LASF40
+ 1026 0493 E1000000 		.4byte	.LASF40
+ 1027 0497 09       		.byte	0x9
+ 1028 0498 8B       		.byte	0x8b
+ 1029 0499 17       		.uleb128 0x17
+ 1030 049a 7B030000 		.4byte	.LASF41
+ 1031 049e 7B030000 		.4byte	.LASF41
+ 1032 04a2 0A       		.byte	0xa
+ 1033 04a3 3A       		.byte	0x3a
+ 1034 04a4 17       		.uleb128 0x17
+ 1035 04a5 BD020000 		.4byte	.LASF42
+ 1036 04a9 BD020000 		.4byte	.LASF42
+ 1037 04ad 0A       		.byte	0xa
+ 1038 04ae 3D       		.byte	0x3d
+ 1039 04af 17       		.uleb128 0x17
+ 1040 04b0 F4020000 		.4byte	.LASF43
+ 1041 04b4 F4020000 		.4byte	.LASF43
+ 1042 04b8 0B       		.byte	0xb
+ 1043 04b9 18       		.byte	0x18
+ 1044 04ba 17       		.uleb128 0x17
+ 1045 04bb CC030000 		.4byte	.LASF44
+ 1046 04bf CC030000 		.4byte	.LASF44
+ 1047 04c3 08       		.byte	0x8
+ 1048 04c4 18       		.byte	0x18
+ 1049 04c5 17       		.uleb128 0x17
+ 1050 04c6 61000000 		.4byte	.LASF45
+ 1051 04ca 61000000 		.4byte	.LASF45
+ 1052 04ce 0A       		.byte	0xa
+ 1053 04cf 3F       		.byte	0x3f
+ 1054 04d0 17       		.uleb128 0x17
+ 1055 04d1 FA000000 		.4byte	.LASF46
+ 1056 04d5 FA000000 		.4byte	.LASF46
+ 1057 04d9 0A       		.byte	0xa
+ 1058 04da 42       		.byte	0x42
+ 1059 04db 17       		.uleb128 0x17
+ 1060 04dc 16000000 		.4byte	.LASF47
+ 1061 04e0 16000000 		.4byte	.LASF47
+ 1062 04e4 09       		.byte	0x9
+ 1063 04e5 8A       		.byte	0x8a
+ 1064 04e6 17       		.uleb128 0x17
+ 1065 04e7 3F000000 		.4byte	.LASF48
+ 1066 04eb 3F000000 		.4byte	.LASF48
+ 1067 04ef 0C       		.byte	0xc
+ 1068 04f0 26       		.byte	0x26
+ 1069 04f1 17       		.uleb128 0x17
+ 1070 04f2 D4010000 		.4byte	.LASF49
+ 1071 04f6 D4010000 		.4byte	.LASF49
+ 1072 04fa 0D       		.byte	0xd
+ 1073 04fb 26       		.byte	0x26
+ 1074 04fc 17       		.uleb128 0x17
+ 1075 04fd E6020000 		.4byte	.LASF50
+ 1076 0501 E6020000 		.4byte	.LASF50
+ 1077 0505 0E       		.byte	0xe
+ 1078 0506 26       		.byte	0x26
+ 1079 0507 17       		.uleb128 0x17
+ 1080 0508 5C020000 		.4byte	.LASF51
+ 1081 050c 5C020000 		.4byte	.LASF51
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 24
+
+
+ 1082 0510 0F       		.byte	0xf
+ 1083 0511 26       		.byte	0x26
+ 1084 0512 17       		.uleb128 0x17
+ 1085 0513 28020000 		.4byte	.LASF52
+ 1086 0517 28020000 		.4byte	.LASF52
+ 1087 051b 10       		.byte	0x10
+ 1088 051c 26       		.byte	0x26
+ 1089 051d 00       		.byte	0
+ 1090              		.section	.debug_abbrev,"",%progbits
+ 1091              	.Ldebug_abbrev0:
+ 1092 0000 01       		.uleb128 0x1
+ 1093 0001 11       		.uleb128 0x11
+ 1094 0002 01       		.byte	0x1
+ 1095 0003 25       		.uleb128 0x25
+ 1096 0004 0E       		.uleb128 0xe
+ 1097 0005 13       		.uleb128 0x13
+ 1098 0006 0B       		.uleb128 0xb
+ 1099 0007 03       		.uleb128 0x3
+ 1100 0008 0E       		.uleb128 0xe
+ 1101 0009 1B       		.uleb128 0x1b
+ 1102 000a 0E       		.uleb128 0xe
+ 1103 000b 55       		.uleb128 0x55
+ 1104 000c 17       		.uleb128 0x17
+ 1105 000d 11       		.uleb128 0x11
+ 1106 000e 01       		.uleb128 0x1
+ 1107 000f 10       		.uleb128 0x10
+ 1108 0010 17       		.uleb128 0x17
+ 1109 0011 00       		.byte	0
+ 1110 0012 00       		.byte	0
+ 1111 0013 02       		.uleb128 0x2
+ 1112 0014 24       		.uleb128 0x24
+ 1113 0015 00       		.byte	0
+ 1114 0016 0B       		.uleb128 0xb
+ 1115 0017 0B       		.uleb128 0xb
+ 1116 0018 3E       		.uleb128 0x3e
+ 1117 0019 0B       		.uleb128 0xb
+ 1118 001a 03       		.uleb128 0x3
+ 1119 001b 0E       		.uleb128 0xe
+ 1120 001c 00       		.byte	0
+ 1121 001d 00       		.byte	0
+ 1122 001e 03       		.uleb128 0x3
+ 1123 001f 16       		.uleb128 0x16
+ 1124 0020 00       		.byte	0
+ 1125 0021 03       		.uleb128 0x3
+ 1126 0022 0E       		.uleb128 0xe
+ 1127 0023 3A       		.uleb128 0x3a
+ 1128 0024 0B       		.uleb128 0xb
+ 1129 0025 3B       		.uleb128 0x3b
+ 1130 0026 0B       		.uleb128 0xb
+ 1131 0027 49       		.uleb128 0x49
+ 1132 0028 13       		.uleb128 0x13
+ 1133 0029 00       		.byte	0
+ 1134 002a 00       		.byte	0
+ 1135 002b 04       		.uleb128 0x4
+ 1136 002c 24       		.uleb128 0x24
+ 1137 002d 00       		.byte	0
+ 1138 002e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 25
+
+
+ 1139 002f 0B       		.uleb128 0xb
+ 1140 0030 3E       		.uleb128 0x3e
+ 1141 0031 0B       		.uleb128 0xb
+ 1142 0032 03       		.uleb128 0x3
+ 1143 0033 08       		.uleb128 0x8
+ 1144 0034 00       		.byte	0
+ 1145 0035 00       		.byte	0
+ 1146 0036 05       		.uleb128 0x5
+ 1147 0037 16       		.uleb128 0x16
+ 1148 0038 00       		.byte	0
+ 1149 0039 03       		.uleb128 0x3
+ 1150 003a 0E       		.uleb128 0xe
+ 1151 003b 3A       		.uleb128 0x3a
+ 1152 003c 0B       		.uleb128 0xb
+ 1153 003d 3B       		.uleb128 0x3b
+ 1154 003e 05       		.uleb128 0x5
+ 1155 003f 49       		.uleb128 0x49
+ 1156 0040 13       		.uleb128 0x13
+ 1157 0041 00       		.byte	0
+ 1158 0042 00       		.byte	0
+ 1159 0043 06       		.uleb128 0x6
+ 1160 0044 35       		.uleb128 0x35
+ 1161 0045 00       		.byte	0
+ 1162 0046 49       		.uleb128 0x49
+ 1163 0047 13       		.uleb128 0x13
+ 1164 0048 00       		.byte	0
+ 1165 0049 00       		.byte	0
+ 1166 004a 07       		.uleb128 0x7
+ 1167 004b 0F       		.uleb128 0xf
+ 1168 004c 00       		.byte	0
+ 1169 004d 0B       		.uleb128 0xb
+ 1170 004e 0B       		.uleb128 0xb
+ 1171 004f 49       		.uleb128 0x49
+ 1172 0050 13       		.uleb128 0x13
+ 1173 0051 00       		.byte	0
+ 1174 0052 00       		.byte	0
+ 1175 0053 08       		.uleb128 0x8
+ 1176 0054 04       		.uleb128 0x4
+ 1177 0055 01       		.byte	0x1
+ 1178 0056 03       		.uleb128 0x3
+ 1179 0057 0E       		.uleb128 0xe
+ 1180 0058 0B       		.uleb128 0xb
+ 1181 0059 0B       		.uleb128 0xb
+ 1182 005a 49       		.uleb128 0x49
+ 1183 005b 13       		.uleb128 0x13
+ 1184 005c 3A       		.uleb128 0x3a
+ 1185 005d 0B       		.uleb128 0xb
+ 1186 005e 3B       		.uleb128 0x3b
+ 1187 005f 0B       		.uleb128 0xb
+ 1188 0060 01       		.uleb128 0x1
+ 1189 0061 13       		.uleb128 0x13
+ 1190 0062 00       		.byte	0
+ 1191 0063 00       		.byte	0
+ 1192 0064 09       		.uleb128 0x9
+ 1193 0065 28       		.uleb128 0x28
+ 1194 0066 00       		.byte	0
+ 1195 0067 03       		.uleb128 0x3
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 26
+
+
+ 1196 0068 0E       		.uleb128 0xe
+ 1197 0069 1C       		.uleb128 0x1c
+ 1198 006a 0B       		.uleb128 0xb
+ 1199 006b 00       		.byte	0
+ 1200 006c 00       		.byte	0
+ 1201 006d 0A       		.uleb128 0xa
+ 1202 006e 2E       		.uleb128 0x2e
+ 1203 006f 01       		.byte	0x1
+ 1204 0070 3F       		.uleb128 0x3f
+ 1205 0071 19       		.uleb128 0x19
+ 1206 0072 03       		.uleb128 0x3
+ 1207 0073 0E       		.uleb128 0xe
+ 1208 0074 3A       		.uleb128 0x3a
+ 1209 0075 0B       		.uleb128 0xb
+ 1210 0076 3B       		.uleb128 0x3b
+ 1211 0077 0B       		.uleb128 0xb
+ 1212 0078 27       		.uleb128 0x27
+ 1213 0079 19       		.uleb128 0x19
+ 1214 007a 11       		.uleb128 0x11
+ 1215 007b 01       		.uleb128 0x1
+ 1216 007c 12       		.uleb128 0x12
+ 1217 007d 06       		.uleb128 0x6
+ 1218 007e 40       		.uleb128 0x40
+ 1219 007f 18       		.uleb128 0x18
+ 1220 0080 9742     		.uleb128 0x2117
+ 1221 0082 19       		.uleb128 0x19
+ 1222 0083 01       		.uleb128 0x1
+ 1223 0084 13       		.uleb128 0x13
+ 1224 0085 00       		.byte	0
+ 1225 0086 00       		.byte	0
+ 1226 0087 0B       		.uleb128 0xb
+ 1227 0088 898201   		.uleb128 0x4109
+ 1228 008b 00       		.byte	0
+ 1229 008c 11       		.uleb128 0x11
+ 1230 008d 01       		.uleb128 0x1
+ 1231 008e 31       		.uleb128 0x31
+ 1232 008f 13       		.uleb128 0x13
+ 1233 0090 00       		.byte	0
+ 1234 0091 00       		.byte	0
+ 1235 0092 0C       		.uleb128 0xc
+ 1236 0093 2E       		.uleb128 0x2e
+ 1237 0094 01       		.byte	0x1
+ 1238 0095 3F       		.uleb128 0x3f
+ 1239 0096 19       		.uleb128 0x19
+ 1240 0097 03       		.uleb128 0x3
+ 1241 0098 0E       		.uleb128 0xe
+ 1242 0099 3A       		.uleb128 0x3a
+ 1243 009a 0B       		.uleb128 0xb
+ 1244 009b 3B       		.uleb128 0x3b
+ 1245 009c 0B       		.uleb128 0xb
+ 1246 009d 11       		.uleb128 0x11
+ 1247 009e 01       		.uleb128 0x1
+ 1248 009f 12       		.uleb128 0x12
+ 1249 00a0 06       		.uleb128 0x6
+ 1250 00a1 40       		.uleb128 0x40
+ 1251 00a2 18       		.uleb128 0x18
+ 1252 00a3 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 27
+
+
+ 1253 00a5 19       		.uleb128 0x19
+ 1254 00a6 01       		.uleb128 0x1
+ 1255 00a7 13       		.uleb128 0x13
+ 1256 00a8 00       		.byte	0
+ 1257 00a9 00       		.byte	0
+ 1258 00aa 0D       		.uleb128 0xd
+ 1259 00ab 898201   		.uleb128 0x4109
+ 1260 00ae 01       		.byte	0x1
+ 1261 00af 11       		.uleb128 0x11
+ 1262 00b0 01       		.uleb128 0x1
+ 1263 00b1 31       		.uleb128 0x31
+ 1264 00b2 13       		.uleb128 0x13
+ 1265 00b3 01       		.uleb128 0x1
+ 1266 00b4 13       		.uleb128 0x13
+ 1267 00b5 00       		.byte	0
+ 1268 00b6 00       		.byte	0
+ 1269 00b7 0E       		.uleb128 0xe
+ 1270 00b8 8A8201   		.uleb128 0x410a
+ 1271 00bb 00       		.byte	0
+ 1272 00bc 02       		.uleb128 0x2
+ 1273 00bd 18       		.uleb128 0x18
+ 1274 00be 9142     		.uleb128 0x2111
+ 1275 00c0 18       		.uleb128 0x18
+ 1276 00c1 00       		.byte	0
+ 1277 00c2 00       		.byte	0
+ 1278 00c3 0F       		.uleb128 0xf
+ 1279 00c4 898201   		.uleb128 0x4109
+ 1280 00c7 01       		.byte	0x1
+ 1281 00c8 11       		.uleb128 0x11
+ 1282 00c9 01       		.uleb128 0x1
+ 1283 00ca 31       		.uleb128 0x31
+ 1284 00cb 13       		.uleb128 0x13
+ 1285 00cc 00       		.byte	0
+ 1286 00cd 00       		.byte	0
+ 1287 00ce 10       		.uleb128 0x10
+ 1288 00cf 05       		.uleb128 0x5
+ 1289 00d0 00       		.byte	0
+ 1290 00d1 03       		.uleb128 0x3
+ 1291 00d2 0E       		.uleb128 0xe
+ 1292 00d3 3A       		.uleb128 0x3a
+ 1293 00d4 0B       		.uleb128 0xb
+ 1294 00d5 3B       		.uleb128 0x3b
+ 1295 00d6 0B       		.uleb128 0xb
+ 1296 00d7 49       		.uleb128 0x49
+ 1297 00d8 13       		.uleb128 0x13
+ 1298 00d9 02       		.uleb128 0x2
+ 1299 00da 17       		.uleb128 0x17
+ 1300 00db 00       		.byte	0
+ 1301 00dc 00       		.byte	0
+ 1302 00dd 11       		.uleb128 0x11
+ 1303 00de 0B       		.uleb128 0xb
+ 1304 00df 01       		.byte	0x1
+ 1305 00e0 11       		.uleb128 0x11
+ 1306 00e1 01       		.uleb128 0x1
+ 1307 00e2 12       		.uleb128 0x12
+ 1308 00e3 06       		.uleb128 0x6
+ 1309 00e4 01       		.uleb128 0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 28
+
+
+ 1310 00e5 13       		.uleb128 0x13
+ 1311 00e6 00       		.byte	0
+ 1312 00e7 00       		.byte	0
+ 1313 00e8 12       		.uleb128 0x12
+ 1314 00e9 34       		.uleb128 0x34
+ 1315 00ea 00       		.byte	0
+ 1316 00eb 03       		.uleb128 0x3
+ 1317 00ec 08       		.uleb128 0x8
+ 1318 00ed 3A       		.uleb128 0x3a
+ 1319 00ee 0B       		.uleb128 0xb
+ 1320 00ef 3B       		.uleb128 0x3b
+ 1321 00f0 0B       		.uleb128 0xb
+ 1322 00f1 49       		.uleb128 0x49
+ 1323 00f2 13       		.uleb128 0x13
+ 1324 00f3 02       		.uleb128 0x2
+ 1325 00f4 17       		.uleb128 0x17
+ 1326 00f5 00       		.byte	0
+ 1327 00f6 00       		.byte	0
+ 1328 00f7 13       		.uleb128 0x13
+ 1329 00f8 34       		.uleb128 0x34
+ 1330 00f9 00       		.byte	0
+ 1331 00fa 03       		.uleb128 0x3
+ 1332 00fb 0E       		.uleb128 0xe
+ 1333 00fc 3A       		.uleb128 0x3a
+ 1334 00fd 0B       		.uleb128 0xb
+ 1335 00fe 3B       		.uleb128 0x3b
+ 1336 00ff 05       		.uleb128 0x5
+ 1337 0100 49       		.uleb128 0x49
+ 1338 0101 13       		.uleb128 0x13
+ 1339 0102 3F       		.uleb128 0x3f
+ 1340 0103 19       		.uleb128 0x19
+ 1341 0104 3C       		.uleb128 0x3c
+ 1342 0105 19       		.uleb128 0x19
+ 1343 0106 00       		.byte	0
+ 1344 0107 00       		.byte	0
+ 1345 0108 14       		.uleb128 0x14
+ 1346 0109 34       		.uleb128 0x34
+ 1347 010a 00       		.byte	0
+ 1348 010b 03       		.uleb128 0x3
+ 1349 010c 0E       		.uleb128 0xe
+ 1350 010d 3A       		.uleb128 0x3a
+ 1351 010e 0B       		.uleb128 0xb
+ 1352 010f 3B       		.uleb128 0x3b
+ 1353 0110 0B       		.uleb128 0xb
+ 1354 0111 49       		.uleb128 0x49
+ 1355 0112 13       		.uleb128 0x13
+ 1356 0113 3F       		.uleb128 0x3f
+ 1357 0114 19       		.uleb128 0x19
+ 1358 0115 02       		.uleb128 0x2
+ 1359 0116 18       		.uleb128 0x18
+ 1360 0117 00       		.byte	0
+ 1361 0118 00       		.byte	0
+ 1362 0119 15       		.uleb128 0x15
+ 1363 011a 01       		.uleb128 0x1
+ 1364 011b 01       		.byte	0x1
+ 1365 011c 49       		.uleb128 0x49
+ 1366 011d 13       		.uleb128 0x13
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 29
+
+
+ 1367 011e 01       		.uleb128 0x1
+ 1368 011f 13       		.uleb128 0x13
+ 1369 0120 00       		.byte	0
+ 1370 0121 00       		.byte	0
+ 1371 0122 16       		.uleb128 0x16
+ 1372 0123 21       		.uleb128 0x21
+ 1373 0124 00       		.byte	0
+ 1374 0125 49       		.uleb128 0x49
+ 1375 0126 13       		.uleb128 0x13
+ 1376 0127 2F       		.uleb128 0x2f
+ 1377 0128 05       		.uleb128 0x5
+ 1378 0129 00       		.byte	0
+ 1379 012a 00       		.byte	0
+ 1380 012b 17       		.uleb128 0x17
+ 1381 012c 2E       		.uleb128 0x2e
+ 1382 012d 00       		.byte	0
+ 1383 012e 3F       		.uleb128 0x3f
+ 1384 012f 19       		.uleb128 0x19
+ 1385 0130 3C       		.uleb128 0x3c
+ 1386 0131 19       		.uleb128 0x19
+ 1387 0132 6E       		.uleb128 0x6e
+ 1388 0133 0E       		.uleb128 0xe
+ 1389 0134 03       		.uleb128 0x3
+ 1390 0135 0E       		.uleb128 0xe
+ 1391 0136 3A       		.uleb128 0x3a
+ 1392 0137 0B       		.uleb128 0xb
+ 1393 0138 3B       		.uleb128 0x3b
+ 1394 0139 0B       		.uleb128 0xb
+ 1395 013a 00       		.byte	0
+ 1396 013b 00       		.byte	0
+ 1397 013c 00       		.byte	0
+ 1398              		.section	.debug_loc,"",%progbits
+ 1399              	.Ldebug_loc0:
+ 1400              	.LLST0:
+ 1401 0000 00000000 		.4byte	.LVL9
+ 1402 0004 16000000 		.4byte	.LVL10
+ 1403 0008 0100     		.2byte	0x1
+ 1404 000a 50       		.byte	0x50
+ 1405 000b 16000000 		.4byte	.LVL10
+ 1406 000f 42000000 		.4byte	.LVL14
+ 1407 0013 0100     		.2byte	0x1
+ 1408 0015 55       		.byte	0x55
+ 1409 0016 42000000 		.4byte	.LVL14
+ 1410 001a 44000000 		.4byte	.LVL15
+ 1411 001e 0100     		.2byte	0x1
+ 1412 0020 50       		.byte	0x50
+ 1413 0021 44000000 		.4byte	.LVL15
+ 1414 0025 8A000000 		.4byte	.LVL25
+ 1415 0029 0100     		.2byte	0x1
+ 1416 002b 55       		.byte	0x55
+ 1417 002c 8A000000 		.4byte	.LVL25
+ 1418 0030 8C000000 		.4byte	.LVL26
+ 1419 0034 0100     		.2byte	0x1
+ 1420 0036 50       		.byte	0x50
+ 1421 0037 8C000000 		.4byte	.LVL26
+ 1422 003b CA000000 		.4byte	.LVL36
+ 1423 003f 0100     		.2byte	0x1
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 30
+
+
+ 1424 0041 55       		.byte	0x55
+ 1425 0042 CA000000 		.4byte	.LVL36
+ 1426 0046 2A010000 		.4byte	.LVL45
+ 1427 004a 0400     		.2byte	0x4
+ 1428 004c F3       		.byte	0xf3
+ 1429 004d 01       		.uleb128 0x1
+ 1430 004e 50       		.byte	0x50
+ 1431 004f 9F       		.byte	0x9f
+ 1432 0050 2A010000 		.4byte	.LVL45
+ 1433 0054 32010000 		.4byte	.LVL46
+ 1434 0058 0100     		.2byte	0x1
+ 1435 005a 50       		.byte	0x50
+ 1436 005b 32010000 		.4byte	.LVL46
+ 1437 005f 42010000 		.4byte	.LVL49
+ 1438 0063 0100     		.2byte	0x1
+ 1439 0065 55       		.byte	0x55
+ 1440 0066 42010000 		.4byte	.LVL49
+ 1441 006a 4C010000 		.4byte	.LFE122
+ 1442 006e 0400     		.2byte	0x4
+ 1443 0070 F3       		.byte	0xf3
+ 1444 0071 01       		.uleb128 0x1
+ 1445 0072 50       		.byte	0x50
+ 1446 0073 9F       		.byte	0x9f
+ 1447 0074 00000000 		.4byte	0
+ 1448 0078 00000000 		.4byte	0
+ 1449              	.LLST1:
+ 1450 007c 54000000 		.4byte	.LVL18
+ 1451 0080 58000000 		.4byte	.LVL19
+ 1452 0084 0200     		.2byte	0x2
+ 1453 0086 30       		.byte	0x30
+ 1454 0087 9F       		.byte	0x9f
+ 1455 0088 58000000 		.4byte	.LVL19
+ 1456 008c 68000000 		.4byte	.LVL22
+ 1457 0090 0100     		.2byte	0x1
+ 1458 0092 54       		.byte	0x54
+ 1459 0093 6A000000 		.4byte	.LVL23
+ 1460 0097 8A000000 		.4byte	.LVL25
+ 1461 009b 0100     		.2byte	0x1
+ 1462 009d 54       		.byte	0x54
+ 1463 009e 00000000 		.4byte	0
+ 1464 00a2 00000000 		.4byte	0
+ 1465              	.LLST2:
+ 1466 00a6 9C000000 		.4byte	.LVL29
+ 1467 00aa A0000000 		.4byte	.LVL30
+ 1468 00ae 0200     		.2byte	0x2
+ 1469 00b0 30       		.byte	0x30
+ 1470 00b1 9F       		.byte	0x9f
+ 1471 00b2 A0000000 		.4byte	.LVL30
+ 1472 00b6 B4000000 		.4byte	.LVL33
+ 1473 00ba 0100     		.2byte	0x1
+ 1474 00bc 54       		.byte	0x54
+ 1475 00bd B6000000 		.4byte	.LVL34
+ 1476 00c1 CC000000 		.4byte	.LVL37
+ 1477 00c5 0100     		.2byte	0x1
+ 1478 00c7 54       		.byte	0x54
+ 1479 00c8 00000000 		.4byte	0
+ 1480 00cc 00000000 		.4byte	0
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 31
+
+
+ 1481              	.LLST3:
+ 1482 00d0 C8000000 		.4byte	.LVL35
+ 1483 00d4 CC000000 		.4byte	.LVL37
+ 1484 00d8 0200     		.2byte	0x2
+ 1485 00da 30       		.byte	0x30
+ 1486 00db 9F       		.byte	0x9f
+ 1487 00dc CC000000 		.4byte	.LVL37
+ 1488 00e0 2A010000 		.4byte	.LVL45
+ 1489 00e4 0100     		.2byte	0x1
+ 1490 00e6 55       		.byte	0x55
+ 1491 00e7 00000000 		.4byte	0
+ 1492 00eb 00000000 		.4byte	0
+ 1493              		.section	.debug_aranges,"",%progbits
+ 1494 0000 34000000 		.4byte	0x34
+ 1495 0004 0200     		.2byte	0x2
+ 1496 0006 00000000 		.4byte	.Ldebug_info0
+ 1497 000a 04       		.byte	0x4
+ 1498 000b 00       		.byte	0
+ 1499 000c 0000     		.2byte	0
+ 1500 000e 0000     		.2byte	0
+ 1501 0010 00000000 		.4byte	.LFB120
+ 1502 0014 1C000000 		.4byte	.LFE120-.LFB120
+ 1503 0018 00000000 		.4byte	.LFB121
+ 1504 001c 2C000000 		.4byte	.LFE121-.LFB121
+ 1505 0020 00000000 		.4byte	.LFB119
+ 1506 0024 30000000 		.4byte	.LFE119-.LFB119
+ 1507 0028 00000000 		.4byte	.LFB122
+ 1508 002c 4C010000 		.4byte	.LFE122-.LFB122
+ 1509 0030 00000000 		.4byte	0
+ 1510 0034 00000000 		.4byte	0
+ 1511              		.section	.debug_ranges,"",%progbits
+ 1512              	.Ldebug_ranges0:
+ 1513 0000 00000000 		.4byte	.LFB120
+ 1514 0004 1C000000 		.4byte	.LFE120
+ 1515 0008 00000000 		.4byte	.LFB121
+ 1516 000c 2C000000 		.4byte	.LFE121
+ 1517 0010 00000000 		.4byte	.LFB119
+ 1518 0014 30000000 		.4byte	.LFE119
+ 1519 0018 00000000 		.4byte	.LFB122
+ 1520 001c 4C010000 		.4byte	.LFE122
+ 1521 0020 00000000 		.4byte	0
+ 1522 0024 00000000 		.4byte	0
+ 1523              		.section	.debug_line,"",%progbits
+ 1524              	.Ldebug_line0:
+ 1525 0000 03030000 		.section	.debug_str,"MS",%progbits,1
+ 1525      02002E02 
+ 1525      00000201 
+ 1525      FB0E0D00 
+ 1525      01010101 
+ 1526              	.LASF0:
+ 1527 0000 7369676E 		.ascii	"signed char\000"
+ 1527      65642063 
+ 1527      68617200 
+ 1528              	.LASF3:
+ 1529 000c 5F5F7569 		.ascii	"__uint8_t\000"
+ 1529      6E74385F 
+ 1529      7400
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 32
+
+
+ 1530              	.LASF47:
+ 1531 0016 55415254 		.ascii	"UART_LOG_PutChar\000"
+ 1531      5F4C4F47 
+ 1531      5F507574 
+ 1531      43686172 
+ 1531      00
+ 1532              	.LASF57:
+ 1533 0027 48617264 		.ascii	"Hardware_Init\000"
+ 1533      77617265 
+ 1533      5F496E69 
+ 1533      7400
+ 1534              	.LASF6:
+ 1535 0035 5F5F696E 		.ascii	"__int32_t\000"
+ 1535      7433325F 
+ 1535      7400
+ 1536              	.LASF48:
+ 1537 003f 59656C6C 		.ascii	"Yellow_LED_Write\000"
+ 1537      6F775F4C 
+ 1537      45445F57 
+ 1537      72697465 
+ 1537      00
+ 1538              	.LASF24:
+ 1539 0050 6D795374 		.ascii	"myStateMachine_t\000"
+ 1539      6174654D 
+ 1539      61636869 
+ 1539      6E655F74 
+ 1539      00
+ 1540              	.LASF45:
+ 1541 0061 4144435F 		.ascii	"ADC_DelSig_IsEndConversion\000"
+ 1541      44656C53 
+ 1541      69675F49 
+ 1541      73456E64 
+ 1541      436F6E76 
+ 1542              	.LASF39:
+ 1543 007c 55415254 		.ascii	"UART_LOG_Start\000"
+ 1543      5F4C4F47 
+ 1543      5F537461 
+ 1543      727400
+ 1544              	.LASF32:
+ 1545 008b 72784461 		.ascii	"rxDataCh\000"
+ 1545      74614368 
+ 1545      00
+ 1546              	.LASF23:
+ 1547 0094 55415254 		.ascii	"UART_TRANSFER_STATE\000"
+ 1547      5F545241 
+ 1547      4E534645 
+ 1547      525F5354 
+ 1547      41544500 
+ 1548              	.LASF38:
+ 1549 00a8 55415254 		.ascii	"UART_LOG_GetChar\000"
+ 1549      5F4C4F47 
+ 1549      5F476574 
+ 1549      43686172 
+ 1549      00
+ 1550              	.LASF37:
+ 1551 00b9 6973725F 		.ascii	"isr_UART_ClearPending\000"
+ 1551      55415254 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 33
+
+
+ 1551      5F436C65 
+ 1551      61725065 
+ 1551      6E64696E 
+ 1552              	.LASF56:
+ 1553 00cf 65537461 		.ascii	"eStateMachineEnum\000"
+ 1553      74654D61 
+ 1553      6368696E 
+ 1553      65456E75 
+ 1553      6D00
+ 1554              	.LASF40:
+ 1555 00e1 55415254 		.ascii	"UART_LOG_PutString\000"
+ 1555      5F4C4F47 
+ 1555      5F507574 
+ 1555      53747269 
+ 1555      6E6700
+ 1556              	.LASF16:
+ 1557 00f4 666C6F61 		.ascii	"float\000"
+ 1557      7400
+ 1558              	.LASF46:
+ 1559 00fa 4144435F 		.ascii	"ADC_DelSig_GetResult32\000"
+ 1559      44656C53 
+ 1559      69675F47 
+ 1559      65745265 
+ 1559      73756C74 
+ 1560              	.LASF30:
+ 1561 0111 73436852 		.ascii	"sChRx\000"
+ 1561      7800
+ 1562              	.LASF1:
+ 1563 0117 756E7369 		.ascii	"unsigned char\000"
+ 1563      676E6564 
+ 1563      20636861 
+ 1563      7200
+ 1564              	.LASF53:
+ 1565 0125 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1565      43313120 
+ 1565      352E342E 
+ 1565      31203230 
+ 1565      31363036 
+ 1566 0158 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1566      20726576 
+ 1566      6973696F 
+ 1566      6E203233 
+ 1566      37373135 
+ 1567 018b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1567      66756E63 
+ 1567      74696F6E 
+ 1567      2D736563 
+ 1567      74696F6E 
+ 1568              	.LASF22:
+ 1569 01b3 53414D50 		.ascii	"SAMPLING_STATE\000"
+ 1569      4C494E47 
+ 1569      5F535441 
+ 1569      544500
+ 1570              	.LASF8:
+ 1571 01c2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1571      20756E73 
+ 1571      69676E65 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 34
+
+
+ 1571      6420696E 
+ 1571      7400
+ 1572              	.LASF49:
+ 1573 01d4 47726565 		.ascii	"Green_LED_Write\000"
+ 1573      6E5F4C45 
+ 1573      445F5772 
+ 1573      69746500 
+ 1574              	.LASF15:
+ 1575 01e4 696E7433 		.ascii	"int32\000"
+ 1575      3200
+ 1576              	.LASF34:
+ 1577 01ea 53746174 		.ascii	"State\000"
+ 1577      6500
+ 1578              	.LASF28:
+ 1579 01f0 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1579      52784275 
+ 1579      66666572 
+ 1579      00
+ 1580              	.LASF31:
+ 1581 01fd 6F436852 		.ascii	"oChRx\000"
+ 1581      7800
+ 1582              	.LASF4:
+ 1583 0203 5F5F7569 		.ascii	"__uint16_t\000"
+ 1583      6E743136 
+ 1583      5F7400
+ 1584              	.LASF17:
+ 1585 020e 646F7562 		.ascii	"double\000"
+ 1585      6C6500
+ 1586              	.LASF2:
+ 1587 0215 73686F72 		.ascii	"short int\000"
+ 1587      7420696E 
+ 1587      7400
+ 1588              	.LASF26:
+ 1589 021f 6973725F 		.ascii	"isr_UART\000"
+ 1589      55415254 
+ 1589      00
+ 1590              	.LASF52:
+ 1591 0228 6666745F 		.ascii	"fft_app\000"
+ 1591      61707000 
+ 1592              	.LASF11:
+ 1593 0230 756E7369 		.ascii	"unsigned int\000"
+ 1593      676E6564 
+ 1593      20696E74 
+ 1593      00
+ 1594              	.LASF10:
+ 1595 023d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1595      206C6F6E 
+ 1595      6720756E 
+ 1595      7369676E 
+ 1595      65642069 
+ 1596              	.LASF12:
+ 1597 0254 75696E74 		.ascii	"uint8_t\000"
+ 1597      385F7400 
+ 1598              	.LASF51:
+ 1599 025c 55736572 		.ascii	"User_LED_Write\000"
+ 1599      5F4C4544 
+ 1599      5F577269 
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 35
+
+
+ 1599      746500
+ 1600              	.LASF55:
+ 1601 026b 433A5C55 		.ascii	"C:\\Users\\giris\\OneDrive\\Documents\\PSoC Creator"
+ 1601      73657273 
+ 1601      5C676972 
+ 1601      69735C4F 
+ 1601      6E654472 
+ 1602 0299 5C534448 		.ascii	"\\SDHD\\SDHD_Lab3.cydsn\000"
+ 1602      445C5344 
+ 1602      48445F4C 
+ 1602      6162332E 
+ 1602      63796473 
+ 1603              	.LASF58:
+ 1604 02af 53616D70 		.ascii	"SamplingArray\000"
+ 1604      6C696E67 
+ 1604      41727261 
+ 1604      7900
+ 1605              	.LASF42:
+ 1606 02bd 4144435F 		.ascii	"ADC_DelSig_StartConvert\000"
+ 1606      44656C53 
+ 1606      69675F53 
+ 1606      74617274 
+ 1606      436F6E76 
+ 1607              	.LASF14:
+ 1608 02d5 696E7433 		.ascii	"int32_t\000"
+ 1608      325F7400 
+ 1609              	.LASF20:
+ 1610 02dd 73697A65 		.ascii	"sizetype\000"
+ 1610      74797065 
+ 1610      00
+ 1611              	.LASF50:
+ 1612 02e6 5265645F 		.ascii	"Red_LED_Write\000"
+ 1612      4C45445F 
+ 1612      57726974 
+ 1612      6500
+ 1613              	.LASF43:
+ 1614 02f4 6973725F 		.ascii	"isr_PushButton_StartEx\000"
+ 1614      50757368 
+ 1614      42757474 
+ 1614      6F6E5F53 
+ 1614      74617274 
+ 1615              	.LASF9:
+ 1616 030b 6C6F6E67 		.ascii	"long long int\000"
+ 1616      206C6F6E 
+ 1616      6720696E 
+ 1616      7400
+ 1617              	.LASF36:
+ 1618 0319 50757368 		.ascii	"Push_Button_ClearInterrupt\000"
+ 1618      5F427574 
+ 1618      746F6E5F 
+ 1618      436C6561 
+ 1618      72496E74 
+ 1619              	.LASF18:
+ 1620 0334 63686172 		.ascii	"char\000"
+ 1620      00
+ 1621              	.LASF29:
+ 1622 0339 70757368 		.ascii	"push_button_toggle\000"
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 36
+
+
+ 1622      5F627574 
+ 1622      746F6E5F 
+ 1622      746F6767 
+ 1622      6C6500
+ 1623              	.LASF33:
+ 1624 034c 636F756E 		.ascii	"count\000"
+ 1624      7400
+ 1625              	.LASF25:
+ 1626 0352 6973725F 		.ascii	"isr_PushButton_Enable_Interrupt\000"
+ 1626      50757368 
+ 1626      42757474 
+ 1626      6F6E5F45 
+ 1626      6E61626C 
+ 1627              	.LASF13:
+ 1628 0372 75696E74 		.ascii	"uint16_t\000"
+ 1628      31365F74 
+ 1628      00
+ 1629              	.LASF41:
+ 1630 037b 4144435F 		.ascii	"ADC_DelSig_Start\000"
+ 1630      44656C53 
+ 1630      69675F53 
+ 1630      74617274 
+ 1630      00
+ 1631              	.LASF7:
+ 1632 038c 6C6F6E67 		.ascii	"long int\000"
+ 1632      20696E74 
+ 1632      00
+ 1633              	.LASF35:
+ 1634 0395 4646545F 		.ascii	"FFT_SamplesArray\000"
+ 1634      53616D70 
+ 1634      6C657341 
+ 1634      72726179 
+ 1634      00
+ 1635              	.LASF19:
+ 1636 03a6 6C6F6E67 		.ascii	"long double\000"
+ 1636      20646F75 
+ 1636      626C6500 
+ 1637              	.LASF54:
+ 1638 03b2 736F7572 		.ascii	"source\\bsw\\statemachine.c\000"
+ 1638      63655C62 
+ 1638      73775C73 
+ 1638      74617465 
+ 1638      6D616368 
+ 1639              	.LASF44:
+ 1640 03cc 6973725F 		.ascii	"isr_UART_StartEx\000"
+ 1640      55415254 
+ 1640      5F537461 
+ 1640      72744578 
+ 1640      00
+ 1641              	.LASF5:
+ 1642 03dd 73686F72 		.ascii	"short unsigned int\000"
+ 1642      7420756E 
+ 1642      7369676E 
+ 1642      65642069 
+ 1642      6E7400
+ 1643              	.LASF27:
+ 1644 03f0 53657175 		.ascii	"Sequencing\000"
+ARM GAS  C:\Users\giris\AppData\Local\Temp\cciTW9lL.s 			page 37
+
+
+ 1644      656E6369 
+ 1644      6E6700
+ 1645              	.LASF21:
+ 1646 03fb 49444C45 		.ascii	"IDLE_STATE\000"
+ 1646      5F535441 
+ 1646      544500
+ 1647              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

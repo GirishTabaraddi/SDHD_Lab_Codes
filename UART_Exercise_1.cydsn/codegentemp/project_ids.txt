@@ -1,0 +1,15 @@
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\LEDBlinking.cydsn\LEDBlinking.cyprj|2d96aedc-d59b-4570-9bfd-4cb5ca31c029
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|cc9eb2e6-eec4-4649-8cc0-7fbe66e8e95c
+C:\Users\giris\OneDrive\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|18bc5dab-3ce4-4a0b-8bcf-429b8ec6e0b1
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|51bd01b0-0183-42ca-b38a-d9b41b623b96
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|200308c4-d94c-4eaa-a895-5712e67ac51f
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|749b9932-2789-46a3-9208-83241b4d888e
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\Button.cydsn\Button.cyprj|fefd3ddd-9a0d-4f5f-a199-49165e5ff7b5
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\3bitCounter.cydsn\3bitCounter.cyprj|4934df21-d70b-4e25-8208-cd8d32f35860
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\LAB3_SDHD.cydsn\LAB3_SDHD.cyprj|4d2cce57-0322-4a0b-8115-e1944f6fc4fa
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_1.cydsn\UART_Exercise_1.cyprj|90900822-b776-4294-8066-520b2472df8f
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_2.cydsn\UART_Exercise_2.cyprj|7320f7c6-f43d-4958-ae1f-82ff0770db9e
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\UART_Exercise_3.cydsn\UART_Exercise_3.cyprj|4fd11189-1928-4e85-979b-116d977d7af3
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\MotionDetector.cydsn\MotionDetector.cyprj|af2b8dd7-9b1a-42e4-bec0-6ae5e9d945ae
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\SDHD_Lab3.cydsn\SDHD_Lab3.cyprj|1fbbb757-9139-45bd-bd91-03a2593433bb
+C:\Users\giris\OneDrive\Documents\PSoC Creator\SDHD\ADC_Exercise.cydsn\ADC_Exercise.cyprj|190bf846-f47f-4784-9797-1c29c9f4d063

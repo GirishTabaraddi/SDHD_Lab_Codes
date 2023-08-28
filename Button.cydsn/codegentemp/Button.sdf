@@ -1,0 +1,24 @@
+(DELAYFILE
+ (SDFVERSION "IEEE 1497 4.0")
+ (DATE "2023-05-07T12:02:08Z")
+ (DESIGN "Button")
+ (VENDOR "Cypress Semiconductor")
+ (PROGRAM "PSoC Creator")
+ (VERSION " 4.4")
+ (DIVIDER .)
+ (TIMESCALE 1 ns)
+ (CELL
+  (CELLTYPE "Button")
+  (INSTANCE *)
+  (DELAY
+   (ABSOLUTE
+    (INTERCONNECT ClockBlock.clk_bus_glb isr_Button.clock (0.000:0.000:0.000))
+    (INTERCONNECT Pin_Button.interrupt isr_Button.interrupt (1.000:1.000:1.000))
+    (INTERCONNECT Pin_YELLOW_LED\(0\)_PAD Pin_YELLOW_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Pin_Button\(0\)_PAD Pin_Button\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Pin_GREEN_LED\(0\)_PAD Pin_GREEN_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Pin_RED_LED\(0\)_PAD Pin_RED_LED\(0\).pad_in (0.000:0.000:0.000))
+   )
+  )
+ )
+)
